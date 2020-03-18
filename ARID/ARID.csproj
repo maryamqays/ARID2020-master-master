@@ -27,7 +27,7 @@
     <PackageReference Include="HangFire" Version="1.6.19" />
     <PackageReference Include="jquery-qrcode" Version="1.0.0" />
     <PackageReference Include="jquery.datatables" Version="1.10.15" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Localization.Routing" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Localization" Version="2.0.0" />
