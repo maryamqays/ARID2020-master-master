@@ -1,0 +1,76 @@
+﻿@model ARID.Models.TicketViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>مركز المساعدة</h2>
+
+<p>
+    <a class="btn btn-success" asp-action="Create">اسأل مركز المساعدة</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.Subject)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.TicketOpenDate)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.Status)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.TicketCategory)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Tickets)
+        {
+        <tr>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    @Html.DisplayFor(modelItem => item.Subject)
+                </a>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketOpenDate)
+            </td>
+
+            <td>
+                @if (item.Status == true)
+                {
+                    <p style="color:green">مفتوحة</p>
+                }
+
+                else
+                {
+                    <p style="color:red">مغلقة</p>
+                }
+                @*@Html.DisplayFor(modelItem => item.Status)*@
+            </td>
+            <td>  @Html.DisplayFor(modelItem => item.TicketCategory.Name)</td>
+
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.Id">تحرير</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">تفاصيل</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">حذف</a> |*@
+                @*<a asp-controller="TicketReplies" asp-action="Create" asp-route-tid="@item.Id">اضف رد</a> |*@
+                @*<a asp-controller="TicketReplies" asp-action="Index" asp-route-tid="@item.Id">تفاصيل</a>*@
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn border" page-class-normal="btn btn-primary active"
+     page-class-selected="btn btn-success active" class="btn-group m-1"></div>

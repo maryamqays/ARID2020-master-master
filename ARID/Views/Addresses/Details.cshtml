@@ -1,0 +1,80 @@
+﻿@model ARID.Models.Address
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-center">معلومات العنوان</h3>
+<div class="col-lg-12">
+    <div class="col-lg-8">
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.FullAddress)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FullAddress)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.AddressSaveName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AddressSaveName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ArName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ArName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EnName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EnName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ApplicationUserId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ApplicationUser.ArName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CityId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.City.ArCityName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Country.ArCountryName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.FacultyId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Faculty.ArFacultyName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UniversityId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.University.ArUniversityName)
+            </dd>
+        </dl>
+        <h4 style="display:inline"><a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">تعديل</a> </h4>
+        <h4 style="display:inline;float:left"><a asp-action="Index" class="btn btn-info">رجوع</a></h4>
+
+    </div>
+    <div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+﻿@model IEnumerable<ARID.Models.FreelancerPortfolio>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Skills)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ExternalLink)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.File)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Likes)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Views)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfRecord)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfAchievement)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Skills)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExternalLink)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Image)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.File)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Likes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Views)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfRecord)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfAchievement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

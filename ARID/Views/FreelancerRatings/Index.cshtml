@@ -1,0 +1,95 @@
+﻿@model IEnumerable<ARID.Models.FreelancerRating>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FreelancerProjectId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Isvisible)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateofRecord)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Professionalism)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Communication)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quality)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Experience)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Delivery)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RehirePossibility)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FreelancerProjectId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isvisible)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateofRecord)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Professionalism)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Communication)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quality)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Experience)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Delivery)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RehirePossibility)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

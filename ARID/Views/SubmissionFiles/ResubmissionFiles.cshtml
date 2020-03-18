@@ -1,0 +1,168 @@
+﻿@model ARID.Models.SubmissionFileViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+
+<h2>إضافة الملفات المرفقة بالبحث</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="ResubmissionFiles" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="SubmissionFile.SubmissionId" class="control-label"></label>
+                <input asp-for="SubmissionFile.SubmissionId" class="form-control" value="@ViewData["sid"]" />
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionFile.JournalFileTypeId" class="control-label"></label>*
+                <select asp-for="SubmissionFile.JournalFileTypeId" class="form-control" asp-items="ViewBag.JournalFileTypeId">
+                    <option disabled selected>إختر نوع الملف</option>
+                </select>
+                <span asp-validation-for="SubmissionFile.JournalFileTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionFile.FileName" class="control-label"></label>*
+                <input asp-for="SubmissionFile.FileName" type="file" name="myfile" id="file" accept=".docx" class="btn btn-primary col-lg-12" />
+                <input required readonly asp-for="SubmissionFile.FileName" id="fileinput" class="form-control" />
+                <span asp-validation-for="SubmissionFile.FileName" class="text-danger"></span>
+            </div>
+            <br />
+            <br />
+            <div class="form-group">
+                <label asp-for="SubmissionFile.Description" class="control-label"></label>*
+                <textarea required asp-for="SubmissionFile.Description" class="form-control"></textarea>
+                <span asp-validation-for="SubmissionFile.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="إضافة" class="btn btn-success col-lg-2" />
+            </div>
+        </form>
+        <div class="col-lg-12">
+            <hr />
+            <table class="table-hover table table-striped table-bordered dt-responsive">
+                <caption>
+                    <h2>الملفات المضافة</h2>
+                </caption>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SubmissionFile.FileName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SubmissionFile.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SubmissionFile.JournalFileTypeId)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SubmissionFiles)
+                    {
+                        <tr>
+                            <td>
+                                <a class="img-rounded" href="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + item.FileName)">
+                                    @Html.DisplayFor(modelItem => item.FileName)
+                                </a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.JournalFileType.FileType.FileName)
+                            </td>
+                            <td class="form-horizontal">
+                                <a title="تعديل" asp-action="EditResubFile" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                                <form id="myform_id" asp-action="Deleteresubfile" method="post">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <a title="حذف" href="javascript:$('#myform_id').submit();"><span class="glyphicon glyphicon-trash"></span></a>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-3">
+        <a asp-controller="Submissions" asp-action="EditResubmission" asp-route-id="@ViewData["sid"]" class="btn btn-success bold">&nbsp;&nbsp;رسالة  لرئيس التحرير</a> <span id="reviewer-t" class="glyphicon glyphicon-ok"></span><br /><br />
+        <a id="attach" href="#" class="bold">&nbsp;&nbsp;إضافة ملفات البحث</a> <span class="glyphicon glyphicon-arrow-right"></span><br /><br />
+        <hr />
+        @if (Model.Submissions.Count() > 0 && @Model.SubmissionFiles.Count() >= @Model.JournalFileTypes.Count())
+        {
+            <a id="subm" asp-controller="Journals" asp-action="Details" asp-route-id="@ViewData["jid"]" class="btn btn-danger bold">&nbsp;&nbsp;&nbsp;&nbsp;تسليم البحث نهائياً</a>
+        }
+        @if (Model.Submissions.Count() == 0 || @Model.SubmissionFiles.Count() < @Model.JournalFileTypes.Count())
+        {
+            <a id="submnot" href="#" class="btn btn-default bold">&nbsp;&nbsp;&nbsp;&nbsp;تسليم البحث نهائياً</a>
+            <p style="color:red;" id="notcompt">لم تكمل جميع المتطلبات بعد</p>
+        }
+
+    </div>
+</div>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script>
+        if (@Model.Submissions.Count()> 0) {
+            $('#submit').addClass("btn btn-success")
+        }
+        else {
+            $('#submit').addClass("btn btn-danger")
+            $('#submit-t').hide();
+        }
+        if (@Model.SubmissionFiles.Count()>= @Model.JournalFileTypes.Count()) {
+            $('#attach').addClass("btn btn-success")
+        }
+        else {
+            $('#attach').addClass("btn btn-danger")
+        }
+        $("#compt").hide();
+        $("#notcompt").hide();
+        $("#subm").click(function () {
+            $("#compt").show();
+        });
+        $("#submnot").click(function () {
+            $("#notcompt").show();
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#subm').click(
+
+                function () {
+                       var FollowOptions = {};
+                    FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/ResearchSubmission/";
+                    //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                    FollowOptions.data = { id: @ViewData["mid"] };
+                    FollowOptions.success = function () {
+                        alert("sucess");
+                    };
+                   $.ajax(FollowOptions);
+                  });
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

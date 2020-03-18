@@ -1,0 +1,32 @@
+﻿@model ARID.Models.Filspay
+
+<div class="row">
+    <div class="col-md-8">
+       <p>يتيح لكم الرصيد في منصة اُريد استخدام خدمات المنصة الاحترافية في مركز خبرة للخدمات العلمية وبقية الخدمات التي ستضاف لاحقا</p>
+        <form asp-action="Filspay">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                <label asp-for="UserAmount" class="control-label"></label>
+                @*<input asp-for="Number" class="form-control" />*@
+                <input class="form-control" id="UserAmount" type="number" min="20" name="UserAmount" />
+                            </div>
+                        <div class="form-group">
+                <input type="submit" value="تعبئة الرصيد عبر فلسبي" class="btn btn-default" />
+            </div>
+            <hr/>
+            <h3>عن فلسبي</h3>
+            <p>
+                فلسبي هي بوابة دفع الكترونية تأسست سنة 2008 في ماليزيا وتتيح فتح حساب مجاني فيها وتعبئة الرصيد عبر البحث عن أقرب موزع لكم (تماما مثل عملية تعبئة رصيد النقال). ثم اتمام عملية الدفع عبر الانترنت بسهولة وآمان.
+
+            </p>
+            <p>عمولة فلسبي : 5% من مقدار المبلغ</p>
+            <p>أقل مبلغ للتعبئة عبر فلسبي 20 دولار </p>
+            <a target="_blank" href="https://filspay.com/Identity/Account/Register">لفتح حساب في فلسبي اضغط هنا</a><br/>
+            <a target="_blank" href="https://filspay.com/Resellers">للاطلاع على قائمة وكلاء وموزعي فلسبي لتعبئة الرصيد اضغط هنا</a>
+
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

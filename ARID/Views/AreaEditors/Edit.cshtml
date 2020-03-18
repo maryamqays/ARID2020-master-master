@@ -1,0 +1,58 @@
+﻿@model ARID.Models.AreaEditor
+@{
+    ViewData["Title"] = "تعديل على معلومات المساعد";
+}
+<h2>تعديل على معلومات المساعد</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="JournalId" class="control-label"></label>
+                <select asp-for="JournalId" class="form-control" asp-items="ViewBag.JournalId"></select>
+                <span asp-validation-for="JournalId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="JoinDate" class="control-label"></label>
+                <input asp-for="JoinDate" class="form-control" />
+                <span asp-validation-for="JoinDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RoleId" class="control-label"></label>
+                <select asp-for="RoleId" asp-items="Html.GetEnumSelectList<Role>()" class="form-control"></select>
+                <span asp-validation-for="RoleId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn btn-success" />
+                <a asp-action="Index" asp-route-id="@Model.JournalId" class="btn btn-primary bold">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>

@@ -1,0 +1,88 @@
+﻿@model ARID.Models.AcademicPosition
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Delete"]</h2>
+
+<h3>@Localizer["Sure"]</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Indx)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Indx)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PositionTypeId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PositionType.ArPositionName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UniversityId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.University.ArUniversityName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FacultyId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Faculty.ArFacultyName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CountryId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country.ArCountryName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CityId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.City.ArCityName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCurrent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsCurrent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FromYear)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FromYear)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ToYear)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ToYear)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="submit" value="@Localizer["Delete"]" class="btn btn-default" />
+        <a asp-action="Index">@Localizer["BackToList"]</a>
+    </form>
+</div>

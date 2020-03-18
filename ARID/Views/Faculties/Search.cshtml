@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ARID.Models.Faculty>
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h2>Search</h2>
+
+<p>
+    <a asp-action="UnIndexed">كليات قيد الموافقة</a>
+</p>
+<form>
+    <p>
+        <input type="text" name="keyword">
+        <input type="submit" value="Search" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ArFacultyName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnFacultyName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HasPostGraduation)
+                </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.Speciality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.University)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArFacultyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnFacultyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasPostGraduation)
+            </td>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.Speciality.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

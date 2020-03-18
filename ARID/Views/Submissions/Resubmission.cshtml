@@ -1,0 +1,124 @@
+﻿@model ARID.Models.SubmissionViewModel
+@{
+    ViewData["Title"] = "رسالة الى رئيس التحرير";
+}
+<h2>رسالة الى رئي التحرير</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Resubmission">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Submission.ManuscriptId" class="control-label"></label>*
+                <select asp-for="Submission.ManuscriptId" class="form-control" asp-items="ViewBag.ManuscriptId"></select>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="AEId" class="control-label"></label>
+                    <select asp-for="AEId" class ="form-control" asp-items="ViewBag.AEId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ResponsetoDecision" class="control-label"></label>
+                    <input asp-for="ResponsetoDecision" class="form-control" />
+                    <span asp-validation-for="ResponsetoDecision" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EICDecision" class="control-label"></label>
+                    <select asp-for="EICDecision" class="form-control"></select>
+                    <span asp-validation-for="EICDecision" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SubmissionStatus" class="control-label"></label>
+                    <select asp-for="SubmissionStatus" class="form-control"></select>
+                    <span asp-validation-for="SubmissionStatus" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DecisionDate" class="control-label"></label>
+                    <input asp-for="DecisionDate" class="form-control" />
+                    <span asp-validation-for="DecisionDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EicDecisionText" class="control-label"></label>
+                    <input asp-for="EicDecisionText" class="form-control" />
+                    <span asp-validation-for="EicDecisionText" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DecisionLetter" class="control-label"></label>
+                    <input asp-for="DecisionLetter" class="form-control" />
+                    <span asp-validation-for="DecisionLetter" class="text-danger"></span>
+                </div>*@
+            <div class="form-group subm">
+                <label asp-for="Submission.CoverLetter" class="control-label"></label>*
+                <textarea asp-for="Submission.CoverLetter" class="form-control"></textarea>
+                <span asp-validation-for="Submission.CoverLetter" class="text-danger"></span>
+            </div>
+            <div class="form-group subm">
+                <div class="checkbox">
+                    <label>
+                        <input required asp-for="Submission.PlagiarismConfirmation" /> @Html.DisplayNameFor(model => model.Submission.PlagiarismConfirmation)
+                        <br />
+                        <span asp-validation-for="Submission.PlagiarismConfirmation" class="text-danger"></span>
+                    </label>*
+                </div>
+            </div>
+            <div class="form-group subm">
+                <div class="checkbox">
+                    <label>
+                        <input required asp-for="Submission.DuplicateSubmissionConfirmation" /> @Html.DisplayNameFor(model => model.Submission.DuplicateSubmissionConfirmation)
+                        <br />
+                        <span asp-validation-for="Submission.DuplicateSubmissionConfirmation" class="text-danger"></span>
+                    </label>*
+                </div>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="AEDecision" class="control-label"></label>
+                    <select asp-for="AEDecision" class="form-control"></select>
+                    <span asp-validation-for="AEDecision" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AEDecisionDate" class="control-label"></label>
+                    <input asp-for="AEDecisionDate" class="form-control" />
+                    <span asp-validation-for="AEDecisionDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AEDecisionText" class="control-label"></label>
+                    <input asp-for="AEDecisionText" class="form-control" />
+                    <span asp-validation-for="AEDecisionText" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <input type="submit" value="إرسال" class="btn btn-success subm" />
+                <a class="btn btn-primary bold" asp-route-jid="@ViewData["jid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="SubmissionSentBackToAuthor">رجوع</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-3">
+        <a href="#" class="btn btn-danger bold">&nbsp;&nbsp;رسالة  لرئيس التحرير</a> <span id="reviewer-t" class="glyphicon glyphicon-ok"></span><br /><br />
+        <a href="#" id="attach" class="btn btn-danger bold">&nbsp;&nbsp;إضافة ملفات البحث</a> <span id="attach-t" class="glyphicon glyphicon-ok"></span><br /><br />
+        <p style="color:red;" id="attacht">يجب إكمال الرسالة أولاً</p>
+        <hr />
+        <a id="subm" class="btn btn-default bold">&nbsp;&nbsp;&nbsp;&nbsp;تسليم البحث نهائياً</a>
+        <p style="color:red;" id="submt">يجب إكمال الرسالة أولاً</p>
+
+    </div>
+</div>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $("#submt").hide();
+        $("#attacht").hide();
+        $("#subm").click(function () {
+            $("#submt").show();
+        });
+        $("#attach").click(function () {
+            $("#attacht").show();
+        });
+    </script>
+    
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

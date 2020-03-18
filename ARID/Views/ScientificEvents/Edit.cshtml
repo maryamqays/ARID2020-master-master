@@ -1,0 +1,180 @@
+﻿@model ARID.Models.ScientificEvent
+@{
+    ViewData["Title"] = "Edit";
+}
+<br />
+<h2>التعديل على الحدث</h2>
+<br />
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="EventNameAr" class="control-label"></label>
+                <input asp-for="EventNameAr" class="form-control" />
+                <span asp-validation-for="EventNameAr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventNameEn" class="control-label"></label>
+                <input asp-for="EventNameEn" class="form-control" />
+                <span asp-validation-for="EventNameEn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventType" class="control-label"></label>
+                <select asp-for="EventType" asp-items="Html.GetEnumSelectList<EventType>()" class="form-control"></select>
+                <span asp-validation-for="EventType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReportType" class="control-label"></label>
+                <select asp-for="ReportType" asp-items="Html.GetEnumSelectList<ReportType>()" class="form-control"></select>
+                <span asp-validation-for="ReportType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Venue" class="control-label"></label>
+                <br />
+                <textarea asp-for="Venue" class="form-control" rows="4" cols="30"></textarea>
+                <span asp-validation-for="Venue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventDate" class="control-label"></label>
+                <input asp-for="EventDate" class="form-control" />
+                <span asp-validation-for="EventDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label><br />
+                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Image)" /><br /><br />
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12" />
+                <input asp-for="Image" id="fileinput" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SpecialityId" class="control-label"></label>
+                <select asp-for="SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId"></select>
+                <span asp-validation-for="SpecialityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Organizers" class="control-label"></label>
+                <br />
+                <input asp-for="Organizers" class="form-control" multiple />
+                <span asp-validation-for="Organizers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactDetails" class="control-label"></label>
+                <br />
+                <textarea asp-for="ContactDetails" class="form-control" rows="4" cols="30"></textarea>
+                <span asp-validation-for="ContactDetails" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" id="admin">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group admin">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsFeatured" onclick="toggle('.myClass', this)" /> @Html.DisplayNameFor(model => model.IsFeatured)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group admin">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsVisible" /> @Html.DisplayNameFor(model => model.IsVisible)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group admin">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsAccepted" /> @Html.DisplayNameFor(model => model.IsAccepted)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Website" class="control-label"></label>
+                <input asp-for="Website" class="form-control" />
+                <span asp-validation-for="Website" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsDecisionMaker" id="dm" />@Html.DisplayNameFor(model => model.IsDecisionMaker)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" id="pre">
+                <label asp-for="AridPrivileges" class="control-label"></label>
+                <br />
+                @Html.TextAreaFor(model => model.AridPrivileges, new { rows = 10, cols = 50 })
+                <span asp-validation-for="AridPrivileges" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <br />
+                @Html.TextAreaFor(model => model.Description, new { rows = 10, cols = 100 })
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn btn-success h5" />
+                <a asp-action="Index" class="btn btn-info pull-left h5">رجوع</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+@section Scripts {
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link",
+            mode: "textareas",
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+            toolbar: false,
+            menubar: false,
+            cleanup: true,
+            paste_as_text: true,
+            paste_word_valid_elements: "h1,h2,h3,b,strong,i,em"
+
+            //plugins: "table,contextmenu,paste,-externalplugin"
+
+        });</script>
+    <script>
+        $(document).ready(function () {
+            $("#pre").hide();
+            $("#dm").click(function () {
+                $("#pre").slideToggle();
+            });
+            $("#img").hide();
+            $("#btn").click(function () {
+                $("#img").slideToggle();
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<ARID.Models.CourseChapterContent>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Indx)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ContentType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FilePath)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Duration)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsFree)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsDownloadable)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseChapter)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Indx)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContentType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FilePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFree)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDownloadable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseChapter.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

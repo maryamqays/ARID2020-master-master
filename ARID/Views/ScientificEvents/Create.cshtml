@@ -1,0 +1,133 @@
+﻿@model ARID.Models.ScientificEvent
+@{
+    ViewData["Title"] = "إضافة حدث علمي";
+}
+
+<h3 class="text-center">الأحداث العلمية</h3>
+
+
+<div class="row">
+    <div class="col-md-8">
+        <h3 class="text-center">إضافة حدث علمي</h3>
+
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EventType" class="control-label"></label>
+                <select asp-for="EventType" asp-items="Html.GetEnumSelectList<EventType>()" class="form-control">
+                    <option selected disabled>اختر نوع الحدث</option>
+
+                </select>
+                <span asp-validation-for="EventType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EventNameAr" class="control-label"></label>
+                <input asp-for="EventNameAr" class="form-control" />
+                <span asp-validation-for="EventNameAr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventNameEn" class="control-label"></label>
+                <input asp-for="EventNameEn" class="form-control" />
+                <span asp-validation-for="EventNameEn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventDate" class="control-label"></label>
+                <input asp-for="EventDate" class="form-control" />
+                <span asp-validation-for="EventDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <img id="img" class="img-rounded" src="" />
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12" />
+                <input asp-for="Image" id="fileinput" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId">
+                    <option selected disabled>اختر بلد اقامة الحدث</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Venue" class="control-label"></label>
+                <textarea asp-for="Venue" class="form-control" rows="4" cols="30"></textarea>
+                <span asp-validation-for="Venue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialityId" class="control-label"></label>
+                <select asp-for="SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId">
+                    <option selected disabled>اختر تخصص الحدث</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Organizers" class="control-label"></label>
+                <input asp-for="Organizers" class="form-control" multiple />
+                <span asp-validation-for="Organizers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactDetails" class="control-label"></label>
+                <textarea asp-for="ContactDetails" class="form-control" rows="4" cols="30"></textarea>
+                <span asp-validation-for="ContactDetails" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Website" class="control-label"></label>
+                <input type="url" asp-for="Website" class="form-control" />
+                <span asp-validation-for="Website" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="pre">
+                <label asp-for="AridPrivileges" class="control-label"></label>
+                <textarea rows="5" class="form-control" asp-for="AridPrivileges"></textarea>
+                <span asp-validation-for="AridPrivileges" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea rows="5" class="form-control" asp-for="Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsDecisionMaker" /> @Html.DisplayNameFor(model => model.IsDecisionMaker)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="إنشاء" class="btn btn-success h5" />
+                <a asp-action="Index" class="btn btn-primary h5 pull-left">رجوع</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+<div>
+</div>
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

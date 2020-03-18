@@ -1,0 +1,119 @@
+﻿@model ARID.Models.AcademicActivity
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Edit"]</h2>
+
+<h4>@Localizer["Index"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ApplicationUserId" />
+            <div class="form-group">
+                <label asp-for="ActivityType" class="control-label"></label>
+                <select asp-for="ActivityType" class="form-control"
+                        asp-items="Html.GetEnumSelectList<ActivityType>()">
+                    <option disabled selected value="">@Localizer["SelectActivityType"]</option>
+                </select>
+                <span asp-validation-for="ActivityType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArTitle" class="control-label"></label>
+                <input asp-for="ArTitle" class="form-control" />
+                <span asp-validation-for="ArTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArDescription" class="control-label"></label>
+                <textarea asp-for="ArDescription" class="form-control" style="height:150px"></textarea>
+                <span asp-validation-for="ArDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnTitle" class="control-label"></label>
+                <input asp-for="EnTitle" class="form-control" />
+                <span asp-validation-for="EnTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EnDescription" class="control-label"></label>
+                <textarea asp-for="EnDescription" class="form-control" style="height:150px"></textarea>
+                <span asp-validation-for="EnDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActivityDate" class="control-label"></label>
+                <input asp-for="ActivityDate" class="form-control" />
+                <span asp-validation-for="ActivityDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActivityURL" class="control-label"></label>
+                <input asp-for="ActivityURL" class="form-control" />
+                <span asp-validation-for="ActivityURL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RelationType" class="control-label"></label>
+                <select asp-for="RelationType" class="form-control"
+                        asp-items="Html.GetEnumSelectList<RelationType>()">
+                    <option disabled selected value="">@Localizer["SelectRelationType"]</option>
+                </select>
+                <span asp-validation-for="RelationType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Language" class="control-label"></label>
+                <select asp-for="Language" class="form-control"
+                        asp-items="Html.GetEnumSelectList<Language>()">
+                    <option disabled selected value="">@Localizer["SelectLanguage"]</option>
+                </select>
+                <span asp-validation-for="Language" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId">
+                    <option disabled selected>@Localizer["SelectCountry"]</option>
+                </select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Photo" class="control-label"></label>
+                <img id="img1" class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ActivityPhotos + "/" + Model.Photo)" height="200" />
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-default" />
+                <input asp-for="Photo" id="fileinput" class="form-control" />
+                <span asp-validation-for="Photo" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">@Localizer["BackToList"]</a>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+
+                    //to show new image at a time of image selected from file input type
+                    if (this.files && this.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                }
+            });
+        });
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+

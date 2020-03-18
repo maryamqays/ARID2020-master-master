@@ -1,0 +1,150 @@
+﻿@model ARID.Models.MOOCListViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+<div class="form-group row col-lg-8">
+    <div class="col-lg-2">
+        <span class="glyphicon glyphicon-search" id="span" title="بحث"></span>
+        <span class="glyphicon glyphicon-remove" id="spanx" title="الغاء نتائج البحث"></span>
+    </div>
+    <div class="col-lg-6">
+        <form asp-controller="MOOCLists" asp-action="Index" id="form" class="row">
+            <p>
+                <input id="in" type="text" name="SearchString">
+                <input type="submit" value="بحث" id="search" />
+            </p>
+        </form>
+    </div>
+</div>
+@if (User.IsInRole("Admins"))
+{
+    <div class="col-lg-4">
+        <input type="submit" value="الكل" id="all" />
+        <input type="submit" value="المبلغ عنه" id="searchreported" />
+    </div>
+
+}
+
+<br />
+<br />
+<h1>قائمة الدورات المتاحة</h1>
+<p>
+    <a asp-action="Create" class="btn btn-success">إضافة</a>
+</p>
+<div class="row">
+    <div class="col-lg-8">
+        <table class="table-hover table table-striped table-bordered dt-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MOOCList.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MOOCList.MOOCProviderId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MOOCList.Link)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MOOCList.Language)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MOOCList.UniversityId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MOOCList.StartDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MOOCList.Instructor)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.MOOCLists)
+                {
+
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MOOCProvider.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Link)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Language)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Instructor)
+                        </td>
+
+                        <td>
+                            @if (User.IsInRole("Admins") || item.ApplicationUserId == currentUser.Id)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+
+                            }
+                            @if (User.IsInRole("Admins"))
+                            {
+                                <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+
+        <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+             page-class="btn border" page-class-normal="btn btn-default active"
+             page-class-selected="btn btn-success active" class="btn-group m-1"></div>
+    </div>
+
+
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $("#form").hide();
+            $("#span").css('cursor', 'pointer');
+            $("#spanx").css('cursor', 'pointer');
+            $("#span").click(function () {
+                $("#form").slideToggle("slow");
+
+                //$("#span").toggleClass(".glyphicon glyphicon-remove");
+
+            });
+            $("#spanx").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+            $("#all").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+            $("#searchreported").click(function () {
+                $("#in").attr('value', 'reported')
+                $('#search').trigger('click');
+            });
+
+        });
+    </script>
+
+}

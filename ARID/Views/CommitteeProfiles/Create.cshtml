@@ -1,0 +1,50 @@
+﻿@model ARID.Models.CommitteeProfile
+
+@{
+    ViewData["Title"] = "إضافة عضو";
+}
+
+<h2>إضافة عضو</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                @*<select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>*@
+                <input asp-for="ApplicationUserId" class="form-control" />
+            </div>
+            <div hidden class="form-group">
+                <label asp-for="CommitteeId" class="control-label"></label>
+                <select asp-for="CommitteeId" class="form-control" asp-items="ViewBag.CommitteeId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Task" class="control-label"></label>
+                <input asp-for="Task" class="form-control" />
+                <span asp-validation-for="Task" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsCommitteeAdmin" /> @Html.DisplayNameFor(model => model.IsCommitteeAdmin)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="أنشاء" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

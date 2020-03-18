@@ -1,0 +1,195 @@
+﻿@model ARID.Models.PublicationTitle
+@{
+    ViewData["Title"] = "معلومات المجلة";
+}
+<h2>&nbsp;</h2>
+@if (Model.Logo != null)
+{
+    <center>
+        <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Logo)" />
+    </center>
+}
+
+<h2 class="text-center">@Model.ArName</h2>
+<hr />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-8">
+            <dl class="dl-horizontal h5">
+                <dt>
+                    @Html.DisplayNameFor(model => model.EnName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EnName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.ArDescription)
+                </dt>
+                <dd>
+                    @Html.Raw(Model.ArDescription)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.PISSN)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.PISSN)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.EISSN)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EISSN)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.EstablishmentDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EstablishmentDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.EditorinChief)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EditorinChief)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsIIndexed)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.IsIIndexed)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsScopusIndexed)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.IsScopusIndexed)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsImpactFactor)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.IsImpactFactor)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Website)
+                </dt>
+                <dd>
+                    <a target="_blank" href="@Model.Website">@Html.DisplayFor(model => model.Website)</a>
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Fb)
+                </dt>
+                <dd>
+                    <a target="_blank" href="@Model.Fb">@Html.DisplayFor(model => model.Fb)</a>
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Twitter)
+                </dt>
+                <dd>
+                    <a target="_blank" href="@Model.Twitter">@Html.DisplayFor(model => model.Twitter)</a>
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ContactUs)
+                </dt>
+                <dd>
+                    @Html.Raw(Model.ContactUs)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Languages)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Languages)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Tags)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Tags)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Status)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.PublicationTypes)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.PublicationTypes)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApplicationUserId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApplicationUser.ArName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CountryId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Country.ArCountryName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.PublisherId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Publisher.ArName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.SpecialityId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Speciality.Name)
+                </dd>
+            </dl>
+            <button type="button" class="btn btn-danger pull-right h5" data-toggle="modal" data-target="#myModal">إبلاغ</button>
+
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">الإبلاغ عن حدث</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="text-center">هل تريد الإبلاغ عن هذا المحتوى بالفعل؟</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="btnreport" class="btn btn-danger pull-right h5" data-dismiss="modal">إبلاغ</button>
+                            <button type="button" class="btn btn-info h5" data-dismiss="modal">إغلاق</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <a class="btn btn-info h5 pull-left" asp-action="Index"> رجوع</a>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#btnreport").click(
+                function () {
+                        var FollowOptions = {};
+                        FollowOptions.url = "/ar-LY/PublicationTitles/Report/";
+                        FollowOptions.data = { id: "@Model.Id" };
+                        FollowOptions.success = function () {
+                            $("#btnreport").prop("text", "تم بلاغ الادارة بنجاح");
+                                                  };
+              $.ajax(FollowOptions);
+                });
+        });
+    </script>
+}

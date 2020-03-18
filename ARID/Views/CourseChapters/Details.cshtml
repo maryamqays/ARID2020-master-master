@@ -1,0 +1,62 @@
+﻿@model ARID.Models.CourseChapterViewModel
+@{
+    ViewData["Title"] = @Html.DisplayFor(model => model.CourseChapter.Name);
+}
+
+<br>
+<div class="row">
+    <div class="col-lg-8">
+        <h3 class="text-center">محتوى القسم</h3>
+
+        <table class="table-hover table table-striped table-bordered dt-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CourseChapterContent.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CourseChapterContent.Indx)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CourseChapterContent.ContentType)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CourseChapterContents)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-controller="CourseChapterContents" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Title)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Indx)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContentType)
+                        </td>
+                        <td>
+                            @if (User.IsInRole("Admins"))
+                            {
+                                <a asp-action="Edit" asp-controller="CourseChapterContents" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+
+                            }
+                            @if (User.IsInRole("Admins"))
+                            {
+                                <a asp-action="Delete" asp-controller="CourseChapterContents" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-4">
+        <label>أسم الدورة</label> :@Html.DisplayFor(model => model.CourseChapter.Course.ArName)
+        <br />
+        <label>إسم القسم</label>:@Html.DisplayFor(model => model.CourseChapter.Name)
+    </div>
+</div>
+<a class="btn btn-success" asp-controller="CourseChapterContents" asp-action="Create" asp-route-cid="@ViewData["CourseChapterId"]"> <span class="glyphicon glyphicon-plus"></span> اضافة محتوى الى القسم</a>
+<a asp-action="Details" asp-controller="Courses" asp-route-id="@Model.CourseChapter.CourseId" class="btn btn-primary">العودة الى قائمة الأقسام</a>

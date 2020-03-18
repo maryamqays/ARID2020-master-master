@@ -1,0 +1,184 @@
+﻿@model ARID.Models.AreaEditorViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+<h2>إضافة مساعد علمي</h2>
+<hr />
+<div class="col-lg-12 row">
+    <form asp-action="Create" method="get">
+        <div class="form-group col-lg-12">
+            <label class="control-label">البحث عن المؤلف في منصة اريد</label>
+            <input id="srch" minlength="4" placeholder="ادخل اسم المؤلف او ابريده الالكتروني او معرف اريد الخاص به ثم اضغط زر بحث --ادخل اربع حروف على الاقل--" class="form-control col-lg-10" name="ss" />
+            <span id="spanvalid"></span>
+            <input type="hidden" name="jid" value="@ViewData["jid"]" /><br />
+            <input class="btn btn-success col-lg-2" type="submit" value="بحث" id="search" />
+        </div>
+    </form>
+    <div class="col-lg-12">
+        @if (Model.ApplicationUsers.Count() > 0)
+        {
+            <table id="users" class="table-hover table table-striped table-bordered dt-responsive">
+                <caption><h3>اختر أحد المستخدمين</h3></caption>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser.ArName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser.EnName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser.CountryId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser.UniversityId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser.Email)
+                        </th>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.ApplicationUser.Id)
+                            </th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ApplicationUsers)
+                    {
+                        <tr>
+                            @if (Model.AreaEditors.Where(a => a.ApplicationUserId == item.Id).Count() == 0)
+                            {
+                                <td>
+                                    <input type="checkbox" name="IdsToAdd" value="@item.Id">
+                                    <input hidden name="itmname" value="@item.ArName" />
+                                    <input hidden name="itmmail" value="@item.Email" />
+                                </td>
+                            }
+                            @if (Model.AreaEditors.Where(a => a.ApplicationUserId == item.Id).Count() > 0)
+                            {
+                                <td>
+                                    <input disabled type="checkbox" name="IdsToAdd" value="@item.Id">
+                                    <input hidden name="itmname" value="@item.ArName" />
+                                    <input hidden name="itmmail" value="@item.Email" />
+                                </td>
+                            }
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ArName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EnName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>*@
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        }
+        <a id="addnew" class="btn btn-success bold">إضافة مؤلف من خارج المنصة</a>
+    </div>
+</div>
+<div class="col-lg-12">
+    <br /><br /><br />
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="AreaEditor.ApplicationUserId" class="control-label"></label>
+                <input id="appuser" asp-for="AreaEditor.ApplicationUserId" class="form-control" />
+            </div>
+            <div class="form-group req">
+                <label asp-for="AreaEditor.ApplicationUserId" class="control-label"></label>
+                <input name="edtrnme" readonly required asp-for="AreaEditor.ApplicationUserId" class="form-control" />
+                <span asp-validation-for="AreaEditor.ApplicationUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group req">
+                <label asp-for="AreaEditor.JournalId" class="control-label"></label>
+                <select asp-for="AreaEditor.JournalId" class="form-control req" asp-items="ViewBag.JournalId"></select>
+                <span asp-validation-for="AreaEditor.JournalId" class="text-danger"></span>
+            </div>
+            <div class="form-group req">
+                <label asp-for="AreaEditor.Description" class="control-label"></label>
+                <textarea asp-for="AreaEditor.Description" class="form-control"></textarea>
+                <span asp-validation-for="AreaEditor.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group req">
+                <div class="form-group req">
+                    <label asp-for="AreaEditor.RoleId" class="control-label"></label>
+                    <select asp-for="AreaEditor.RoleId" asp-items="Html.GetEnumSelectList<Role>()" class="form-control">
+                        <option selected disabled>اختر دور المساعد</option>
+                    </select>
+                    <span asp-validation-for="AreaEditor.RoleId" class="text-danger"></span>
+                </div>
+
+                @*<div class="form-group req">
+                        <label asp-for="AreaEditor.JoinDate" class="control-label"></label>
+                        <input asp-for="AreaEditor.JoinDate" class="form-control" />
+                        <span asp-validation-for="AreaEditor.JoinDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group req">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="AreaEditor.IsActive" /> @Html.DisplayNameFor(model => model.AreaEditor.IsActive)
+                            </label>
+                        </div>
+                    </div>*@
+                <div class="form-group">
+                    <input type="submit" value="إضافة" class="btn btn-success req" />
+                    <a asp-action="Index" asp-route-id="@ViewData["jid"]" class="btn btn-primary bold">رجوع</a>
+                </div>
+        </form>
+    </div>
+</div>
+<style>
+
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+@section scripts{
+    <script>
+        $('.req').hide();
+        $("input[name=IdsToAdd]").change(function () {
+            $('#appuser').val($(this).val());
+            $("input[name=IdsToAdd]").not(this).attr('checked', false);
+            $("input[type=email]").val($("input[name=IdsToAdd]:checked").siblings("input[name=itmmail]").val());
+            $("input[name=edtrnme]").val($("input[name=IdsToAdd]:checked").siblings("input[name=itmname]").val());
+            $('#users').slideUp();
+            $('.req').slideDown();
+
+        });
+        $("#compt").hide();
+        $("#notcompt").hide();
+        $("#subm").click(function () {
+            $("#compt").show();
+        });
+        $("#submnot").click(function () {
+            $("#notcompt").show();
+        });
+        $('#form2').hide();
+        $("#addnew").click(function () {
+            $('#form1').slideUp();
+            $('#form2').slideDown();
+            $('#users').hide();
+        });
+        if (@Model.ApplicationUsers.Count()> 0) {
+            $("#addnew").hide()
+        }
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

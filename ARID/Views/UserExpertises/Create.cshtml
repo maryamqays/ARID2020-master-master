@@ -1,0 +1,90 @@
+﻿@model ARID.Models.UserExpertise
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Create"]</h2>
+
+<h4>@Localizer["Index"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ApplicationUserId" value="@ViewBag.ApplicationUserId" />
+            <div class="form-group">
+                    <label asp-for="ExpertiseId" class="control-label"></label>
+                    <select asp-for="ExpertiseId" class="form-control" asp-items="ViewBag.ExpertiseId">
+                        <option disabled selected value="">@Localizer["SelectExpertise"]</option>
+                    </select>
+                </div>
+
+            @*<div class="form-group">
+                <label asp-for="ExpertiseId" class="control-label"></label>
+                <input asp-for="ExpertiseId" type="hidden" />
+                <select id="ExpertiseId" class="form-control" multiple>
+                    @{
+                        List<CommunityAutofillModel> ls = (List<CommunityAutofillModel>)ViewBag.Skills;
+                        foreach (var temp in ls)
+                        {
+                            <option value="@temp.Value">@temp.Text</option>
+                        }
+                    }
+                </select>
+
+                <br /> <span asp-validation-for="ExpertiseId" class="text-danger"></span>
+            </div>*@
+
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["BackToList"]</a>
+</div>
+
+@section Scripts {
+    <link href="~/css/jquery-ui.css"
+          rel="stylesheet"
+          type="text/css" />
+    <link href="~/css/tokenize2.css"
+          rel="stylesheet"
+          type="text/css" />
+    <script src="~/js/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/js/tokenize2.js"></script>
+    <script type="text/javascript">
+        function Submit() {
+            debugger
+            var tags = $("#ExpertiseId").val();
+            var b = tags.join(", ")
+            $("#Tags").val(tags.join(", "));
+            $('#createform').submit();
+
+        }
+        function onAdditionalData() {
+            return {
+                text: $("#ExpertiseId").val()
+            };
+        }
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#ExpertiseId').tokenize2({
+                searchMinLength: 5
+            });
+        });
+    </script>
+
+             @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+
+}

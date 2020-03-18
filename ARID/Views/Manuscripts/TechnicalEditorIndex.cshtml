@@ -1,0 +1,99 @@
+﻿@model IEnumerable<ARID.Models.Manuscript>
+@{
+    ViewData["Title"] = "TechnicalEditorIndex";
+}
+<h2>الأبحاث التي تم اتخاذ القرار بنشرها</h2>
+<div class="col-lg-12">
+    <div class="col-lg-8"><br />
+        <table class="table-hover table table-striped table-bordered dt-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreationDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArTitle)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EnTitle)
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model..RunningTitle)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model..Areas)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model..CurrentStatus)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model..CorrespondingAuthorId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model..JournalArticleTypeId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model..SpecialityId)
+                        </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.SubmittedforIssueId)
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+                        <td>
+                            <a asp-controller="Manuscripts" asp-action="TechnicalEditorDetails" asp-route-id="@item.Id">     @Html.DisplayFor(modelItem => item.ArTitle)</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Manuscripts" asp-action="TechnicalEditorDetails" asp-route-id="@item.Id">     @Html.DisplayFor(modelItem => item.EnTitle)</a>
+                        </td>
+                        @*@if (item.CurrentStatus == CurrentStatus.SubmissionSentBackToAuthor && item.CorrespondingAuthorId == currentUser.Id)
+                            {
+                                <td>
+                                    <a asp-controller="Submissions" asp-action="Resubmission" asp-route-mid="@item.Id">     @Html.DisplayFor(modelItem => item.ArTitle)</a>
+                                </td>
+                            }*@
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.RunningTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Areas)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CurrentStatus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CorrespondingAuthor.ArName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.JournalArticleType.ArticleType.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Speciality.Name)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubmittedforIssue.Name)
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<a class="btn btn-primary bold" asp-action="Home" asp-controller="Journals" asp-route-id="@ViewData["jsn"]">رجوع</a>
+
+<style>
+
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>

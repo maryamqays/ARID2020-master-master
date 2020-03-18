@@ -1,0 +1,299 @@
+@model ARID.Models.ApplicationUser
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ApplicationUser currentUser = null;
+    if (SignInManager.IsSignedIn(User))
+    {
+        currentUser = await UserManager.GetUserAsync(User);
+    }
+}
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>ApplicationUser</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="RegDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="RegDate" class="form-control" disabled />
+                <span asp-validation-for="RegDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ARID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ARID" class="form-control" disabled />
+                <span asp-validation-for="ARID" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ARIDDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ARIDDate" class="form-control" disabled />
+                <span asp-validation-for="ARIDDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ReferredById" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <input asp-for="ReferredById" class="form-control" disabled />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="Status" class="form-control"
+                        asp-items="Html.GetEnumSelectList<StatusType>()">
+                    <option disabled selected value="">Select a Status</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SecondEmail" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SecondEmail" class="form-control" />
+                <span asp-validation-for="SecondEmail" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArName" class="form-control" />
+                <span asp-validation-for="ArName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EnName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EnName" class="form-control" />
+                <span asp-validation-for="EnName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="OtherNames" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="OtherNames" class="form-control" />
+                <span asp-validation-for="OtherNames" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateofBirth" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateofBirth" class="form-control" />
+                <span asp-validation-for="DateofBirth" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Gender" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="Gender" class="form-control"
+                        asp-items="Html.GetEnumSelectList<GenderType>()">
+                    <option disabled selected value="">Select a Gender</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UILanguage" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="UILanguage" class="form-control"
+                        asp-items="@(ViewBag.UILanguageId)">
+                    <option disabled selected value="">@Localizer["SelectUILanguage"]</option>
+                </select>
+                <span asp-validation-for="UILanguage" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CountryId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select id="cntid" asp-for="CountryId" class="form-control" asp-items="@(ViewBag.CountryId)">
+                    <option>Select Country</option>
+                </select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CityId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select id="ctyid" asp-for="CityId" class="form-control" asp-items="@(ViewBag.CityId)">
+                    <option value="">Select City</option>
+                </select>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UniversityId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select id="uniid" asp-for="UniversityId" class="form-control" asp-items="@(ViewBag.UniversityId)">
+                    <option>Select University</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FacultyId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select id="facid" asp-for="FacultyId" class="form-control" asp-items="@(ViewBag.FacultyId)">
+                    <option value="">Select Faculty</option>
+                </select>
+                <span asp-validation-for="FacultyId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProfileImage" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ProfileImage" class="form-control" />
+                <span asp-validation-for="ProfileImage" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FeaturedImage" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FeaturedImage" class="form-control" />
+                <span asp-validation-for="FeaturedImage" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CVURL" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CVURL" class="form-control" />
+                <span asp-validation-for="CVURL" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Summary" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Summary" class="form-control" />
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ContactMeDetail" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ContactMeDetail" class="form-control" />
+                <span asp-validation-for="ContactMeDetail" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Visitors" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Visitors" class="form-control" />
+                <span asp-validation-for="Visitors" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="DAL" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DAL" class="form-control" />
+                <span asp-validation-for="DAL" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <a id="followbtn" class="btn btn-default" style="color:black;font-weight:800">@Localizer["EmailConfirmation"]</a>
+                <a id="followbtn" class="btn btn-default" style="color:black;font-weight:800">@Localizer["PhoneConfirmation"]</a>
+                <a class="btn btn-danger" asp-route-id="@Model.Id" asp-action="ControlPanel">Control Panel</a>
+                <a class="btn btn-danger" asp-controller="UserBadges" asp-route-id="@Model.Id" asp-action="Create">Assign Badge</a>
+                <a class="btn btn-warning" asp-action="UserStatements" asp-controller="Statements" asp-route-id="@Model.Id">Statement</a>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // $("#ctyid").prop("disabled", true);
+            $("#cntid").change(function () {
+                //  $("#ctyid").prop("disabled", true);
+                $("#ctyid").empty();
+                $("#ctyid").append($('<option>', { text: "Select City" }));
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/Account/GetCitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#ctyid").append($('<option>', { value: row.value, text: row.text }))
+                        });
+                        //  $("#ctyid").prop("disabled", false);
+                    };
+                    CountryOptions.error = function () { alert("Error: can't retrieve the list of cities!!!!"); };
+                    $.ajax(CountryOptions);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#uniid").change(function () {
+                $("#facid").empty();
+                $("#facid").append($('<option>', { text: "Select Faculty" }));
+                if ($("#uniid").val() > 0) {
+                    var UniversityOptions = {};
+                    UniversityOptions.url = "/Account/GetFacultiesList/";
+                    UniversityOptions.data = { universityid: $("#uniid").val() };
+                    UniversityOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#facid").append($('<option>', { value: row.value, text: row.text }))
+                        });
+                    };
+                    UniversityOptions.error = function () { alert("Error: can't retrieve the list of faculties!!!!"); };
+                    $.ajax(UniversityOptions);
+                }
+            });
+        });
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+

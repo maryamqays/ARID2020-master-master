@@ -1,0 +1,98 @@
+﻿@model ARID.Models.JournalIssue
+
+@{
+    ViewData["Title"] = "تفاصيل العدد";
+}
+
+<h2>@Model.Name</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Releasedate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Releasedate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cover)
+        </dt>
+        <dd>
+            @if (Model.Cover != null)
+            {
+                <div class="form-group">
+                    <label class="control-label">الصورة الحالية</label><br />
+                    <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + Model.Cover)" width="280" height="200" />
+                </div>
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pdf)
+        </dt>
+        <dd>
+            <div class="form-group">
+                <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + Model.Pdf)" width="280" height="200">
+                    @Html.DisplayFor(model => model.Pdf)
+                </a>
+            </div>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Number)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Number)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPublished)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPublished)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsOpen)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsOpen)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Visitors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Visitors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PdfDownloadCounter)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PdfDownloadCounter)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.JournalId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Journal.ArName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VolumeId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Volume.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a class="btn btn-primary bold" asp-action="Index" asp-route-id="@ViewData["jid"]">رجوع</a>
+</div>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>

@@ -1,0 +1,84 @@
+﻿@model ARID.Models.Project
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Create"]</h2>
+
+<h4>@Localizer["Index"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ApplicationUserId" value="@ViewBag.ApplicationUserId" />
+            <div class="form-group">
+                <label asp-for="ArProjectName" class="control-label"></label>
+                <input asp-for="ArProjectName" class="form-control" />
+                <span asp-validation-for="ArProjectName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnProjectName" class="control-label"></label>
+                <input asp-for="EnProjectName" class="form-control" />
+                <span asp-validation-for="EnProjectName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArDescription" class="control-label"></label>
+                <textarea asp-for="ArDescription" class="form-control" style="height:150px"></textarea>
+                <span asp-validation-for="ArDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnDescription" class="control-label"></label>
+                <textarea asp-for="EnDescription" class="form-control" style="height:150px"></textarea>
+                <span asp-validation-for="EnDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArDetails" class="control-label"></label>
+                <textarea asp-for="ArDetails" class="form-control" style="height:150px"></textarea>
+                <span asp-validation-for="ArDetails" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnDetails" class="control-label"></label>
+                <textarea asp-for="EnDetails" class="form-control" style="height:150px"></textarea>
+                <span asp-validation-for="EnDetails" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control"
+                        asp-items="ViewBag.CountryId">
+                    <option disabled selected value="">@Localizer["SelectCountry"]</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FromYear" class="control-label"></label>
+                <input asp-for="FromYear" class="form-control" />
+                <span asp-validation-for="FromYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToYear" class="control-label"></label>
+                <input asp-for="ToYear" class="form-control" />
+                <span asp-validation-for="ToYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectState" class="control-label"></label>
+                <select asp-for="ProjectState" class="form-control"
+                        asp-items="Html.GetEnumSelectList<ProjectState>()">
+                    <option disabled selected value="">@Localizer["SelectProjectStatus"]</option>
+                </select>
+                <span asp-validation-for="ProjectState" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["BackToList"]</a>
+</div>
+

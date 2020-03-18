@@ -1,0 +1,46 @@
+﻿@model ARID.Models.ApplicationUserViewModel
+@{
+    ViewData["Title"] = "دعوة صديق";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<h2>دعوة باحث للانضمام الى منصة أريد للعلماء و الباحثين</h2>
+<p>يمكن ارسال دعوة عبر نظام منصة اريد مع رابط التسجيل الخاص بكم. يمكن تجربة الارسال عبر كتابة اسمك وبريدك للاطلاع على الصيغة اولا ثم البدء بالارسال الى بقية العلماء والخبراء والباحثين الذين تعرفهم</p>
+<input hidden id="true" value="@ViewData["true"]" />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="InviteFriend">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">أدخل البريد الإلكتروني للمدعو</label>
+                <input required type="email" name="email" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label"> أدخل  أسم المدعو</label>
+                <input required type="text" name="name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="إرسال الدعوة" class="btn btn-info" />
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+@section scripts{
+<script>
+    $(window).on('load', function () {
+        if ($("#true").val() == "true") {
+            alert("تم إرسال الدعوة بنجاح");
+        }
+    });
+
+</script>
+}

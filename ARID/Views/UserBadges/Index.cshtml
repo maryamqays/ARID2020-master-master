@@ -1,0 +1,83 @@
+@model IEnumerable<ARID.Models.UserBadge>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BadgeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateofRequest)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateofGrant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsGranted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsRejected)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RejectCount)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.RejectReason)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Disabled)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.ArName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Badge.ArBadgeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateofRequest)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateofGrant)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsGranted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsRejected)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RejectCount)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.RejectReason)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Disabled)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ARID.Models.University>
+@{
+    ViewData["Title"] = "Index";
+}
+<h2>Index</h2>
+<p>
+    <a asp-action="Create">اضف جامعة جديدة</a>  |   <a asp-action="Unindexed">جامعات قيد الموافقة</a>
+</p>
+
+<form>
+    <p>
+        <input type="text" name="keyword">
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArUniversityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnUniversityName)
+            </th>
+
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArUniversityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnUniversityName)
+                </td>
+                                <td>
+                    <a asp-controller="Faculties" asp-action="Create" asp-route-universityid="@item.Id">أضف كلية جديدة</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

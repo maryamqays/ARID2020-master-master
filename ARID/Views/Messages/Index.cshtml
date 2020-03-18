@@ -1,0 +1,357 @@
+﻿@model ARID.Models.MessageViewModel
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currenUser = await UserManager.GetUserAsync(User); }
+
+@{
+    ViewData["Title"] = "الرسائل";
+}
+<h3>الرسائل</h3>
+
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="col-lg-4" style="">
+            <ul class="nav nav-tabs">
+                <li class="active h5"><a href="#inbox" data-toggle="tab">الوارد&nbsp;<span class="label label-info">@Model.InboxMessages.Count()</span></a></li>
+                <li class="h5"><a href="#sent" data-toggle="tab">المرسل&nbsp;<span class="label label-info">@Model.SentMessages.Count()</span></a></li>
+            </ul>
+            <div class="tab-content">
+                <h6>&nbsp;</h6>
+                <div class="tab-pane fade in active" id="inbox">
+                    @if (Model.InboxMessages.Count() > 0) { 
+                    @foreach (var item in Model.InboxMessages.OrderByDescending(m => m.LastActivitydate))
+                    {
+                        <div data-target="@item.Id" class="col-lg-12 table-bordered" style="background-color:ghostwhite;border-color:ActiveCaption;margin:1px">
+                            <div class="col-lg-3">
+                                <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.FromApplicationUserId">
+                                    <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.arid.my/profileimages/default_small.png';" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + item.FromApplicationUser.ProfileImage)"
+                                         height="40" width="40" class="img-circle center-block" />
+                                </a>
+                            </div>
+                            <div class="col-lg-9">
+                                @if (Model.messageReplies.Where(m => m.MessageId == item.Id && m.IsRead == false && currenUser.Id!=m.ApplicationUserId).Any())
+                                {
+                                    <a name="@item.Id"  title="@item.Id" class="h5 isread text-danger">@item.Subject</a>
+                                }
+                                else
+                                {
+                                    <a name="@item.Id"  title="@item.Id" class="h6 isread text-info">@item.Subject</a>
+                                }
+                                <br /><h6 class="text-center pull-right" title="الوقت">
+                                    <small><span class="glyphicon glyphicon-hourglass"></span>&nbsp; @FreelancerProject.GetDate(item.LastActivitydate)</small>
+                                </h6>
+                            </div>
+                        </div>
+                    }
+                    }
+                    else
+                    {
+                        <h5>لا توجد رسائل واردة</h5>
+                    }
+                </div>
+                <div class="tab-pane fade" id="sent">
+                    @if (Model.SentMessages.Count() > 0)
+                    {
+
+                        @foreach (var item in Model.SentMessages.OrderByDescending(m => m.LastActivitydate))
+                        {
+                            <div class="col-lg-12 table-bordered" style="background-color:ghostwhite;border-color:ActiveCaption;margin:1px">
+                                <div class="col-lg-3">
+                                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ToApplicationUserId">
+                                        <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.arid.my/profileimages/default_small.png';" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + item.ToApplicationUser.ProfileImage)"
+                                             height="40" width="40" class="img-circle center-block" />
+                                    </a>
+                                </div>
+                                <div class="col-lg-9">
+                                    @if (Model.messageReplies.Where(m => m.MessageId == item.Id && m.IsRead == false && currenUser.Id != m.ApplicationUserId).Any())
+                                    {
+                                        <a name="@item.Id" title="@item.Id" class="h5 isread text-danger">@item.Subject</a>
+                                    }
+                                    else
+                                    {
+                                        <a name="@item.Id" title="@item.Id" class="h6 isread text-info">@item.Subject</a>
+                                    }
+                                    <br /><h6 class="text-center pull-right" title="الوقت">
+                                        <small><span class="glyphicon glyphicon-hourglass"></span>&nbsp; @FreelancerProject.GetDate(item.LastActivitydate)</small>
+                                    </h6>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                            <h5>لا توجد رسائل مرسلة</h5>
+                    }
+                </div>
+            </div>
+
+        </div>
+        <div  id="refresh" class="col-lg-8" style="padding-bottom:20px">
+            <h3>&nbsp;</h3>
+            @foreach (var item in Model.Messages)
+            {
+            <div id="@item.Id" class="col-lg-12 table-bordered div" style="background-color:whitesmoke;border-color:ActiveCaption;margin:3px">
+                <h4 class="text-center">@item.Subject</h4>
+                <h5 class="">@item.Content</h5>
+                @if (item.Attachment != null)
+                {<a class="pull-left h5 text-success" href="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + item.Attachment)" width="280" height="200">
+                        تحميل الملف
+                    </a>
+                }
+                <small class="h6 pull-left"><span class="label label-info h6">@FreelancerProject.GetDate(item.DateOfRecord)</span></small>
+                @if (currenUser.Id == item.FromApplicationUserId && item.IsRead == true)
+                {
+                <small class="h6 pull-left"><span title="@item.DateOfRead" class="glyphicon glyphicon-ok text-success"></span>تأريخ القراءة: @item.DateOfRead</small> }
+
+                <!-- Left-aligned media object -->
+                <br />
+                <hr />
+                <div>
+                    @foreach (var i in Model.messageReplies.Where(m => m.MessageId == item.Id))
+                    {
+                        @if (i.ApplicationUserId == currenUser.Id)
+                        {
+                            <div class="media   table-bordered" style="background-color:white;padding:5px">
+                                <div class="media-left">
+                                    <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.arid.my/profileimages/default_small.png';" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + i.ApplicationUser.ProfileImage)"
+                                         height="40" width="40" class="img-circle center-block" />
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="media-heading pull-right">@i.ApplicationUser.ArName</h5><h6 class="media-heading pull-left text-info">@FreelancerProject.GetDate(i.DateOfRecord)</h6><h6>&nbsp;</h6>
+                                    <h6>@Html.Raw(i.Content)</h6>
+                                    @if (i.Attachment != null)
+                                    {
+                                        <a class="pull-left h5 text-success" href="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + i.Attachment)" width="280" height="200">
+                                            تحميل الملف
+                                        </a>
+                                    }
+                                    @if (i.IsRead == true)
+                                    {
+                                        <small class="h6 pull-right"><span title="@i.DateOfRead" class="glyphicon glyphicon-ok text-success"></span>تأريخ القراءة: @item.DateOfRead </small>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <!-- Right-aligned media object -->
+                            <div class="media table-bordered" style="background-color:ghostwhite;padding:5px">
+                                <div class="media-body media-right">
+                                    <h5 class="media-heading pull-left">@i.ApplicationUser.ArName</h5><h6 class="media-heading pull-right text-info">@FreelancerProject.GetDate(i.DateOfRecord)</h6><br />
+                                    <h6>@Html.Raw(i.Content)</h6>
+                                </div>
+                                <div class="media-left h6">
+                                    <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.arid.my/profileimages/default_small.png';" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + i.ApplicationUser.ProfileImage)"
+                                         height="40" width="40" class="img-circle center-block" />
+
+                                </div>
+                                @if (i.Attachment != null)
+                                {
+                                    <a class="pull-right h5 text-success" href="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + i.Attachment)" width="280" height="200">
+                                        تحميل الملف
+                                    </a>
+                                }
+
+                            </div>
+                        }
+
+                    }
+                </div>
+
+                <br />
+                <div class="col-lg-12 table-bordered" style="background-color:whitesmoke;border-color:ActiveCaption">
+                    <br /> <form asp-action="CreateComment" enctype="multipart/form-data">
+                        <input hidden value="" />
+                        <h4 class="col-lg-2 pull-right">إرفاق ملف</h4>
+                        <input name="file" type="file" accept=".docx,.pdf" class="btn btn-primary col-lg-10" />
+                        <div class="col-lg-1"></div>
+                        <input type="hidden" max="" class="form-control" />
+                        <h4 class="col-lg-1 pull-right">الرد</h4>
+                        <textarea class="form-control col-lg-10" name="reply"></textarea>
+                        <div class="col-lg-6"></div>
+                        <a name="@item.Id" class="btn btn-sm btn-info h5 addreply">إرسال</a>
+                        <h6>&nbsp;</h6>
+                    </form>
+                </div>
+                <h6>&nbsp;</h6>
+            </div>
+
+            }
+
+        </div>
+
+    </div>
+    <input type="hidden" class="cuid" value="@currenUser.Id" />
+    <input type="hidden" class="cumessage" />
+</div>
+@*<table class="table">
+        <thead>
+            <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Subject)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Content)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateOfRecord)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateOfRead)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsRead)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsDeleted)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsReported)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Attachment)
+                    </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FromApplicationUser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ToApplicationUser)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subject)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfRecord)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfRead)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsRead)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsDeleted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsReported)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Attachment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FromApplicationUser.ArName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ToApplicationUser.ArName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>*@
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".addreply").click(
+
+                function () {
+
+                    {
+
+                                var formData = new FormData();
+                        formData.append('file', $(this).siblings("[name='file']")[0].files[0]); // myFile is the input type="file" control
+                        formData.append('reply', $(this).siblings("[name='reply']").val()); // myFile is the input type="file" control
+                        formData.append('messageid', $(this).prop('name')); // myFile is the input type="file" control
+
+                            var _url = '@Url.Action("AddReply", "Messages")';
+
+                            $.ajax({
+                                url: _url,
+                                type: 'POST',
+                                data: formData,
+                                processData: false,  // tell jQuery not to process the data
+                                contentType: false,  // tell jQuery not to set contentType
+                                success: function (result) {
+                                    var x = $('.cumessage').val();
+                                    $("#refresh").load(window.location + ' #'+x+'');
+                                },
+                                error: function (jqXHR) {
+
+                                },
+                                complete: function (result,jqXHR, status) {
+                                }
+
+                            });
+
+                    }
+                  });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.isread').click(function () {
+                $('.cumessage').val($(this).prop('name'))
+                var _url = '@Url.Action("IsRead", "Messages")';
+                var formData = new FormData();
+                formData.append('mid', $(this).prop('name')); // myFile is the input type="file" control
+                formData.append('cuid', $("#cuid").val()); // myFile is the input type="file" control
+
+                $.ajax({
+                    url: _url,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,  // tell jQuery not to process the data
+                    contentType: false,  // tell jQuery not to set contentType
+                    success: function (result) {
+                    },
+                    error: function (jqXHR) {
+                    },
+                    complete: function (jqXHR, status) {
+                    }
+
+                });
+
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".div").hide();
+            $('.isread').click(function () {
+                var c = $(this).prop('name');
+                $('.div').each(function () {
+                    if ($(this).attr('id') == c) {
+                        $(".div").hide();
+                        $(this).show();
+                    }
+                });
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('a[href*="inbox"]').click(function () {
+                $(".div").hide();
+            });
+            $('a[href*="sent"]').click(function () {
+                $(".div").hide();
+            });
+
+        });
+    </script>
+}

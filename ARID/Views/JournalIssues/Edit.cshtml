@@ -1,0 +1,128 @@
+﻿@model ARID.Models.JournalIssue
+@{
+    ViewData["Title"] = "التعديل على عدد المجلة";
+}
+<h2>التعديل على عدد المجلة</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit" asp-route-jid="@ViewData["jid"]" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Releasedate" class="control-label"></label>
+                <input asp-for="Releasedate" class="form-control" />
+                <span asp-validation-for="Releasedate" class="text-danger"></span>
+            </div>
+            @if (Model.Cover != null)
+            {
+                <div class="form-group">
+                    <label class="control-label">الصورة الحالية</label><br />
+                    <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + Model.Cover)" width="280" height="200" />
+                </div>
+            }
+
+            <div class="form-group">
+                <img id="img1" class="img-rounded" src="" />
+                <input type="file" name="myfile1" id="file1" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-default" />
+                <span asp-validation-for="Cover" class="text-danger"></span>
+                <input asp-for="Cover" id="fileinput1" class="form-control" />
+            </div>
+            <br />
+            <div class="form-group">
+                <label  class="control-label">الملف الحالي</label>
+                <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + Model.Pdf)" width="280" height="200">
+                    @Html.DisplayFor(model => model.Pdf)
+                </a>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pdf" class="control-label"></label>
+                <input type="file" name="myfile" id="file" accept=".pdf" class="btn btn-default" />
+                <span asp-validation-for="Pdf" class="text-danger"></span>
+                <input asp-for="Pdf" id="fileinput" class="form-control" />
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Number" class="control-label"></label>
+                <input asp-for="Number" class="form-control" />
+                <span asp-validation-for="Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="JournalId" class="control-label"></label>
+                <select asp-for="JournalId" class="form-control" asp-items="ViewBag.JournalId"></select>
+                <span asp-validation-for="JournalId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VolumeId" class="control-label"></label>
+                <select asp-for="VolumeId" class="form-control" asp-items="ViewBag.VolumeId"></select>
+                <span asp-validation-for="VolumeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Visitors" class="control-label"></label>
+                <input asp-for="Visitors" class="form-control" />
+                <span asp-validation-for="Visitors" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PdfDownloadCounter" class="control-label"></label>
+                <input asp-for="PdfDownloadCounter" class="form-control" />
+                <span asp-validation-for="PdfDownloadCounter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsPublished" /> @Html.DisplayNameFor(model => model.IsPublished)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsOpen" /> @Html.DisplayNameFor(model => model.IsOpen)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+                <a class="btn btn-primary bold" asp-action="Index" asp-route-id="@ViewData["jid"]">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file1").change(function () {
+                if ($("#file1").val() != "") {
+                    $("#fileinput1").prop("value", $("#file1").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+}

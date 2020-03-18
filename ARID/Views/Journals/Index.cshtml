@@ -1,0 +1,99 @@
+﻿@model IEnumerable<ARID.Models.Journal>
+@{
+    ViewData["Title"] = "قائمة مجلات منصة أُريد";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+<h2>قائمة المجلات</h2>
+@if (User.IsInRole("Admins"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">إضافة مجلة</a>
+    </p>
+}
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PISSN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EISSN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JournalStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Visitors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EiC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublisherId)
+            </th>
+            <th></th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Home" asp-route-id="@item.ShortName">@Html.DisplayFor(modelItem => item.ArName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PISSN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EISSN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JournalStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Visitors)
+                </td>
+              
+                <td>
+                    <a target="_blank" asp-action="Details" asp-route-id="@item.EiC.Id" asp-controller="ApplicationUsers">  @Html.DisplayFor(model => item.EiC.ArName)</a>
+                </td>
+                <td>
+                    <a target="_blank" asp-action="Details" asp-route-id="@item.Publisher.Id" asp-controller="Publishers">  @Html.DisplayFor(model => item.Publisher.ArName)</a>
+                </td>
+                <td>
+                    <a asp-action="Index" asp-controller="JournalIssues" asp-route-id="@item.Id"><span class="glyphicon glyphicon-folder-open"></span></a>
+                    @if (User.IsInRole("Admins") || item.CreatedByUserId == currentUser.Id)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+
+                    }
+                    @if (User.IsInRole("Admins"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                    }
+                </td>
+                <td>
+                    <a asp-action="ImageExport" asp-route-id="@item.Id">Image</a>
+                    <a asp-action="PDFExport" asp-route-id="@item.Id">PDF</a>
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

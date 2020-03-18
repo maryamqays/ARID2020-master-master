@@ -1,0 +1,69 @@
+﻿@model ARID.Models.RegistrationForm
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>RegistrationForm</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpiryDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExpiryDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailContent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmailContent.ArContent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailContentReminder)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmailContentReminder.ArContent)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

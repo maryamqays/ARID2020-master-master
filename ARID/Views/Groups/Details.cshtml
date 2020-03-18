@@ -1,0 +1,178 @@
+﻿@model ARID.Models.CommunityViewModel
+@{
+    ViewData["Title"] = Html.DisplayFor(model => model.Community.Name);
+}
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<br />
+@if (Model.Community.BgImage != null)
+{
+    <img style=" margin-left: auto;margin-right: auto;display:block;width:50%;"  class="img-rounded img-responsive" src="@Url.Content("~/" + @ARID.Properties.Resources.Community + "/" + Model.Community.BgImage)" />
+}
+<div style="float:left">
+    @{
+        ApplicationUser currentUser = null;
+        if (SignInManager.IsSignedIn(User))
+        {
+            currentUser = await UserManager.GetUserAsync(User);
+
+            if (Model.CommunityFollower.Where(f => f.ApplicationUserId == currentUser.Id && f.IsAdmin==false).Count() > 0 ||( Model.CommunityFollower.Where(c=>c.ApplicationUserId==currentUser.Id && c.IsAdmin).Count()>0 && Model.CommunityFollower.Where(c=>c.IsAdmin).Count()>1))
+            {
+                @*<a id="followbtn" class="btn btn-default" style="color:black;font-weight:800">@Localizer["Unfollow"]</a>*@
+                @*<a id="followbtn" class="btn btn-danger">مغادرة</a>*@
+                <a class="btn btn-danger" onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بالمغادرة؟');" asp-action="LeaveGroup" asp-route-id="@Model.Community.Id">مغادرة</a>
+
+            }
+            else if (Model.CommunityFollower.Where(f => f.IsAdmin==true).Count() == 1 && Model.CommunityFollower.Where(c=>c.ApplicationUserId==currentUser.Id && c.IsAdmin==true).Count()>0)
+            {
+                @*<a id="followbtn" class="btn btn-default" style="color:black;font-weight:800">@Localizer["Unfollow"]</a>*@
+                @*<a id="followbtn" class="btn btn-danger">مغادرة</a>*@
+                <a class="btn btn-danger" onclick="javascript: return alert('لايمكنك المغادرة إلا بعد منح الإدارة لعضو آخر');">مغادرة</a>
+
+            }
+            else 
+            {
+                <a id="followbtn" class="btn btn-success">انضمام</a>
+            }
+
+        }
+    }
+
+    |<span> اعضاء المجموعة :</span>
+    <span id="counter">  @ViewData["Count"]</span>
+    <a asp-controller="CommunityFollowers" asp-action="Index" asp-route-id="@ViewData["CommunityId"]"><span title="عرض جميع اعضاء المجموعة" class="glyphicon glyphicon-user"></span></a>
+</div>
+
+<h1>
+    @if (Model.Community.Logo != null)
+    {
+        <img class="img-rounded" width="50" height="50" src="@Url.Content("~/" + @ARID.Properties.Resources.Community + "/" + Model.Community.Logo)" />
+    }
+
+        @Html.DisplayFor(model => model.Community.Name) |  @Html.DisplayFor(model => model.Community.ShortName)
+    </h1>
+<p>
+    @Html.Raw(Model.Community.Description)
+</p>
+<br />
+<p>
+    <a class="btn btn-success" asp-controller="Posts" asp-action="CreateGroupPost" asp-route-cid="@ViewData["CommunityId"]"> <small><span class="glyphicon glyphicon-plus"></span></small> اضافة موضوع</a>
+</p>
+<div>
+    <table class="table-hover table table-striped table-bordered dt-responsive">
+        <thead>
+            <tr>
+                <th><span class="glyphicon glyphicon-scale"></span></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Post.DateTime)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Post.Tags)
+                    </th>*@
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Post.PostType)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Post.ApplicationUser)
+                </th>
+                <th><span title="عدد التعليقات" class="glyphicon glyphicon-comment"></span></th>
+                <th><span title="عدد المشاهدات" class="glyphicon glyphicon-eye-open"></span></th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Posts)
+            {
+                <tr>
+                    <td>
+                        @Model.PostMetrics.Where(a => a.PostId == item.Id).Sum(a => a.VoteValue)
+                    </td>
+                    <td>
+                        <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Tags)
+                        </td>*@
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.PostType)
+                        </td>*@
+                    <td>
+                        <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId">@Html.DisplayFor(modelItem => item.ApplicationUser.ArName)</a>
+                    </td>
+
+                    <td>
+                        @Model.PostComments.Where(a => a.PostId == item.Id).Count()
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reads)
+                    </td>
+
+                    <td>
+                        @if (User.IsInRole("Admins"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+        <a asp-action="Index" class="btn btn-info">رجوع</a>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#followbtn").click(
+                function () {
+                    if ($("#followbtn").text() == "انضمام")
+                    {
+                        var FollowOptions = {};
+                        @*FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Communities/Follow/";*@
+                        FollowOptions.url = "/ar-LY/Communities/Follow/";
+                        FollowOptions.data = { id: "@Model.Community.Id" };
+                        FollowOptions.success = function () {
+                            $("#followbtn").prop("text", "الغاء الانضمام");
+                            $("#followbtn").removeClass("btn-success");
+                            $("#followbtn").addClass("btn-danger");
+                            $('#counter').text(function (i, oldVal) {
+                                return parseInt(oldVal, 10) + 1
+                            })
+                        };
+              $.ajax(FollowOptions);
+                    }
+                    else
+                    {
+                        var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Communities/Unfollow/";
+                        FollowOptions.data = { id: "@Model.Community.Id" };
+                        FollowOptions.success = function () {
+                            $("#followbtn").prop("text", "انضمام");
+                            $("#followbtn").removeClass("btn-danger");
+                            $("#followbtn").addClass("btn-success");
+                            $('#counter').text(function (i, oldVal) {
+                                return parseInt(oldVal, 10) - 1
+                            })
+                           };
+                        $.ajax(FollowOptions);
+                    }
+                });
+        });
+    </script>
+}

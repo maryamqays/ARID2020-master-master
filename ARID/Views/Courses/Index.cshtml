@@ -1,0 +1,233 @@
+﻿@model ARID.Models.CourseViewModel
+@{
+    ViewData["Title"] = "جميع الدورات";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+<br>
+<br>
+<div class="form-group row col-lg-12" hidden>
+    <div class="col-lg-6">
+        <form asp-controller="Courses" asp-action="Index" id="form" class="row">
+            <p>
+                <input id="in" type="text" name="SearchString">
+                <input type="submit" value="بحث" id="search" />
+            </p>
+        </form>
+    </div>
+</div>
+@if (User.IsInRole("Admins"))
+{
+    <div class="col-lg-12">
+        <div class="col-lg-8"></div>
+        <div class="col-lg-4">
+            <input class="btn-xs btn-info pull-left" type="submit" value="الكل" id="all" />
+            <input class="btn-xs btn-warning pull-left" type="submit" value="مميزة" id="featured" />
+            <input class="btn-xs btn-danger pull-left" type="submit" value="تحتاج موافقة" id="accepted" />
+        </div>
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn-sm btn-success h5"> <small><span class="glyphicon glyphicon-plus"></span></small> إضافة دورة</a>
+   @if (Model.CourseRegisterations!=null) { 
+    <a asp-action="MyCourses" class="btn-sm btn-warning h5">دورات سجلت فيها</a>}
+</p>
+<div class="row">
+    <div class="col-lg-8">
+        <h3 class="text-center text-primary"><strong>قائمة الدورات المتاحة</strong></h3>
+        @foreach (var item in Model.Courses)
+        {
+            <div class="container table-bordered col-lg-12" style="background-color:ghostwhite;border-color:ActiveCaption;padding:10px;margin-top:10px;margin-bottom:10px">
+                <a class="text-primary" asp-controller="Courses" asp-action="Details" asp-route-id="@item.Id">
+                    <img class="img-rounded  pull-right" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + item.Image)" width="100" height="100" />
+                    <h4>&nbsp; <strong>@item.ArName</strong></h4>
+                </a>
+                <div class="pull-left" style="position:absolute;bottom:10px;left:10px">
+                    @if (item.IsFeatured == true)
+                    {<h5 style="display:inline"><span class="label label-warning">"مميز"</span></h5>}
+                    @if (item.IsPaid == false)
+                    {<h5 style="display:inline"><span class="label label-warning">"مجانية"</span></h5>}
+                    @if (item.Certificate == Certificate.Free)
+                    {<h5 style="display:inline"><span class="label label-warning">"شهادة مجانية"</span></h5>}
+                    @if (item.Certificate == Certificate.Paid)
+                    {<h5 style="display:inline"><span class="label label-primary">"شهادة"</span></h5>}
+                    <h5 style="display:inline"><span class="label label-default">@Html.DisplayFor(e => item.Language)</span></h5>
+                    <h5 style="display:inline"><span class="label label-info">@item.StartingDate.ToString("dd/M/yyyy")</span></h5>
+                    <h5 style="display:inline"><span class="label label-success">@item.Speciality.Name</span></h5>
+                    @if (User.IsInRole("Admins") || currentUser.Id == item.ApplicationUserId)
+                    {
+
+                        <div class="dropdown" style="display:inline;">
+                            <button class="btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+                                <small><span class="glyphicon glyphicon-cog"></span></small>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a asp-action="Edit" asp-controller="Courses" asp-route-id="@item.Id">تعديل</a></li>
+                                <li><a asp-action="Details" asp-controller="Courses" asp-route-id="@item.Id">معاينة</a></li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+                <br />
+            </div>
+
+        }
+        @*<table class="table-hover table table-striped table-bordered dt-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Course.ArName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Course.StartingDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Course.EndingDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Course.Language)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Course.SpecialityId)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Courses)
+                    {
+                        @if (!User.IsInRole("Admins"))
+                        {
+
+                            @if (item.IsAdminApproved == true)
+                            {
+
+                                <tr>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ArName)</a>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StartingDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EndingDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Language)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Speciality.Name)
+                                    </td>
+                                    <td>
+                                        @if (item.ApplicationUserId == currentUser.Id)
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else if (User.IsInRole("Admins"))
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ArName)</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartingDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndingDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Language)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Speciality.Name)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                                </td>
+                            </tr>
+
+                        }
+                    }
+                </tbody>
+            </table>*@
+        @if (Model.Courses.Count() > 10)
+        {
+            <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+                 page-class="btn border" page-class-normal="btn btn-default active"
+                 page-class-selected="btn btn-success active" class="btn-group m-1"></div>}
+    </div>
+    <div class="col-lg-4">
+        <h3 class="text-center"><strong>دورات مميزة</strong></h3>
+        <hr style=" border-top:3px solid #275bad;">
+        @foreach (var item in Model.Courses.Where(c=>c.IsFeatured==true))
+        {
+            <a asp-action="Details" asp-route-id="@item.Id">
+                <div style="text-align:center;"><img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + item.Image)" width="300" height="200" /></div>
+            </a>
+            <div>
+                <h4 class="text-center">
+                    <strong> @Html.DisplayFor(modelItem => item.ArName)</strong>
+                </h4>
+
+            </div>
+            <div class="text-center">
+                @if (item.IsPaid == false)
+                {<h5 class="text-center" style="display:inline"><span class="label label-warning">"مجانية"</span></h5>}
+                @if (item.Certificate == Certificate.Free)
+                {<h5 class="text-center" style="display:inline"><span class="label label-warning">"شهادة مجانية"</span></h5>}
+                @if (item.Certificate == Certificate.Paid)
+                {<h5 class="text-center" style="display:inline"><span class="label label-primary">"شهادة"</span></h5>}
+                <h5 class="text-center" style="display:inline"><span class="label label-default">@Html.DisplayFor(e => item.Language)</span></h5>
+                <h5 class="text-center" style="display:inline"><span class="label label-info">@item.StartingDate.ToString("dd/M/yyyy")</span></h5>
+                <h5 class="text-center" style="display:inline"><span class="label label-success">@item.Speciality.Name</span></h5>
+            </div>
+
+
+            <hr style=" border-top:3px solid #275bad;">
+
+        }
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $("#form").hide();
+            $("#span").css('cursor', 'pointer');
+            $("#spanx").css('cursor', 'pointer');
+            $("#span").click(function () {
+                $("#form").slideToggle("slow");
+
+                //$("#span").toggleClass(".glyphicon glyphicon-remove");
+
+            });
+            $("#spanx").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+            $("#all").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+            $("#featured").click(function () {
+                $("#in").attr('value', 'featured')
+                $('#search').trigger('click');
+            });
+            $("#accepted").click(function () {
+                $("#in").attr('value', 'accepted')
+                $('#search').trigger('click');
+            });
+
+        });
+    </script>
+}

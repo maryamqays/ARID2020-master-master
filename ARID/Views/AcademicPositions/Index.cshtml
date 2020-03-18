@@ -1,0 +1,97 @@
+﻿@model IEnumerable<ARID.Models.AcademicPosition>
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h3>@Localizer["Index"]</h3>
+<hr />
+<p>
+    <a asp-action="Create" class="btn btn-default" style="color:black;font-weight:800">@Localizer["CreateNew"]</a>
+</p>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Indx)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PositionTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacultyId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UniversityId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CityId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCurrent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FromYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToYear)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Indx)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositionType.ArPositionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Faculty.ArFacultyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City.ArCityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCurrent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FromYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ToYear)
+            </td>            
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

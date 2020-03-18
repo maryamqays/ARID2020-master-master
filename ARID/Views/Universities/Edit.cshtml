@@ -1,0 +1,134 @@
+@model ARID.Models.University
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <h4>University</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="ArUniversityName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArUniversityName" class="form-control" />
+                <span asp-validation-for="ArUniversityName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EnUniversityName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EnUniversityName" class="form-control" />
+                <span asp-validation-for="EnUniversityName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Website" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Website" class="form-control" />
+                <span asp-validation-for="Website" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="StaffNo" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="StaffNo" class="form-control" />
+                <span asp-validation-for="StaffNo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="StudentNo" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="StudentNo" class="form-control" />
+                <span asp-validation-for="StudentNo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LogoHD" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-default" />
+                <input asp-for="LogoHD" id="fileinput" class="form-control" />
+                <img id="img1" class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.UniversityLogoFolder + "/" + Model.LogoHD)" width="100" height="100" />
+                <span asp-validation-for="LogoHD" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="YearofEstablishment" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="YearofEstablishment" class="form-control" />
+                <span asp-validation-for="YearofEstablishment" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="Governmental" />
+                    <label asp-for="Governmental"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="SemiPrivate" />
+                    <label asp-for="SemiPrivate"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="Private" />
+                    <label asp-for="Private"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsIndexed" />
+                    <label asp-for="IsIndexed"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CountryId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+
+                    //to show new image at a time of image selected from file input type
+                    if (this.files && this.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                }
+            });
+        });
+    </script>
+}

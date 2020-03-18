@@ -1,0 +1,119 @@
+﻿@model ARID.Models.FreelancerPortfolio
+
+@{
+    ViewData["Title"] = "التعديل على العمل";
+}
+
+<h2>التعديل على العمل</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form id="createform" asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group" hidden>
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Skills" class="control-label"></label>
+                <input asp-for="Skills" class="form-control" />
+                <span asp-validation-for="Skills" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea rows="10" asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExternalLink" class="control-label"></label>
+                <input type="url" asp-for="ExternalLink" class="form-control" />
+                <span asp-validation-for="ExternalLink" class="text-danger"></span>
+            </div>
+            <h4>الصورة الحالية</h4>
+            <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Image)" width="280" height="200" />
+            <div class="form-group" id="img">
+                <label asp-for="Image" class="control-label"></label>
+                <img id="img1" class="img-rounded" src="" />
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-primary col-lg-12" />
+                <input readonly asp-for="Image" id="fileinput" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="Image" class="control-label"></label>
+            <input asp-for="Image" class="form-control" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>*@
+            <div class="form-group" id="fileform">
+                <label asp-for="File" class="control-label"></label>
+                <input type="file" name="myfile2" id="file2" accept=".pdf,.docx" class="btn btn-primary col-lg-12" />
+                <input readonly asp-for="File" id="fileinput2" class="form-control" />
+                <span asp-validation-for="File" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Likes" class="control-label"></label>
+                <input asp-for="Likes" class="form-control" />
+                <span asp-validation-for="Likes" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Views" class="control-label"></label>
+                <input asp-for="Views" class="form-control" />
+                <span asp-validation-for="Views" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="DateOfRecord" class="control-label"></label>
+                <input asp-for="DateOfRecord" class="form-control" />
+                <span asp-validation-for="DateOfRecord" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfAchievement" class="control-label"></label>
+                <input asp-for="DateOfAchievement" class="form-control" />
+                <span asp-validation-for="DateOfAchievement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h4 style="display:inline"><input onclick="Submit()" type="submit" value="حفظ" class="btn btn-success" />   </h4>
+                <h4 style="float:left;display:inline"><a asp-action="FreelancerDetails" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUserId" class="btn btn-info">رجوع</a></h4>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+
+@section Scripts{
+    
+
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            $("#file2").change(function () {
+                if ($("#file2").val() != "") {
+                    $("#fileinput2").prop("value", $("#file2").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

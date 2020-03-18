@@ -1,0 +1,225 @@
+﻿@model ARID.Models.MOOCListViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+<h2>تعديل تفاصيل المساق</h2>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MOOCList.Id" />
+            <div class="form-group">
+                <label asp-for="MOOCList.Title" class="control-label"></label>
+                <input asp-for="MOOCList.Title" placeholder="ادحل العنوان كاملا في هذا الحقل" class="form-control" />
+                <span asp-validation-for="MOOCList.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.MOOCProviderId" class="control-label"></label>
+                <select asp-for="MOOCList.MOOCProviderId" class="form-control" asp-items="ViewBag.MOOCProviderId">
+                    <option selected disabled>اختر المنصة</option>
+
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.Description" class="control-label"></label>
+                @Html.TextAreaFor(model => model.MOOCList.Description, new { rows = 10, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="MOOCList.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.SpecialityId" class="control-label"></label>
+                <select asp-for="MOOCList.SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId">
+                    <option disabled selected>حدد تخصص الدورة</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.Language" class="control-label"></label>
+                <select asp-for="MOOCList.Language" asp-items="Html.GetEnumSelectList<Language>()" class="form-control">
+                    <option disabled selected>حدد لغة الدورة</option>
+                </select>
+                <span asp-validation-for="MOOCList.Language" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.Certificate" class="control-label"></label>
+                <select asp-for="MOOCList.Certificate" asp-items="Html.GetEnumSelectList<Certificate>()" class="form-control">
+                    <option disabled selected>حدد نوع شهادة الدورة</option>
+                </select>
+                <span asp-validation-for="MOOCList.Certificate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.Duration" class="control-label"></label>
+                <input placeholder="تفاصيل المدة مثلا محاضرة اسبوعيا بواقع 4 ساعات" asp-for="MOOCList.Duration" class="form-control" />
+                <span asp-validation-for="MOOCList.Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select id="cntid" asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId">
+                    <option disabled selected>اختر دولة الجامعة</option>
+                </select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.UniversityId" class="control-label"></label>
+                <select id="uniid" asp-for="MOOCList.UniversityId" class="form-control" asp-items="ViewBag.UniversityId"></select>
+                <span asp-validation-for="MOOCList.UniversityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.Link" class="control-label"></label>
+                <input placeholder="رابط الدورة الخارجي" asp-for="MOOCList.Link" class="form-control" />
+                <span asp-validation-for="MOOCList.Link" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.YouTubeLink" class="control-label"></label>
+                <input placeholder="رابط اليوتيوب - اختياري" asp-for="MOOCList.YouTubeLink" class="form-control" />
+                <span asp-validation-for="MOOCList.YouTubeLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.Tags" class="control-label"></label>
+                <input placeholder="افصل بين الكلمات المفتاحية بفارزة مثلا تاريخ اسلامي ، حضارة" asp-for="MOOCList.Tags" class="form-control" />
+                <span asp-validation-for="MOOCList.Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.Instructor" class="control-label"></label>
+                <input placeholder="اسم المحاضر مع اللقب العلمي" asp-for="MOOCList.Instructor" class="form-control" />
+                <span asp-validation-for="MOOCList.Instructor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOOCList.StartDate" class="control-label"></label>
+                <input asp-for="MOOCList.StartDate" class="form-control" />
+                <span asp-validation-for="MOOCList.StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="MOOCList.IsFree" /> @Html.DisplayNameFor(model => model.MOOCList.IsFree)
+                    </label>
+                </div>
+            </div>
+                        <div class="form-group">
+                <label class="control-label">الصورة الحالية</label>
+                <br />
+                <img id="img1" class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.MOOCList.Image)" width="280" height="200" />
+            </div>
+            <br />
+            <input id="btn" type="button" class="btn btn-primary" value="تعديل الصورة" />
+            <br />
+            <div class="form-group" id="img">
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-default col-lg-12" />
+                <input asp-for="MOOCList.Image" id="fileinput" class="form-control" />
+                <span asp-validation-for="MOOCList.Image" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="MOOCList.StartDate" class="control-label"></label>
+                <input asp-for="MOOCList.StartDate" class="form-control" />
+                <span asp-validation-for="MOOCList.StartDate" class="text-danger"></span>
+            </div>
+            @if (User.IsInRole("Admins"))
+            {
+                <div class="form-group">
+                    <label class="control-label">إسم مقدم الطلب</label>
+                    <br />
+                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">
+                        @Html.DisplayFor(model => Model.ApplicationUser.ArName)
+                    </a>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">مقدم الطلب</label>
+                    <input asp-for="ApplicationUser.Id" class="form-control" asp-items="ViewBag.ApplicationUserId" />
+                    <span asp-validation-for="ApplicationUser.Id" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="MOOCList.IsReported" /> @Html.DisplayNameFor(model => model.MOOCList.IsReported)
+                        </label>
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="MOOCList.IsFree" /> @Html.DisplayNameFor(model => model.MOOCList.IsFree)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">العودة الى القائمة</a>
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link",
+            mode: "textareas",
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+            toolbar: false,
+            menubar: false
+            //plugins: "table,contextmenu,paste,-externalplugin"
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#img").hide();
+            $("#btn").click(function () {
+                $("#img").slideToggle();
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#cntid").change(function () {
+                $("#uniid").empty();
+                $("#uniid").append($('<option>', { text: "@Localizer["SelectUniversity"]" }));
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetUniversitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#uniid").append($('<option>', {value: row.value, text: row.text}))
+                        });
+                    };
+                    CountryOptions.error = function () { alert("@Localizer["UniError"]"); };
+                    $.ajax(CountryOptions);
+                }
+            });
+        });
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+}

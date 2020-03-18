@@ -1,0 +1,92 @@
+﻿@model IEnumerable<ARID.Models.Project>
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h3>@Localizer["Index"]</h3>
+<hr />
+<p>
+    <a asp-action="Create" class="btn btn-default" style="color:black;font-weight:800">@Localizer["CreateNew"]</a>
+</p>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArProjectName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnProjectName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArDetails)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnDetails)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FromYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToYear)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectState)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArProjectName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnProjectName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArDetails)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnDetails)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FromYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ToYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

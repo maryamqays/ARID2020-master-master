@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ARID.Models.PositionType>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArPositionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnPositionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsApproved)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArPositionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnPositionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsApproved)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

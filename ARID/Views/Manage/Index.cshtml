@@ -1,0 +1,359 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@model IndexViewModel
+@{
+    ViewData["Title"] = @Localizer["Title"];
+    ViewData.AddActivePage(ManageNavPages.Index);
+}
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" asp-action="Index" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <table class="table-bordered table-hover table">
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.Username)</th>
+                                    <th>@Html.DisplayFor(model => model.Username)</th>
+                                </tr>
+                                @*<tr>
+                                        <th>@Html.DisplayNameFor(model => model.ArName)</th>
+                                        <th>@Html.DisplayFor(model => model.ArName)</th>
+                                    </tr>*@
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.ARID)</th>
+                                    <th>arid.my/@Common.ARIDFormat(Model.ARID)</th>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.ARIDDate)</th>
+                                    <th>@Html.DisplayFor(model => model.ARIDDate)</th>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.Status)</th>
+                                    <th>@Html.DisplayFor(model => model.Status)</th>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.RegDate)</th>
+                                    <th>@Html.DisplayFor(model => model.RegDate)</th>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.LastLogin)</th>
+                                    <th>@Html.DisplayFor(model => model.LastLogin)</th>
+                                </tr>
+                                @if (Model.ReferredById != null)
+                                {
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.ReferredById)</th>
+                                        <th>@Html.DisplayFor(model => model.ReferredById)</th>
+                                    </tr>
+                                }
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.Visitors)</th>
+                                    <th>@Html.DisplayFor(model => model.Visitors)</th>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.HoldingBalance)</th>
+                                    <th>$@Html.DisplayFor(model => model.HoldingBalance)</th>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.Balance)</th>
+                                    <th>@Html.DisplayFor(model => model.Balance)$ <span><a asp-action="Filspay" asp-controller="Manage">+</a></span></th>
+                                </tr>
+                            </table>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="form-group">
+                                <a id="qrCode" href="@Url.Action("Details", "ApplicationUsers", new { id=currentUser.Id }, this.Context.Request.Scheme)" target="_blank">@Localizer["QRText"]</a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form-group">
+                @if (Model.ProfileImage != null)
+                {
+                    <img id="img1" class="img-rounded" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + Model.ProfileImage)" width="200" height="250" />
+                }
+                <input type="file" name="myfile1" id="myfile1" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-default" />
+                <input asp-for="ProfileImage" id="fileinput1" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                @if (Model.IsEmailConfirmed)
+                {
+                    <div class="input-group">
+                        <span class="input-group" aria-hidden="true">
+                            <span class="input-group-addon glyphicon glyphicon-ok"></span>
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <button asp-action="SendVerificationEmail" class="btn btn-danger">@Localizer["Sendverificationemail"]</button>
+                }
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecondEmail"></label>
+                <input asp-for="SecondEmail" class="form-control" />
+                <span asp-validation-for="SecondEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArName"></label>
+                <input asp-for="ArName" class="form-control" />
+                <span asp-validation-for="ArName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnName"></label>
+                <input asp-for="EnName" class="form-control" />
+                <span asp-validation-for="EnName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OtherNames"></label>
+                <textarea asp-for="OtherNames" class="form-control" style="height:100px"></textarea>
+                <span asp-validation-for="OtherNames" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DateofBirth"></label>
+                <input asp-for="DateofBirth" class="form-control" />
+                <span asp-validation-for="DateofBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender"></label>
+                <select asp-for="Gender" class="form-control"
+                        asp-items="Html.GetEnumSelectList<GenderType>()">
+                    <option disabled selected value="">@Localizer["SelectGender"]</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UILanguage"></label>
+                <select asp-for="UILanguage" class="form-control"
+                        asp-items="@(ViewBag.UILanguageId)">
+                    <option disabled selected value="">@Localizer["SelectUILanguage"]</option>
+                </select>
+                <span asp-validation-for="UILanguage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId"></label>
+                <select id="cntid" asp-for="CountryId" class="form-control"
+                        asp-items="@(ViewBag.CountryId)">
+                    <option>@Localizer["SelectCountry"]</option>
+                </select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CityId"></label>
+                <select id="ctyid" asp-for="CityId" class="form-control" asp-items="@(ViewBag.CityId)">
+                    <option value="">@Localizer["SelectCity"]</option>
+                </select>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="chkStatus" asp-for="IsNotUniversity" /> @Html.DisplayNameFor(model => model.IsNotUniversity)
+                    </label>
+                </div>
+            </div>
+            <div id="testdiv">
+                <div class="form-group">
+                    <label asp-for="UniversityId"></label>
+                    <a class="btn btn-info btn-xs" target="_blank" asp-controller="Universities" title="اضف جامعة" asp-action="CreateUnIndexed">+</a>
+                    <select id="uniid" asp-for="UniversityId" class="form-control" asp-items="@(ViewBag.UniversityId)">
+                        <option>@Localizer["SelectCity"]</option>
+                    </select>
+                    <span asp-validation-for="UniversityId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FacultyId"></label>
+                    <a class="btn btn-info btn-xs" target="_blank" asp-controller="Universities" title="اضف كلية" asp-action="SearchByUser">+</a>
+                    <select id="facid" asp-for="FacultyId" class="form-control" asp-items="@(ViewBag.FacultyId)">
+                        <option value="">@Localizer["SelectFaculty"]</option>
+                    </select>
+                    <span asp-validation-for="FacultyId" class="text-danger"></span>
+                </div>
+            </div>
+            <div id="firmname" class="form-group" hidden>
+                <label asp-for="FirmName"></label>
+                <input required asp-for="FirmName" class="form-control" />
+                <span asp-validation-for="FirmName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CVURL"></label>
+                <input type="file" name="myfile2" id="myfile2" accept=".pdf,.doc,.docx" class="btn btn-default" />
+                <input asp-for="CVURL" name="fileinput2" id="fileinput2" class="form-control" disabled />
+            </div>
+            @if (!string.IsNullOrEmpty(Model.CVURL))
+            {
+                <div>
+                    <label>@Localizer["Download"]</label>
+                    <a href="@Url.Content("~/" + @ARID.Properties.Resources.CVFileFolder + "/" + @Model.CVURL)" target="_blank">@Model.CVURL</a>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="Summary"></label>
+                <textarea asp-for="Summary" class="form-control" style="height:300px"></textarea>
+                <span asp-validation-for="Summary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactMeDetail"></label>
+                <textarea asp-for="ContactMeDetail" class="form-control" style="height:150px"></textarea>
+                <span asp-validation-for="ContactMeDetail" class="text-danger"></span>
+            </div>
+            <h3>مركز خدمات الباحثين</h3>
+            <p>يمكن تفعيل خيار استقبال المشاريع في مركز خدمات الباحثين عبر تفعيل مربع الاختيار أدناه</p>
+            <a target="_blank" asp-controller="FreelancerProjects" asp-action="Index">اضغط هنا للاطلاع على احدث المشاريع المفتوحة في مركز خدمات الباحثين</a>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsFreelancer" /> @Html.DisplayNameFor(model => model.IsFreelancer)
+                    </label>
+                </div>
+            </div>
+            <input type="hidden" asp-for="DAL" />
+            <button id="btnsave" type="submit" class="btn btn-default">@Localizer["Save"]</button>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript" src="~/lib/qrcode.js"></script>
+    <script type="text/javascript">
+        new QRCode(document.getElementById("qrCode"),
+            {
+                text: "@Url.Action("Details", "ApplicationUsers", new { id=currentUser.Id }, this.Context.Request.Scheme)",
+                width: 150,
+                height: 150
+            });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // $("#ctyid").prop("disabled", true);
+            $("#cntid").change(function () {
+                //  $("#ctyid").prop("disabled", true);
+                $("#ctyid").empty();
+                $("#ctyid").append($('<option>', { text: "@Localizer["SelectCity"]" }));
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetCitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#ctyid").append($('<option>', { value: row.value, text: row.text }))
+                        });
+                        //  $("#ctyid").prop("disabled", false);
+                    };
+                    CountryOptions.error = function () { alert("@Localizer["CityError"]"); };
+                    $.ajax(CountryOptions);
+                    }
+                });
+            });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#cntid").change(function () {
+                $("#uniid").empty();
+                $("#uniid").append($('<option>', { text: "@Localizer["SelectUniversity"]" }));
+                $("#facid").empty();
+                $("#facid").append($('<option>', { text: "@Localizer["SelectFaculty"]" }));
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetUniversitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#uniid").append($('<option>', {value: row.value, text: row.text}))
+                        });
+                    };
+                    CountryOptions.error = function () { alert("@Localizer["UniError"]"); };
+                    $.ajax(CountryOptions);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#uniid").change(function () {
+                $("#facid").empty();
+
+                $("#facid").append($('<option>', { text: "@Localizer["SelectFaculty"]" }));
+                $("#facid").append($('<option>', { value: 1, text: "Others | أخرى" }))
+                if ($("#uniid").val() > 0) {
+                    var UniversityOptions = {};
+                    UniversityOptions.url = "/ar-LY/Account/GetFacultiesList/";
+                    UniversityOptions.data = { universityid: $("#uniid").val() };
+                    UniversityOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#facid").append($('<option>', { value: row.value, text: row.text }));
+
+                        });
+                    };
+                    UniversityOptions.error = function () { alert("@Localizer["FacError"]"); };
+                    $.ajax(UniversityOptions);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#myfile1").change(function () {
+                if ($("#myfile1").val() != "") {
+                    $("#fileinput1").prop("value", $("#myfile1").val().split('\\').pop());
+
+                    //to show new image at a time of image selected from file input type
+                    if (this.files && this.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            if ($('#chkStatus').is(':checked')) {
+
+                $("#testdiv").hide();
+                $('#firmname').fadeIn();
+
+            }
+
+            $("#myfile2").change(function () {
+                if ($("#myfile2").val() != "") {
+                    $("#fileinput2").prop("value", $("#myfile2").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#chkStatus').change(function () {
+                if ($('#chkStatus').is(':checked')) {
+                    $('#firmname').fadeIn();
+                    $("#testdiv").fadeOut();
+                }
+                else {
+                    $('#firmname').fadeOut();
+                    $("#testdiv").fadeIn();
+                 
+                }
+            });
+        });
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

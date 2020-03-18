@@ -1,0 +1,108 @@
+﻿
+@model ARID.Models.CommunityWallViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Text.RegularExpressions;
+
+﻿@{
+    ViewData["Title"] = "ARID";
+}
+<div class="row">
+    <div class="col-md-10">
+
+        @foreach (var item in Model.Posts.Where(a => a.Community.CommunityType == CommunityType.Personal && a.IsDeleted == false && a.IsHidden == false).OrderByDescending(a => a.DateTime).Take(100))
+        {
+            <div class="container table-bordered col-lg-12" style="background-color:whitesmoke;border-color:ActiveCaption;padding:10px;margin-top:10px;margin-bottom:10px">
+                <div class="col-lg-12">
+                    <h5 style="display:inline">
+                        <a class="text-info" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.ApplicationUserId">
+                            @if (item.ApplicationUser.ProfileImage != null)
+                            {
+                                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + item.ApplicationUser.ProfileImage)" width="36" height="36" />
+                            }
+                            else
+                            {
+                                <img class="img-rounded" src="@Url.Content("~/images/default_small.png")" width="36" height="36" />
+                            }
+                            @item.ApplicationUser.ArName |   @item.ApplicationUser.EnName
+                        </a>
+                    </h5>
+                    <div style="float:left;">
+                        <h5 style="display:inline"><span class="badge"><span class="glyphicon glyphicon-eye-open"></span> @item.Reads</span></h5>
+                        &nbsp;
+                        <h5 style="display:inline"><span class="label label-info">@FreelancerProject.GetDate(item.DateTime)</span></h5>
+                        &nbsp;
+                        @if (User.IsInRole("Admins"))
+                        {
+
+                            <div class="dropdown" style="display:inline;">
+                                <button class="btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <small><span class="glyphicon glyphicon-cog"></span></small>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بعملية الإخفاء؟');" asp-action="PostHidden" asp-route-id="@item.Id">إخفاء</a></li>
+                                    <li><a target="_blank" asp-action="EditBlog" asp-controller="Posts" asp-route-id="@item.Id">تعديل</a></li>
+                                    <li><a href="#">إبلاغ</a></li>
+
+
+                                </ul>
+                            </div>
+                        }
+                    </div>
+                    <br />
+                    <div class="text-center">
+                        <h4 style="display:inline">
+                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <h5>
+                        @if (item.Body != null && item.Body.Length > 500)
+                        {
+                            @Regex.Replace(Html.Raw(item.Body).ToString().Substring(0, 499), "<.*?>", String.Empty)
+
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.Body)
+                        }
+                        <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
+                            @*@Localizer["Details"]*@
+                            >>
+                        </a><br />
+
+                    </h5>
+                </div>
+            </div>
+        }
+
+
+    </div>
+
+    <div class="col-md-2">
+        <center>
+
+            <a asp-controller="Badges" asp-action="Details" asp-route-id="1"> <img class="img-responsive" src="https://etangsto.sirv.com/Images/badge.jpg" title="وسام باحث مبادر" /></a>
+
+            @*<a class="btn btn-info" asp-controller="Badges" asp-action="Index">جميع الاوسمة</a>
+                <hr />
+                <a class="btn btn-primary" asp-controller="Blogs" asp-action="Index">مدونة عالم</a>
+                <hr />
+                <a class="btn btn-success" asp-controller="Communities" asp-action="Index">
+                    المجتمعات العلمية
+                </a>
+                <hr />
+                <a class="btn btn-warning" asp-controller="Groups" asp-action="Index">المجاميع البحثية</a>*@
+
+            <hr />
+            <a asp-controller="FreelancerProjects" asp-action="Index"><img class="img-responsive" src="https://etangsto.sirv.com/Images/khibra.gif" alt="مركز خبرة" /></a>
+        </center>
+    </div>
+</div>
+
+
+
+

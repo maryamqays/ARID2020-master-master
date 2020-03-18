@@ -1,0 +1,88 @@
+@model ARID.Models.University
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>University</h4>
+    <hr />
+    <dl class="dl-horizontal">        
+        <dt>
+            @Html.DisplayNameFor(model => model.ArUniversityName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArUniversityName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnUniversityName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnUniversityName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Website)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Website)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StaffNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StaffNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StudentNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StudentNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LogoHD)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LogoHD)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.YearofEstablishment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.YearofEstablishment)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Governmental)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Governmental)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SemiPrivate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SemiPrivate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Private)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Private)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country.ArCountryName)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

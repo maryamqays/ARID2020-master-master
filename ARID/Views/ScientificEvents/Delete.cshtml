@@ -1,0 +1,118 @@
+﻿@model ARID.Models.ScientificEvent
+
+@{
+    ViewData["Title"] = "حذف";
+}
+<br/>
+<h2>حذف الحدث العلمي</h2>
+<br />
+<div>
+    <h4>  @Html.DisplayFor(model => model.EventNameEn)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EventNameAr)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EventNameAr)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EventNameEn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EventNameEn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EventType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EventType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Venue)
+        </dt>
+        <dd>
+            @Html.Raw(Model.Venue)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Organizers)
+        </dt>
+        <dd>
+            @Html.Raw(Model.Organizers)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactDetails)
+        </dt>
+        <dd>
+            @Html.Raw(Model.ContactDetails)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFeatured)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsFeatured)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVisible)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsVisible)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAccepted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsAccepted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Website)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Website)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDecisionMaker)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsDecisionMaker)
+        </dd>
+      
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.ArName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country.ArCountryName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Speciality)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Speciality.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AridPrivileges)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AridPrivileges)
+        </dd>
+     
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,86 @@
+﻿@model ARID.Models.VipDeclaration
+@{
+    ViewData["Title"] = "Edit";
+}
+<br />
+<h1>تعديل التصريح</h1>
+<br />
+<hr />
+<div class="row form-border">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group row">
+                <div class="col-lg-3">
+                    <label asp-for="ApplicationUserId" class="control-label"></label>
+                </div>
+                <div class="col-lg-5">
+                    <input asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId" />
+                    <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-3">
+                    <label asp-for="DeclarationDate" class="control-label"></label>
+                </div>
+                <div class="col-lg-5">
+                    <input asp-for="DeclarationDate" class="form-control" />
+                    <span asp-validation-for="DeclarationDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-3">
+                    <label asp-for="CreationDate" class="control-label"></label>
+                </div>
+                <div class="col-lg-5">
+                    <input asp-for="CreationDate" class="form-control" />
+                    <span asp-validation-for="CreationDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-3">
+                    <label asp-for="DeclarationBody" class="control-label"></label>
+                </div>
+                <div class="col-lg-5">
+                    @Html.TextAreaFor(model => model.DeclarationBody, new { rows = 10, cols = 50 })
+                    <span asp-validation-for="DeclarationBody" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-3">
+                    <label asp-for="DeclarationOccasion" class="control-label"></label>
+                </div>
+                <div class="col-lg-5">
+                    <input asp-for="DeclarationOccasion" class="form-control" />
+                    <span asp-validation-for="DeclarationOccasion" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    .form-border {
+        border: 1px solid #bbb9b9;
+        border-radius: 5px;
+        padding-top: 30px;
+        padding-bottom: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .custom-label {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 20px;
+        line-height: 1.4285;
+        color: #555;
+    }
+</style>

@@ -1,0 +1,120 @@
+﻿@model ARID.Models.MOOCProviderViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<h1>
+    @Html.DisplayFor(model => model.MOOCProvider.Name) @{
+        ApplicationUser currentUser = null;
+        if (SignInManager.IsSignedIn(User))
+        {
+            currentUser = await UserManager.GetUserAsync(User);
+            if (Model.MOOCProviderFollowers.Where(f => f.MOOCProviderId == Model.MOOCProvider.Id && f.ApplicationUserId == currentUser.Id).Count() > 0)
+            {
+                <a id="followbtn" class="btn btn-default">الغاء المتابعة</a>
+            }
+            else
+            {
+                <a id="followbtn" class="btn btn-success">متابعة</a>
+            }
+
+        }
+    }
+</h1>
+
+    @Html.Raw(Model.MOOCProvider.Description)
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MOOCProvider.Logo)
+        </dt>
+        <dd>
+            <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.MOOCProvider.Logo)" onerror="this.onerror=null;this.src='https://arid.my/images/logo.png';" width="280" height="200" />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MOOCProvider.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MOOCProvider.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MOOCProvider.Website)
+        </dt>
+        <dd>
+            <a href="@Html.DisplayFor(model => model.MOOCProvider.Website)" target="_blank">@Html.DisplayFor(model => model.MOOCProvider.Website)</a>
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MOOCProvider.Fb)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MOOCProvider.Fb)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MOOCProvider.Twitter)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MOOCProvider.Twitter)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MOOCProvider.DateOfRecord)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MOOCProvider.DateOfRecord)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MOOCProvider.ApplicationUserId)
+        </dt>
+        <dd>
+            <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.MOOCProvider.ApplicationUser.Id">
+                @Html.DisplayFor(model => Model.MOOCProvider.ApplicationUser.ArName)
+                <br />
+                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + Model.MOOCProvider.ApplicationUser.ProfileImage)" width="50" height="50" /><br />
+            </a>
+        </dd>
+
+
+    </dl>
+    <div>
+        <a class="btn btn-primary" asp-action="Index"> العودة الى القائمة</a>
+    </div>
+    @section Scripts{
+        <script>
+        $(document).ready(function () {
+            $("#followbtn").click(
+                function () {
+                    if ($("#followbtn").text() == "متابعة")
+                    {
+                        var FollowOptions = {};
+                        @*FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Communities/Follow/";*@
+                        FollowOptions.url = "/ar-LY/MOOCProviders/Follow/";
+                        FollowOptions.data = { id: "@Model.MOOCProvider.Id" };
+                        FollowOptions.success = function () {
+                            $("#followbtn").prop("text", "الغاء المتابعة");
+                            $('#counter').text(function (i, oldVal) {
+                                return parseInt(oldVal, 10) + 1
+                            })
+                        };
+              $.ajax(FollowOptions);
+                    }
+                    else
+                    {
+                        var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/MOOCProviders/Unfollow/";
+                        FollowOptions.data = { id: "@Model.MOOCProvider.Id" };
+                        FollowOptions.success = function () {
+                            $("#followbtn").prop("text", "متابعة");
+                            $('#counter').text(function (i, oldVal) {
+                                return parseInt(oldVal, 10) - 1
+                            })
+                           };
+                        $.ajax(FollowOptions);
+                    }
+                });
+        });
+        </script>
+    }

@@ -1,0 +1,81 @@
+﻿@model ARID.Models.FreelancerRating
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>FreelancerRating</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class ="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FreelancerProjectId" class="control-label"></label>
+                <input asp-for="FreelancerProjectId" class="form-control" />
+                <span asp-validation-for="FreelancerProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Isvisible" /> @Html.DisplayNameFor(model => model.Isvisible)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateofRecord" class="control-label"></label>
+                <input asp-for="DateofRecord" class="form-control" />
+                <span asp-validation-for="DateofRecord" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment" class="control-label"></label>
+                <input asp-for="Comment" class="form-control" />
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Professionalism" class="control-label"></label>
+                <input asp-for="Professionalism" class="form-control" />
+                <span asp-validation-for="Professionalism" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Communication" class="control-label"></label>
+                <input asp-for="Communication" class="form-control" />
+                <span asp-validation-for="Communication" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quality" class="control-label"></label>
+                <input asp-for="Quality" class="form-control" />
+                <span asp-validation-for="Quality" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Experience" class="control-label"></label>
+                <input asp-for="Experience" class="form-control" />
+                <span asp-validation-for="Experience" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Delivery" class="control-label"></label>
+                <input asp-for="Delivery" class="form-control" />
+                <span asp-validation-for="Delivery" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RehirePossibility" class="control-label"></label>
+                <input asp-for="RehirePossibility" class="form-control" />
+                <span asp-validation-for="RehirePossibility" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

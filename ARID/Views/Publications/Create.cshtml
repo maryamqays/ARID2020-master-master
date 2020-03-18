@@ -1,0 +1,168 @@
+﻿@model ARID.Models.Publication
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Create"]</h2>
+
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <h4>@Localizer["Index"]</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ApplicationUserId" value="@ViewBag.ApplicationUserId" />
+        <div class="form-group">
+            <label asp-for="PublicationType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="PublicationType" class="form-control"
+                        asp-items="Html.GetEnumSelectList<PublicationType>()">
+                    <option disabled selected value="">@Localizer["SelectType"]</option>
+                </select>
+                <span asp-validation-for="PublicationType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArTitle" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArTitle" class="form-control" />
+                <span asp-validation-for="ArTitle" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EnTitle" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EnTitle" class="form-control" />
+                <span asp-validation-for="EnTitle" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArAuthors" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArAuthors" class="form-control" />
+                <span asp-validation-for="ArAuthors" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EnAuthors" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EnAuthors" class="form-control" />
+                <span asp-validation-for="EnAuthors" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArAbstract" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="ArAbstract" class="form-control" style="height:150px"></textarea>
+                <span asp-validation-for="ArAbstract" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EnAbstract" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="EnAbstract" class="form-control" style="height:150px"></textarea>
+                <span asp-validation-for="EnAbstract" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Keywords" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Keywords" class="form-control" />
+                <span asp-validation-for="Keywords" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PublicationDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PublicationDate" class="form-control" />
+                <span asp-validation-for="PublicationDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Publisher" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Publisher" class="form-control" />
+                <span asp-validation-for="Publisher" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="VolumeNo" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="VolumeNo" class="form-control" />
+                <span asp-validation-for="VolumeNo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="IssueNo" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="IssueNo" class="form-control" />
+                <span asp-validation-for="IssueNo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ISSN" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ISSN" class="form-control" />
+                <span asp-validation-for="ISSN" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DOI" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DOI" class="form-control" />
+                <span asp-validation-for="DOI" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Pages" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Pages" class="form-control" />
+                <span asp-validation-for="Pages" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="FileLink" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input type="file" name="myfile" id="myfile" accept=".pdf,.doc,.docx" class="btn btn-default" />
+                <input asp-for="FileLink" id="fileinput" class="form-control" disabled />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ExternalLink" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ExternalLink" class="form-control" />
+                <span asp-validation-for="ExternalLink" class="text-danger"></span>
+            </div>
+        </div>
+        @*<div class="form-group">
+                <label asp-for="DownloadHits" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="DownloadHits" class="form-control" />
+                    <span asp-validation-for="DownloadHits" class="text-danger"></span>
+                </div>
+            </div>*@
+        <div class="form-group">
+            <input type="submit" value="@Localizer["Create"]" class="btn btn-default" />
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">@Localizer["BackToList"]</a>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#myfile").change(function () {
+                if ($("#myfile").val() != "") {
+                    $("#fileinput").prop("value", $("#myfile").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

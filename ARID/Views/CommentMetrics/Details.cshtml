@@ -1,0 +1,48 @@
+﻿@model ARID.Models.CommentMetric
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CommentMetric</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.VoteValue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VoteValue)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReportType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PostComment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostComment.Comment)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

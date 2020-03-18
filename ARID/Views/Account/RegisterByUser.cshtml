@@ -1,0 +1,142 @@
+﻿@model RegisterViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+@{
+    string RegisteredBy = "";
+    @if (Url.ActionContext.RouteData.Values["id"] != null)
+    {
+        RegisteredBy = Url.ActionContext.RouteData.Values["id"].ToString();
+    }
+}
+
+@*<div>
+        <table align="center">
+            <tr>
+                <td align="center">
+                    <h2>
+                        @Localizer["Message"]
+                    </h2>
+                </td>
+            </tr>
+        </table>
+    </div>*@
+
+@{ ViewData["Title"] = @Localizer["Register"]; }
+
+<h2>@ViewData["Title"]</h2>
+<a style="color:red" target="_blank" href="https://www.youtube.com/watch?v=oPnNKmS8Ze0">شرح مبسط لعملية التسجيل >>></a>
+<form asp-controller="Account" asp-action="Register" method="post" class="form-horizontal">
+    @*asp-route-returnurl="@ViewData["ReturnUrl"]"*@
+    <h4>@Localizer["Title"]</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="UILanguage" value="@CultureInfo.CurrentCulture.Name" />
+    <input type="hidden" asp-for="ReferredById" class="form-control" value="@RegisteredBy" />
+    <div class="form-group">
+        <label asp-for="ArName" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="ArName" onpaste="return false" class="form-control" />
+            <span asp-validation-for="ArName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="EnName"  class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="EnName" onpaste="return false" class="form-control" />
+            <span asp-validation-for="EnName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Email" oncopy="return false" onpaste="return false" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Password" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+  
+   
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">@Localizer["Register"]</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+           // $("#ctyid").prop("disabled", true);
+            $("#cntid").change(function () {
+              //  $("#ctyid").prop("disabled", true);
+                $("#ctyid").empty();
+                $("#ctyid").append($('<option>', { text: "Select City" }));
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetCitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#ctyid").append($('<option>', {value: row.value, text: row.text}))
+                        });
+                     //  $("#ctyid").prop("disabled", false);
+                    };
+                    CountryOptions.error = function () { alert("Error: can't retrieve the list of cities!!!!"); };
+                    $.ajax(CountryOptions);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#cntid").change(function () {
+                $("#uniid").empty();
+                $("#uniid").append($('<option>', { text: "Select Univercity" }));
+                $("#facid").empty();
+                $("#facid").append($('<option>', { text: "Select Faculty" }));
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetUniversitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#uniid").append($('<option>', {value: row.value, text: row.text}))
+                        });
+                    };
+                    CountryOptions.error = function () { alert("Error: can't retrieve the list of universities!!!!"); };
+                    $.ajax(CountryOptions);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#uniid").change(function () {
+                $("#facid").empty();
+                $("#facid").append($('<option>', { text: "Select Faculty" }));
+                if ($("#uniid").val() > 0) {
+                    var UniversityOptions = {};
+                    UniversityOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetFacultiesList/";
+                    UniversityOptions.data = { universityid: $("#uniid").val() };
+                    UniversityOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#facid").append($('<option>', { value: row.value, text: row.text }))
+                        });
+                    };
+                    UniversityOptions.error = function () { alert("Error: can't retrieve the list of faculties!!!!"); };
+                    $.ajax(UniversityOptions);
+                }
+            });
+        });
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

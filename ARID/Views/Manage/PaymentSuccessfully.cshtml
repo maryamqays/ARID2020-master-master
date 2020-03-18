@@ -1,0 +1,15 @@
+﻿@model ARID.Models.Filspay
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Filspay">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                                          <h3>@ViewData["PaymentStatus"]</h3>
+                                        </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,0 +1,131 @@
+﻿@model ARID.Models.SubmissionViewModel
+@{
+    ViewData["Title"] = "إضافة مساعد علمي";
+}
+<h2>إضافة مساعد علمي</h2>
+<hr />
+@if (Model.Submission.AEId != null)
+{
+    <dd>
+        <a style="float:left;" class="btn btn-danger" title="حذف المساعد العلمي" onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بهذه العملية؟');" asp-action="AEDelete" asp-route-id="@Model.Submission.Id"><span class="glyphicon glyphicon-trash"></span></a>
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Submission.AEId)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Submission.AE.ApplicationUser.ArName)
+    </dd>
+}
+else
+{
+    <div class="row">
+
+        <div class="col-md-8">
+            <form asp-action="AddAreaEditor">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Submission.Id" />
+                <div class="form-group">
+                    <label asp-for="Submission.ManuscriptId" class="control-label"></label>*
+                    <select asp-for="Submission.ManuscriptId" class="form-control" asp-items="ViewBag.ManuscriptId"></select>
+                    <span asp-validation-for="Submission.ManuscriptId" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.SubmissionStatus" class="control-label"></label>
+                    <select asp-for="Submission.SubmissionStatus" asp-items="Html.GetEnumSelectList<SubmissionStatus>()" class="form-control"></select>
+                    <span asp-validation-for="Submission.SubmissionStatus" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Submission.AEId" class="control-label"></label>
+                    <select asp-for="Submission.AEId" class="form-control" asp-items="ViewBag.AEId"></select>
+                    <span asp-validation-for="Submission.AEId" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.DateOfSubmission" class="control-label"></label>
+                    <input asp-for="Submission.DateOfSubmission" class="form-control" />
+                    <span asp-validation-for="Submission.DateOfSubmission" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.ResponsetoDecision" class="control-label"></label>
+                    <input asp-for="Submission.ResponsetoDecision" class="form-control" />
+                    <span asp-validation-for="Submission.ResponsetoDecision" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.EICDecision" class="control-label"></label>
+                    <select asp-for="Submission.EICDecision" class="form-control" asp-items="Html.GetEnumSelectList<EICDecision>()"></select>
+                    <span asp-validation-for="Submission.EICDecision" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.DecisionDate" class="control-label"></label>
+                    <input asp-for="Submission.DecisionDate" class="form-control" />
+                    <span asp-validation-for="Submission.DecisionDate" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.EicDecisionText" class="control-label"></label>
+                    <input asp-for="Submission.EicDecisionText" class="form-control" />
+                    <span asp-validation-for="Submission.EicDecisionText" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.DecisionLetter" class="control-label"></label>
+                    <input asp-for="Submission.DecisionLetter" class="form-control" />
+                    <span asp-validation-for="Submission.DecisionLetter" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.CoverLetter" class="control-label"></label>*
+                    <textarea readonly asp-for="Submission.CoverLetter" class="form-control"></textarea>
+                    <span asp-validation-for="Submission.CoverLetter" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <div class="checkbox">
+                        <label>
+                            <input required asp-for="Submission.PlagiarismConfirmation" /> @Html.DisplayNameFor(model => model.Submission.PlagiarismConfirmation)
+                            <br />
+                            <span asp-validation-for="Submission.PlagiarismConfirmation" class="text-danger"></span>
+                        </label>*
+                    </div>
+                </div>
+                <div class="form-group" hidden>
+                    <div class="checkbox">
+                        <label>
+                            <input required asp-for="Submission.DuplicateSubmissionConfirmation" /> @Html.DisplayNameFor(model => model.Submission.DuplicateSubmissionConfirmation)
+                            <br />
+                            <span asp-validation-for="Submission.DuplicateSubmissionConfirmation" class="text-danger"></span>
+                        </label>*
+                    </div>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.AEDecision" class="control-label"></label>
+                    <select asp-for="Submission.AEDecision" class="form-control"></select>
+                    <span asp-validation-for="Submission.AEDecision" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.AEDecisionDate" class="control-label"></label>
+                    <input asp-for="Submission.AEDecisionDate" class="form-control" />
+                    <span asp-validation-for="Submission.AEDecisionDate" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Submission.AEDecisionText" class="control-label"></label>
+                    <input asp-for="Submission.AEDecisionText" class="form-control" />
+                    <span asp-validation-for="Submission.AEDecisionText" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="إضافة" class="btn btn-success" />
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+        </div>
+    </div>}
+<a class="btn btn-primary bold" asp-controller="Manuscripts" asp-action="Details" asp-route-id="@Model.Submission.ManuscriptId">رجوع</a>
+
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+
+@section scripts{
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

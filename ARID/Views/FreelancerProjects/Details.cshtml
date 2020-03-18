@@ -1,0 +1,1422 @@
+﻿@model ARID.Models.FreelancerProjectViewModel
+
+@{
+    ViewData["Title"] = @Html.DisplayNameFor(model => model.FreelancerProject.Name);
+}
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+<h1>&nbsp;@*@Html.Raw(Model.FreelancerProject.AdminNotification)*@</h1>
+<div class="row">
+    <div class="col-lg-8">
+        <h3>
+            @Html.DisplayFor(model => model.FreelancerProject.Name)
+        </h3>
+        @if (ViewData["srvices"].ToString() == "true" && Model.FreelancerProject.ApplicationUserId == currentUser.Id && Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.FreelancerReadyServices)
+        {
+            <h5 class="text-danger img-rounded table-bordered" style="background-color:white;border-color:ActiveCaption; padding:5px;display:inline;">
+                <span class="glyphicon glyphicon-info-sign"></span> &nbsp; تم إبلاغ صاحب الخدمة بطلبك و نحن الان بإنتظار موافقته..سيتم إبلاغك حال موافقته برسالة إلى بريدك الإلكتروني
+            </h5>
+        }
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                <h4>@Html.DisplayNameFor(model => model.FreelancerProject.Description):</h4>
+            </dt>
+            <dd>
+                <h5> @Html.Raw(Model.FreelancerProject.Description)</h5>
+            </dd>
+        </dl>
+        @foreach (var item in Model.FreelancerProposals)
+        {
+            @if (item.ProposalStatus == ProposalStatus.Delivered && Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Delivered)
+            {
+                @if (Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0 || (Model.FreelancerRecruiters.Count() == 0 && currentUser.Id == Model.FreelancerProject.ApplicationUserId))
+                {
+                    <h4 style="display:inline;"><button name="projaccept" class="btn btn-success ">قبول العمل المنجز</button></h4>
+                    <div class="col-lg-1"></div>
+                    @*<h4 style="display:inline;"><button name="projrej" class="btn btn-danger">رفض العمل المنجز</button></h4>*@
+                    <h4 style="display:inline;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">رفض العمل المنجز</button></h4>
+
+                    <!-- Modal -->
+                    <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">سبب الرفض</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="ProjectReject" asp-route-id="@Model.FreelancerProject.Id">
+                                        <textarea class="col-lg-12 form-control" maxlength="250" name="adminNotificationfromprojectowner" required></textarea>
+                                        <h4 class="text-center"><input type="submit" value="إرسال" class="btn btn-success" /></h4>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <h4 style="display:inline"><button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button></h4>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            }
+            @if (item.ProposalStatus != ProposalStatus.Delivered && item.IsAssigned == true && FreelancerProject.GetRemainingTime(item.DateOfAssignment.AddDays(Model.FreelancerProject.DaysRequired)) == "إنتهى الوقت")
+            {
+                @if (Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0 || (Model.FreelancerRecruiters.Count() == 0 && currentUser.Id == Model.FreelancerProject.ApplicationUserId))
+                {
+                    <h4>لقد إنتهى الوقت المخصص لإنجاز المشروع من غير ان يتم تسليمه لديك أحد الخيارين أدناه</h4>
+                    <h4 style="display:inline;"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">تمديد الوقت</button></h4>
+
+                    <!-- Modal -->
+                    <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">أدخل عدد الإيام المضافة</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="DaysExtension" asp-route-id="@Model.FreelancerProject.Id">
+                                        <input class="col-lg-12 form-control" max="30" name="extension" required />
+                                        <h4 class="text-center"><input type="submit" value="إرسال" class="btn btn-success" /></h4>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <h4 style="display:inline"><button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button></h4>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-1"></div>
+                    @*<h4 style="display:inline;"><button name="projrej" class="btn btn-danger">رفض العمل المنجز</button></h4>*@
+                    <h4 style="display:inline;"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">رفض العمل المنجز</button></h4>
+
+                    <!-- Modal -->
+                    <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">سبب الرفض</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form asp-action="ProjectReject" asp-route-id="@Model.FreelancerProject.Id">
+                                        <textarea class="col-lg-12 form-control" maxlength="250" name="adminNotificationfromprojectowner" required></textarea>
+                                        <h4 class="text-center"><input type="submit" value="إرسال" class="btn btn-success" /></h4>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <h4 style="display:inline"><button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button></h4>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+        @if (Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0)
+        {
+            @if (Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Rejected && (Model.FreelancerProject.ApplicationUserId == currentUser.Id || currentUser.Id == Model.FreelancerProposals.SingleOrDefault(a => a.IsAssigned == true).ApplicationUserId || Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0))
+            {
+                <h5 class="text-danger img-rounded table-bordered" style="background-color:whitesmoke; padding:5px;display:inline;border-color:ActiveCaption">
+                    <span class="glyphicon glyphicon-remove"></span> تم رفض العمل المنجز
+                </h5>
+
+            }
+        }
+        @if (Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0)
+        {
+            @if (Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Completed && (Model.FreelancerProject.ApplicationUserId == currentUser.Id || currentUser.Id == Model.FreelancerProposals.SingleOrDefault(a => a.IsAssigned == true).ApplicationUserId || Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0))
+            {
+                <h5 class="text-success img-rounded table-bordered" style="background-color:whitesmoke; padding:5px;display:inline;border-color:ActiveCaption">
+                    <span class="glyphicon glyphicon-ok"></span> تم قبول العمل المنجز بنجاح
+                </h5>
+
+
+            }
+        }
+    </div>
+    <div class="col-lg-4">
+        @*الخيارات في الجانب الأيسر العلوي من الصفحة*@
+        <div class="dropdown" style="float:left">
+            <h4 style="display:inline"><a class="btn-xs btn-danger" href="#" data-toggle="modal" data-target="#myModal">إبلاغ عن مشكلة</a></h4>
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">سبب الإبلاغ</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form asp-action="CreateTicket" asp-route-PId="@Model.FreelancerProject.Id">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="Ticket.TicketCategoryId" class="control-label"></label>
+                                    <select name="TicketCategoryId" class="form-control" asp-items="ViewBag.TicketCategoryId"><option>4</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <input readonly value="مركز خبرة / إبلاغ عن مشكلة في المشروع رقم @Model.FreelancerProject.Id" name="Subject" class="form-control" />
+                                    <span asp-validation-for="Ticket.Subject" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <textarea required name="Body" class="form-control" rows="6"></textarea>
+                                    <span asp-validation-for="Ticket.Body" class="text-danger"></span>
+                                </div>
+                                <div class="modal-footer">
+                                    <h4 style="display:inline" class="text-center"><input type="submit" value="إرسال" class="btn-sm btn-success" /></h4>
+                                    <h4 style="display:inline" class="text-center"><button type="button" class="btn-sm btn-default" data-dismiss="modal">إغلاق</button></h4>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (SignInManager.IsSignedIn(User)) {<h4 style="display:inline"><a class="btn-xs btn-success" asp-action="CreateSimilar" asp-controller="FreelancerProjects" asp-route-id="@Model.FreelancerProject.Id">إنشاء مشروع مماثل</a></h4>}
+        @if (SignInManager.IsSignedIn(User))
+        {@if (currentUser.Id == Model.FreelancerProject.ApplicationUserId && FreelancerProject.GetHours(Model.FreelancerProject.DateOfRecord) < 24)
+            {
+                <h4 style="display:inline"><a class="btn-xs btn-warning" asp-action="Edit" asp-route-id="@Model.FreelancerProject.Id">تعديل على المشروع</a></h4>}}
+
+        <br /><br />
+        <div class="col-lg-12 table-bordered img-rounded" style="background-color:whitesmoke;margin-bottom:20px;padding:10px;border-color:ActiveCaption">
+            <h4 class="text-center">القسم التعريفي</h4>
+            <hr />
+            <h5>
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FreelancerProject.DateOfRecord)
+                    </dt>
+                    <dd>
+                        @FreelancerProject.GetDate(Model.FreelancerProject.DateOfRecord)
+                    </dd>
+                    @if (Model.FreelancerProject.File != null)
+                    {
+                        <dt>
+                            @Html.DisplayNameFor(model => model.FreelancerProject.File)
+                        </dt>
+                        <dd>
+                            <a href="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + Model.FreelancerProject.File)">تحميل الملف المرفق</a>
+                        </dd>
+                    }
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FreelancerProject.Skills)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.FreelancerProject.Skills)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FreelancerProject.BugetType)
+                    </dt>
+                    @if (Model.FreelancerProject.FreelancerProjectStatus != FreelancerProjectStatus.HireMe)
+                    {
+                        <dd>
+                            @Html.DisplayFor(model => model.FreelancerProject.BugetType)
+                        </dd>
+                    }
+                    else
+                    {
+                        <dd>
+                            @Html.DisplayFor(model => model.FreelancerProject.FixedPrice) $
+                        </dd>
+                    }
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FreelancerProject.PurposeType)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.FreelancerProject.PurposeType)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FreelancerProject.SkillCategoryType)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.FreelancerProject.SkillCategoryType)
+                    </dd>
+                    @*<dt>
+                        @Html.DisplayNameFor(model => model.FreelancerProject.RecruiterProjectType)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.FreelancerProject.RecruiterProjectType)
+                    </dd>*@
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FreelancerProject.DaysRequired)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.FreelancerProject.DaysRequired)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FreelancerProject.Speciality)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.FreelancerProject.Speciality.Name)
+                    </dd>
+                    <hr />
+                    @if (User.IsInRole("Admins") || Model.FreelancerProject.HideProjectOwnerDetails == false)
+                    {
+                        <dt>
+                            @Html.DisplayNameFor(model => model.FreelancerProject.ApplicationUserId)
+                        </dt>
+                        <dd>
+                            <a target="_blank" asp-action="FreelancerDetails" asp-controller="ApplicationUsers" asp-route-id="@Model.FreelancerProject.ApplicationUserId">@Html.DisplayFor(model => model.FreelancerProject.ApplicationUser.ArName) </a>
+                            <br />
+                            <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + Model.FreelancerProject.ApplicationUser.ProfileImage)" width="50" height="50" />
+                        </dd>
+                    }
+                    <br />
+                    @if ((Model.FreelancerProject.RecruiterProjectType == RecruiterProjectType.Add && User.IsInRole("Admins")) || (Model.FreelancerProject.RecruiterProjectType == RecruiterProjectType.Add && currentUser.Id == Model.FreelancerProject.ApplicationUserId))
+                    {
+                        @if (Model.FreelancerProposals.Where(f => f.IsAssigned == true).Count() == 0)
+                        {
+                            <h4><a asp-action="Create" asp-controller="FreelancerRecruiters" asp-route-pid="@Model.FreelancerProject.Id" class="btn btn-info col-lg-12">إضافة مكلف لإدارة المشروع</a></h4>
+                        }
+                    }
+                </dl>
+            </h5>
+        </div>
+        @if ((Model.FreelancerRecruiters.Count() > 0 && currentUser.Id == Model.FreelancerProject.ApplicationUserId) || (Model.FreelancerRecruiters.Count() > 0 && User.IsInRole("Admins")))
+        {
+            <div class="col-lg-12 table-bordered img-rounded" style="background-color:whitesmoke;margin-bottom:20px;padding:10px;border-color:ActiveCaption">
+                <h4 class="text-center">المكلفون بإدارة المشروع</h4>
+                <hr />
+                @foreach (var item in Model.FreelancerRecruiters)
+                {
+                    <div class="recruiters" style="margin-bottom:3px;">
+                        <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + item.ApplicationUser.ProfileImage)" width="35" height="35" />
+                        <h5 style="display:inline;"><a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId">@Html.DisplayFor(modelitem => item.ApplicationUser.ArName)</a></h5>
+                        @if (Model.FreelancerProposals.Where(f => f.IsAssigned).Count() == 0 && currentUser.Id == Model.FreelancerProject.ApplicationUserId)
+                        {
+                            <h5 class="recruiterdelet" style="display:inline;float:left"><a href="#" name="@item.Id" class="text-danger delete">حذف</a></h5>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+<div id="offeradd" class="row">
+    <div class="col-lg-12">
+        @if (SignInManager.IsSignedIn(User) && Model.FreelancerProject.ApplicationUserId != currentUser.Id && Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() == 0 && Model.FreelancerProposals.Where(f => f.ApplicationUserId == currentUser.Id).Count() == 0)
+        {
+
+            <div class="col-md-12 table-bordered img-rounded" style="background-color:ghostwhite;border-color:black;border-color:ActiveCaption">
+                <h3 class="text-center">أضف عرض</h3>
+                <br />
+                <form asp-action="CreateProposal">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group" hidden>
+                        <label asp-for="FreelancerProposal.FreelancerProjectId" class="control-label"></label>
+                        <input value="@Model.FreelancerProject.Id" asp-for="FreelancerProposal.FreelancerProjectId" class="form-control" />
+                        <span asp-validation-for="FreelancerProposal.FreelancerProjectId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-4">
+                            <h4>مدة التسليم (يوم)</h4>
+                            @*<label asp-for="FreelancerProposal.DaysRequired" class="control-label siz col-lg-12"></label>*@
+                            <input min="1" asp-for="FreelancerProposal.DaysRequired" class="form-control col-lg-12" />
+                            <span asp-validation-for="FreelancerProposal.DaysRequired" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-4">
+                            <h4>قيمة العرض ($)</h4>
+                            @*<label asp-for="FreelancerProposal.BidAmount" class="control-label col-lg-12"></label>*@
+                            @if (Model.FreelancerProject.BugetType == BugetType.قليل)
+                            {
+                                <input type="number" min="10" max="30" asp-for="FreelancerProposal.BidAmount" class="form-control col-lg-12" />
+                                <span asp-validation-for="FreelancerProposal.BidAmount" class="text-danger"></span>
+                            }
+                            @if (Model.FreelancerProject.BugetType == BugetType.متوسط)
+                            {
+                                <input type="number" min="30" max="100" asp-for="FreelancerProposal.BidAmount" class="form-control col-lg-12" />
+                                <span asp-validation-for="FreelancerProposal.BidAmount" class="text-danger"></span>
+                            }
+                            @if (Model.FreelancerProject.BugetType == BugetType.عالي)
+                            {
+                                <input type="number" min="100" max="300" asp-for="FreelancerProposal.BidAmount" class="form-control col-lg-12" />
+                                <span asp-validation-for="FreelancerProposal.BidAmount" class="text-danger"></span>
+                            }
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-8">
+                            <h4 style="display:inline;">تفاصيل العرض</h4>
+                            @*<label asp-for="FreelancerProposal.Description" class="control-label col-lg-12"></label>*@
+                            <textarea asp-for="FreelancerProposal.Description" class="form-control col-lg-12"></textarea><br />
+                            <span asp-validation-for="FreelancerProposal.Description" class="text-danger"></span>
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <div class="col-lg-5"></div>
+                        @if (currentUser.ProfileImage != null)
+                        {
+                            <h4 class="text-center"><input type="submit" value="أضف العرض" class="btn btn-info" /></h4>
+                        }
+                        else
+                        {
+                            <h4 class="text-center">لايمكن اضافة عرض الا بعد اكمال تفاصيل الملف الشخصي <a asp-controller="Manage" asp-action="Index">اضغط هنا لتحديث الملف الشخصي</a> </h4>
+                        }
+                    </div>
+                </form>
+
+            </div>
+        }
+        else if (!SignInManager.IsSignedIn(User))
+        { <h3 class="danger">يجب تسجيل الدخول  لإضافة عرض</h3>}
+
+    </div>
+</div>
+
+
+<div class=" row">
+    <div class=" col-lg-12">
+        @if (Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0)
+        {
+            <div class="col-lg-12 table-bordered img-rounded" style="background-color:ghostwhite;margin-top:20px;padding:10px;border-color:ActiveCaption">
+
+                @foreach (var item in Model.FreelancerProposals)
+                {
+                    @if (item.IsAssigned == true)
+                    {
+                        <div class="container table-bordered img-rounded col-lg-12" style="background-color:whitesmoke;border-color:ActiveCaption">
+                            <div class="section">
+                                <div class="col span_2_of_3">
+                                    <div class="col-lg-12" style="padding:10px;">
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-4">
+                                                @if (item.ApplicationUser.ProfileImage != null)
+                                                {
+                                                    <a style="float:right" target="_blank" asp-action="FreeLancerDetails" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId"><img style="float:left" class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + item.ApplicationUser.ProfileImage)" width="40" height="40" /></a>
+                                                }
+                                                <h4 style="display:inline">
+                                                    &nbsp;
+                                                    <a target="_blank" class="text-info" asp-action="FreelancerDetails" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUser.Id">
+                                                        &nbsp;&nbsp;@item.ApplicationUser.ArName
+                                                    </a>
+                                                </h4><br />
+                                                <h5 style="display:inline"> &nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>@FreelancerProject.GetDate(item.DateofRecord)</h5>
+                                            </div>
+                                            <div style="float:left;">
+                                                @if (currentUser.Id == Model.FreelancerProject.ApplicationUserId || currentUser.Id == item.ApplicationUserId)
+                                                {
+                                                    <h5 style="display:inline;">
+                                                        <label class="label label-info" target="_blank" href="#">
+                                                            مدة التسليم : @item.DaysRequired يوم
+                                                        </label>
+                                                    </h5>
+                                                    <span>&nbsp;</span>
+                                                    <h5 style="display:inline;">
+                                                        <label class="label label-info" target="_blank" href="#">
+                                                            قيمة العرض : @item.BidAmount $
+                                                        </label>
+                                                    </h5>}
+                                                &nbsp;
+                                                @if (item.ProposalStatus == ProposalStatus.Delivered)
+                                                {
+                                                    <h5 style="display:inline;">
+                                                        <label class="label label-info" target="_blank" href="#">
+                                                            تم التسليم<span class="glyphicon glyphicon-ok"></span>
+                                                        </label>
+                                                    </h5>
+                                                }
+                                                &nbsp;
+                                                @if (Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0)
+                                                {
+                                                    @if (Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Rejected && (Model.FreelancerProject.ApplicationUserId == currentUser.Id || currentUser.Id == Model.FreelancerProposal.ApplicationUserId || Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0))
+                                                    {
+                                                        <h5 style="display:inline;">
+                                                            <label class="label label-info" target="_blank" href="#">
+                                                                <span class="glyphicon glyphicon-remove"></span> تم رفض العمل المنجز
+                                                            </label>
+                                                        </h5>
+
+                                                    }
+                                                }
+                                                @if (Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0)
+                                                {
+                                                    @if (Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Completed && (Model.FreelancerProject.ApplicationUserId == currentUser.Id || currentUser.Id == Model.FreelancerProposal.ApplicationUserId || Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0))
+                                                    {
+                                                        <h5 style="display:inline;">
+                                                            <label class="label label-info" target="_blank" href="#">
+                                                                <span class="glyphicon glyphicon-ok"></span> تم قبول العمل المنجز بنجاح
+                                                            </label>
+                                                        </h5>
+                                                    }
+                                                }
+                                                &nbsp;
+                                                @if (Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0)
+                                                {
+                                                    @if ((Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Execution && Model.FreelancerProject.ApplicationUserId == currentUser.Id || currentUser.Id == Model.FreelancerProposal.ApplicationUserId || Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0))
+                                                    {
+                                                        <h5 style="display:inline;">
+                                                            <label class="label label-info" target="_blank" href="#">
+                                                                <span class="glyphicon glyphicon-time"></span>&nbsp;تأريخ الإسناد  : @item.DateofRecord.Year/@item.DateofRecord.Month/@item.DateofRecord.Day
+                                                            </label>
+                                                        </h5>
+                                                    }
+                                                }
+                                                &nbsp;
+                                                @if (Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0)
+                                                {
+                                                    @if (Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Execution && (Model.FreelancerProject.ApplicationUserId == currentUser.Id || currentUser.Id == Model.FreelancerProposal.ApplicationUserId || Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0))
+                                                    {
+                                                        <h5 style="display:inline;">
+                                                            <label class="label label-danger" target="_blank" href="#">
+                                                                <span class="glyphicon glyphicon-hourglass"></span>الوقت المتبقي : @FreelancerProject.GetRemainingTime(item.DateOfAssignment.AddDays(Model.FreelancerProject.DaysRequired))<span id="demo"></span>
+                                                            </label>
+                                                        </h5>
+                                                    }
+                                                }
+
+                                            </div>
+                                            <br /><br /><br />
+                                            <div class="col-lg-12">
+                                                <h5>
+                                                    @Html.Raw(item.Description);
+                                                </h5>
+                                                @if (item.ProposalStatus == ProposalStatus.Execution && currentUser.Id == item.ApplicationUserId && Model.FreelancerComments.Where(f => f.ApplicationUserId == item.ApplicationUserId).Count() > 0)
+                                                {
+                                                    <h5 class="text-center"><button name="delvired" value="@item.Id" class="btn-sm btn-danger">تسليم المشروع</button></h5>
+                                                }
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+        }
+        @if (Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() == 0 && Model.FreelancerProposals.Count() > 0)
+        {
+            <div class="container table-bordered img-rounded col-lg-12" style="background-color:ghostwhite;padding:10px;margin-top:10px;margin-bottom:10px;border-color:ActiveCaption">
+                <h3 class="text-center">العروض</h3>
+
+                @foreach (var item in Model.FreelancerProposals)
+                {
+                    <div class="container table-bordered img-rounded col-lg-12" style="background-color:whitesmoke;padding:10px;margin-top:10px;margin-bottom:10px;border-color:ActiveCaption">
+                        <div class="section">
+                            <div class="col span_2_of_3">
+                                <div class="blog-post col-lg-12">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-4">
+                                            @if (item.ApplicationUser.ProfileImage != null)
+                                            {
+                                                <a style="float:right" target="_blank" asp-action="FreeLancerDetails" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId"><img style="float:left" class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + item.ApplicationUser.ProfileImage)" width="40" height="40" /></a>
+                                            }
+                                            <h4 style="display:inline">
+                                                <a target="_blank" class="text-info" asp-action="FreelancerDetails" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUser.Id">
+                                                    &nbsp;&nbsp;@item.ApplicationUser.ArName
+                                                </a>
+                                            </h4><br />
+                                            <h5 style="display:inline">&nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span>@FreelancerProject.GetDate(item.DateofRecord)</h5>
+                                        </div>
+                                        @if (User.IsInRole("Admins") || currentUser.Id == Model.FreelancerProject.ApplicationUserId || currentUser.Id == item.ApplicationUserId)
+                                        {
+                                            <div style="float:left;">
+                                                <h5 style="display:inline;">
+                                                    <label class="label label-info" target="_blank" href="#">
+                                                        مدة التسليم : @item.DaysRequired يوم
+                                                    </label>
+                                                </h5>
+                                                &nbsp;
+                                                <h5 style="display:inline;">
+                                                    <label class="label label-info" target="_blank" href="#">
+                                                        قيمة العرض : @item.BidAmount $
+                                                    </label>
+                                                </h5>
+                                                &nbsp;
+                                                <div class="dropdown" style="display:inline;">
+                                                    <button class="btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+                                                        <small><span class="glyphicon glyphicon-cog"></span></small>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        @if ((User.IsInRole("Admins") || currentUser.Id == item.ApplicationUserId || User.IsInRole("Admins")) && FreelancerProject.GetHours(item.DateofRecord) < 24 && Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Acceptingoffers)
+                                                        {
+                                                            <li class="text-center"><form onsubmit="return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بعملية الحذف؟');" asp-action="Delete" method="post" asp-controller="FreelancerProposals" asp-route-id="@item.Id"><button type="submit" style="border:none;background:none;padding:0">حذف</button></form></li>
+                                                            <li class="text-center"><a target="_blank" asp-action="Edit" asp-controller="FreelancerProposals" asp-route-id="@item.Id">تعديل</a></li>
+                                                        }
+                                                        <li class="text-center">
+                                                            <a class="text-center" href="#" data-toggle="modal" data-target="#myModa">إبلاغ</a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="dropdown" style="float:left">
+                                                        <!-- Modal -->
+                                                        <div id="myModa" class="modal fade" role="dialog">
+                                                            <div class="modal-dialog">
+                                                                <!-- Modal content-->
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        <h4 class="modal-title">سبب الإبلاغ</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form asp-action="CreateTicket" asp-route-PId="@Model.FreelancerProject.Id" asp-route-prpsalid="@item.Id">
+                                                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                                            <div class="form-group" hidden>
+                                                                                <label asp-for="Ticket.TicketCategoryId" class="control-label"></label>
+                                                                                <select name="TicketCategoryId" class="form-control" asp-items="ViewBag.TicketCategoryId"><option>4</option></select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <input readonly value="مركز خبرة / إبلاغ عن مشكلة في المشروع رقم @Model.FreelancerProject.Id صاحب العرض @item.ApplicationUser.ArName" name="Subject" class="form-control" />
+                                                                                <span asp-validation-for="Ticket.Subject" class="text-danger"></span>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <textarea required name="Body" class="form-control" rows="6"></textarea>
+                                                                                <span asp-validation-for="Ticket.Body" class="text-danger"></span>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <h4 style="display:inline" class="text-center"><input type="submit" value="إرسال" class="btn-sm btn-success" /></h4>
+                                                                                <h4 style="display:inline" class="text-center"><button type="button" class="btn-sm btn-default" data-dismiss="modal">إغلاق</button></h4>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <h5>
+                                            @item.Description
+                                        </h5>
+                                        @if (Model.FreelancerProject.ApplicationUserId == currentUser.Id && ViewData["srvices"].ToString() != "true" && Model.FreelancerProject.FreelancerProjectStatus != FreelancerProjectStatus.HireMe)
+                                        {
+                                            @if (Model.FreelancerProject.ApplicationUser.Balance >= item.BidAmount)
+                                            {
+                                                @if ((Model.FreelancerRecruiters.Count() == 0 && currentUser.Id == Model.FreelancerProject.ApplicationUserId) || (Model.FreelancerRecruiters.Count() > 0 && Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0))
+                                                {
+                                                    <h4 class="text-center"><button name="accept" value="@item.Id" class="btn btn-info">إختيار</button></h4>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <h5 class="text-center text-danger"><span class="table-bordered img-rounded" style="background-color:azure;border-color:ActiveCaption;border-color:ActiveCaption"> ليس لديك الرصيد الكافي لهذا العرض<a class="btn btn-default" asp-controller="Manage" asp-action="Filspay">اضف رصيد في أريد</a></span></h5>
+                                            }
+                                        }
+
+                                        @if ((ViewData["srvices"].ToString() == "true" || Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.HireMe) && Model.FreelancerProposals.Where(f => f.ApplicationUserId == currentUser.Id).Any())
+                                        {
+                                            @*<h4 class="text-center"><button name="acceptservice" value="@item.Id" class="btn btn-info">قبول تنفيذ الخدمة</button></h4>*@
+                                            <!-- Trigger the modal with a button -->
+                                            <h4 class="text-center"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#acceptmodal">قبول تنفيذ الخدمة</button></h4>
+
+                                            <!-- Modal -->
+                                            <div id="acceptmodal" class="modal fade" role="dialog">
+                                                <div class="modal-dialog">
+
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title">أكتب شيئا</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form asp-action="AcceptService" asp-route-id="@item.Id">
+                                                                <textarea rows="4" class="form-control" name="description"></textarea>
+                                                                <h4 class="text-center"><input name="sub" type="submit" value="إرسال" class="btn btn-success" /></h4>
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        <hr />
+    </div>
+</div>
+@if (Model.FreelancerProposal != null)
+{
+    @if (currentUser.Id == Model.FreelancerProposal.ApplicationUserId && Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Rejected && !Model.FreelancerProject.AdminNotification.Contains(Model.FreelancerProposal.ApplicationUser.ArName))
+    {
+        <div>
+            <hr style="border-color:ActiveCaption" />
+            <form onsubmit="return confirm('هل تريد الإرسال فعلاً')" asp-action="ProjectReject" asp-route-id="@Model.FreelancerProject.Id">
+                <h4 class="control-label text-center">توضيح للإدارة عن سبب الرفض</h4>
+                <textarea class="form-control" name="notificationfromfreelancer"></textarea>
+                <h4 class="text-center"><input class="btn btn-info" type="submit" value="إرسال" /></h4>
+            </form>
+            <hr style="border-color:ActiveCaption" />
+
+        </div>
+    }
+
+}
+
+
+<div id="comment">
+    @if (Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0)
+    {
+        @if (currentUser.Id == Model.FreelancerProject.ApplicationUserId || Model.FreelancerProposals.SingleOrDefault(a => a.IsAssigned == true).ApplicationUserId == currentUser.Id || Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0)
+        {
+            <div id="refresh" class="row">
+                <div class="col-md-12">
+                    <div class="col-md-12 img-rounded table-bordered" style="background-color:ghostwhite;margin-top:20px;padding:10px;border-color:ActiveCaption">
+                        <h3 class="text-center">التعليقات</h3>
+                        @foreach (var item in Model.FreelancerComments)
+                        {
+                            <div class="col-lg-12 table-bordered img-rounded div" style="background-color:whitesmoke;margin-bottom:10px;padding:10px;border-color:ActiveCaption">
+                                <div class="col-lg-12">
+                                    <div class="col-lg-4">
+                                        <a style="float:right" target="_blank" asp-action="details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId"><img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + item.ApplicationUser.ProfileImage)" width="40" height="40" /></a>
+                                        <h4 style="display:inline">
+                                            <a target="_blank" class="text-info" asp-action="FreelancerDetails" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUser.Id">
+                                                &nbsp; @item.ApplicationUser.ArName
+                                            </a>
+                                        </h4><br />
+                                        <h5 style="display:inline">&nbsp;<span class="glyphicon glyphicon-time"></span>@FreelancerProject.GetDate(item.DateOfRecord)</h5>
+                                    </div>
+                                    @if (item.File != null)
+                                    {
+                                        <div style="float:left;">
+                                            <h5 style="display:inline;">
+                                                <a class="btn-xs btn-danger" target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + item.File)">
+                                                    تحميل الملف
+                                                </a>
+                                            </h5>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div style="float:left;">
+                                            <h5 style="display:inline;">
+                                                <label class="label label-info" target="_blank" href="#">
+                                                    لا يوجد ملف
+                                                </label>
+                                            </h5>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-lg-12">
+                                    <h5>
+                                        @item.Commentary
+                                    </h5>
+                                </div>
+                            </div>
+                        }
+                        <div class="col-lg-12 table-bordered img-rounded" style="background-color:whitesmoke;padding:10px;;border-color:ActiveCaption">
+                            <form asp-action="CreateComment" enctype="multipart/form-data">
+                                <input hidden asp-for="FreelancerComment.FreelancerProjectId" value="@Model.FreelancerProject.Id" />
+                                <div class="form-group col-lg-12">
+                                    <div class="col-lg-2">
+                                        <h4 style="float:left">إرفاق ملف</h4>
+                                    </div>
+                                    <input name="file" type="file"  id="file" accept=".docx,.pdf" class="btn btn-primary col-lg-9" />
+                                    <input type="hidden" asp-for="FreelancerComment.File" id="fileinput" class="form-control" />
+                                    <span asp-validation-for="FreelancerComment.File" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-lg-12">
+                                    <div class="col-lg-1"></div>
+                                    <h4 class="col-lg-1">التعليق</h4>
+                                    <textarea class="form-control col-lg-9" name="comment" asp-for="FreelancerComment.Commentary"></textarea>
+                                    <div class="col-lg-1"></div>
+                                </div>
+                                <div class="col-lg-3"></div>
+                                <span asp-validation-for="FreelancerComment.Commentary" class="text-danger"></span>
+                                <div class="form-group col-lg-12">
+                                    <h4 class="text-center"><a id="addcomment" value="تعليق" class="btn btn-sm btn-info">تعليق</a></h4>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+</div>
+@if ((Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Completed || Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Rejected) && (Model.FreelancerRatings.Where(f => f.ApplicationUserId == Model.FreelancerProposal.ApplicationUserId).Count() == 0 || Model.FreelancerRatings.Where(f => f.ApplicationUserId == Model.FreelancerProject.ApplicationUserId).Count() == 0) && (Model.FreelancerProject.ApplicationUserId == currentUser.Id || Model.FreelancerProposal.ApplicationUserId == currentUser.Id))
+{
+    @if (currentUser.Id == Model.FreelancerProject.ApplicationUserId && Model.FreelancerRatings.Where(f => f.ApplicationUserId == Model.FreelancerProposal.ApplicationUserId).Count() == 0 || currentUser.Id == Model.FreelancerProposal.ApplicationUserId && Model.FreelancerRatings.Where(f => f.ApplicationUserId == Model.FreelancerProject.ApplicationUserId).Count() == 0)
+    {
+        <div class="img-rounded table-bordered" style="background-color:aliceblue;border-color:ActiveCaption;margin-top:10px;padding:10px">
+            <br />
+            @if (currentUser.Id == Model.FreelancerProject.ApplicationUserId && Model.FreelancerProposal != null)
+            {
+                <h4 class="text-center">تقييمك لصاحب العرض: <a asp-action="FreelancerDetails" asp-controller="ApplicationUsers" asp-route-id="@Model.FreelancerProposal.ApplicationUserId">@Model.FreelancerProposal.ApplicationUser.ArName</a> </h4>}
+            else
+            {
+                <h4 class="text-center">تقييمك  لصاحب المشروع </h4>}
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="CreateRating">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group" hidden>
+                            <label asp-for="FreelancerRating.FreelancerProjectId" class="control-label"></label>
+                            <input value="@Model.FreelancerProject.Id" asp-for="FreelancerRating.FreelancerProjectId" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.FreelancerProjectId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group" hidden>
+                            <label asp-for="FreelancerRating.ApplicationUserId" class="control-label"></label>
+                            @if (currentUser.Id == Model.FreelancerProject.ApplicationUserId && Model.FreelancerProposal != null)
+                            {
+                                <input value="@Model.FreelancerProposal.ApplicationUserId" asp-for="FreelancerRating.ApplicationUserId" class="form-control" />
+                            }
+                            else
+                            {
+                                <input value="@Model.FreelancerProject.ApplicationUserId" asp-for="FreelancerRating.ApplicationUserId" class="form-control" />
+                            }
+                            <span asp-validation-for="FreelancerRating.ApplicationUserId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Professionalism" class="control-label"></label><br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.Professionalism" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.Professionalism" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Communication" class="control-label"></label><br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.Communication" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.Communication" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Quality" class="control-label"></label><br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.Quality" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.Quality" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Experience" class="control-label"></label><br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.Experience" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.Experience" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Delivery" class="control-label"></label><br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.Delivery" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.Delivery" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.RehirePossibility" class="control-label"></label><br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.RehirePossibility" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.RehirePossibility" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Comment" class="control-label"></label><br />
+                            <textarea asp-for="FreelancerRating.Comment" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="FreelancerRating.Comment" class="text-danger"></span>
+                        </div>
+                        @if (Model.FreelancerProject.FreelancerReadyServiceId != null)
+                        {
+                            <div class="form-group" hidden>
+                                <label asp-for="FreelancerRating.FreelancerReadyServiceId" class="control-label"></label><br />
+                                <input value="@Model.FreelancerProject.FreelancerReadyServiceId" asp-for="FreelancerRating.FreelancerReadyServiceId" class="form-control" />
+                                <span asp-validation-for="FreelancerRating.FreelancerReadyServiceId" class="text-danger"></span>
+                            </div>}
+                        <div class="form-group text-center">
+                            <h4><input type="submit" value="تقييم" class="btn btn-info" /></h4>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+}
+@foreach (var item in Model.FreelancerRecruiters)
+{
+    @if ((Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Completed || Model.FreelancerProject.FreelancerProjectStatus == FreelancerProjectStatus.Rejected) && Model.FreelancerRatings.Where(f => f.ApplicationUserId == item.ApplicationUserId).Count() == 0 && Model.FreelancerProject.ApplicationUserId == currentUser.Id)
+    {
+        <div class="img-rounded table-bordered" style="background-color:aliceblue;border-color:ActiveCaption;margin-top:10px;padding:10px">
+
+            <br />
+            <h4 class="text-center">تقييم صاحب المشروع للمكلف : @item.ApplicationUser.ArName</h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="CreateRating">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group" hidden>
+                            <label asp-for="FreelancerRating.FreelancerProjectId" class="control-label"></label>
+                            <input value="@Model.FreelancerProject.Id" asp-for="FreelancerRating.FreelancerProjectId" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.FreelancerProjectId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group" hidden>
+                            <label asp-for="FreelancerRating.ApplicationUserId" class="control-label"></label>
+                            <input value="@item.ApplicationUserId" asp-for="FreelancerRating.ApplicationUserId" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.ApplicationUserId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Professionalism" class="control-label"></label><br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.Professionalism" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.Professionalism" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Communication" class="control-label"></label>
+                            <br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.Communication" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.Communication" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Quality" class="control-label"></label>
+                            <br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.Quality" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.Quality" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Experience" class="control-label"></label>
+                            <br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.Experience" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.Experience" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Delivery" class="control-label"></label><br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.Delivery" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.Delivery" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.RehirePossibility" class="control-label"></label><br />
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="1" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="2" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="3" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="4" /> </label>
+                            <label style="font-size:30px;" class="glyphicon glyphicon-star-empty"><input style="opacity:0" type="checkbox" class="checkbox" value="5" /> </label>
+                            <input type="hidden" asp-for="FreelancerRating.RehirePossibility" class="form-control" />
+                            <span asp-validation-for="FreelancerRating.RehirePossibility" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FreelancerRating.Comment" class="control-label"></label>
+                            <textarea asp-for="FreelancerRating.Comment" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="FreelancerRating.Comment" class="text-danger"></span>
+                        </div>
+                        <div class="form-group text-center">
+                            <h4><input type="submit" value="تقييم" class="btn btn-info" /></h4>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+}
+@if (Model.FreelancerRatings.Where(f => f.ApplicationUserId == Model.FreelancerProposal.ApplicationUserId).Count() == 1)
+{<div class="img-rounded table-bordered text-center" style="background-color:ghostwhite;border-color:ActiveCaption;margin-top:10px;padding:10px;">
+        <h4>تقييم صاحب المشروع لصاحب العرض </h4>
+        @foreach (var item in Model.FreelancerRatings.Where(f => f.ApplicationUserId == Model.FreelancerProposal.ApplicationUserId))
+        {
+            <h5 class="img-rounded table-bordered" style="float:left;display:inline;background-color:aliceblue;border-color:ActiveCaption;padding:2px;">@FreelancerProject.GetDate(item.DateofRecord)</h5>
+            <h5 class="img-rounded table-bordered" style="display:inline;background-color:aliceblue;border-color:ActiveCaption;padding:2px;float:right">صاحب العرض:@item.ApplicationUser.ArName</h5><br /><br />
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.Professionalism):
+                @for (var j = 1; j <= item.Professionalism; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Professionalism/5
+            </h4>
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.Communication):
+                @for (var j = 1; j <= item.Communication; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Communication/5
+            </h4>
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.Quality):
+                @for (var j = 1; j <= item.Quality; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Quality/5
+            </h4><br /><br />
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.Experience):
+                @for (var j = 1; j <= item.Experience; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Experience/5
+            </h4>
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.Delivery):
+                @for (var j = 1; j <= item.Delivery; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Delivery/5
+            </h4>
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.RehirePossibility):
+                @for (var j = 1; j <= item.RehirePossibility; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.RehirePossibility/5
+            </h4><br /><br />
+            <h5 class="img-rounded table-bordered text-center" style="display:inline;background-color:white;border-color:ActiveCaption;padding:2px;">@Html.DisplayNameFor(modelitem => item.Comment):@item.Comment</h5>
+        }
+    </div>
+}
+
+@if (Model.FreelancerRatings.Where(f => f.ApplicationUserId == Model.FreelancerProject.ApplicationUserId).Count() > 0)
+{
+    @foreach (var item in Model.FreelancerRatings.Where(f => f.ApplicationUserId == Model.FreelancerProject.ApplicationUserId))
+    {
+        <div class="img-rounded table-bordered text-center" style="background-color:ghostwhite;border-color:ActiveCaption;margin-top:10px;padding:10px;">
+            <h4 class="text-center">تقييم صاحب العرض لصاحب المشروع </h4>
+            <h5 class="img-rounded table-bordered" style="float:left;display:inline;background-color:aliceblue;border-color:ActiveCaption;padding:2px;">@FreelancerProject.GetDate(item.DateofRecord)</h5>
+            <h5 class="img-rounded table-bordered" style="float:right;display:inline;background-color:aliceblue;border-color:ActiveCaption;padding:2px;">صاحب المشروع:@item.ApplicationUser.ArName</h5><br /><br />
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.Professionalism):
+                @for (var j = 1; j <= item.Professionalism; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Professionalism/5
+            </h4>
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.Communication):
+                @for (var j = 1; j <= item.Communication; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Communication/5
+            </h4>
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.Quality):
+                @for (var j = 1; j <= item.Quality; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Quality/5
+            </h4><br /><br />
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.Experience):
+                @for (var j = 1; j <= item.Experience; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Experience/5
+            </h4>
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.Delivery):
+                @for (var j = 1; j <= item.Delivery; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Delivery/5
+            </h4>
+            <h4 style="display:inline;margin-left:50px">
+                @Html.DisplayNameFor(modelitem => item.RehirePossibility):
+                @for (var j = 1; j <= item.RehirePossibility; j++)
+                {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.RehirePossibility/5
+            </h4><br /><br />
+            <h5 class="img-rounded table-bordered text-center" style="display:inline;background-color:white;border-color:ActiveCaption;padding:2px;">@Html.DisplayNameFor(modelitem => item.Comment):@item.Comment</h5>
+        </div>
+    }
+}
+
+@if (Model.FreelancerRatings.Where(f => f.Id != 0 && Model.FreelancerRecruiters.Where(s => s.ApplicationUserId == f.ApplicationUserId).Count() > 0).Count() > 0)
+{
+    @foreach (var i in Model.FreelancerRecruiters)
+    {<div class="img-rounded table-bordered text-center" style="background-color:ghostwhite;border-color:ActiveCaption;margin-top:10px;padding:10px;">
+            <h4 class="text-center">تقييم صاحب المشروع للمكلف </h4>
+            @foreach (var item in Model.FreelancerRatings.Where(f => f.ApplicationUserId == i.ApplicationUserId))
+            {
+                <h5 class="img-rounded table-bordered" style="float:left;display:inline;background-color:aliceblue;border-color:ActiveCaption;padding:2px;">@FreelancerProject.GetDate(item.DateofRecord)</h5>
+                <h5 class="img-rounded table-bordered" style="display:inline;background-color:aliceblue;border-color:ActiveCaption;padding:2px;float:right">المكلف:@item.ApplicationUser.ArName</h5><br /><br />
+                <h4 style="display:inline;margin-left:50px">
+                    @Html.DisplayNameFor(modelitem => item.Professionalism):
+                    @for (var j = 1; j <= item.Professionalism; j++)
+                    {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Professionalism/5
+                </h4>
+                <h4 style="display:inline;margin-left:50px">
+                    @Html.DisplayNameFor(modelitem => item.Communication):
+                    @for (var j = 1; j <= item.Communication; j++)
+                    {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Communication/5
+                </h4>
+                <h4 style="display:inline;margin-left:50px">
+                    @Html.DisplayNameFor(modelitem => item.Quality):
+                    @for (var j = 1; j <= item.Quality; j++)
+                    {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Quality/5
+                </h4><br /><br />
+                <h4 style="display:inline;margin-left:50px">
+                    @Html.DisplayNameFor(modelitem => item.Experience):
+                    @for (var j = 1; j <= item.Experience; j++)
+                    {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Experience/5
+                </h4>
+                <h4 style="display:inline;margin-left:50px">
+                    @Html.DisplayNameFor(modelitem => item.Delivery):
+                    @for (var j = 1; j <= item.Delivery; j++)
+                    {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.Delivery/5
+                </h4>
+                <h4 style="display:inline;margin-left:50px">
+                    @Html.DisplayNameFor(modelitem => item.RehirePossibility):
+                    @for (var j = 1; j <= item.RehirePossibility; j++)
+                    {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@item.RehirePossibility/5
+                </h4><br /><br />
+                <h5 class="img-rounded table-bordered text-center" style="display:inline;background-color:white;border-color:ActiveCaption;padding:2px;">@Html.DisplayNameFor(modelitem => item.Comment):@item.Comment</h5>
+            }
+        </div>
+    }
+}
+<div>
+    <br />
+    <h4><a asp-action="Index" class="btn btn-info">العودة الى القائمة</a></h4>
+</div>
+<style>
+    .rating {
+        float: right;
+        width: 300px;
+    }
+
+        .rating span {
+            float: left;
+            position: relative;
+        }
+
+            .rating span input {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                opacity: 0;
+            }
+
+            .rating span label {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                text-align: center;
+                color: #FFF;
+                background: #ccc;
+                font-size: 30px;
+                margin-right: 2px;
+                line-height: 30px;
+                border-radius: 50%;
+                -webkit-border-radius: 50%;
+            }
+
+            .rating span:hover ~ span label,
+            .rating span:hover label,
+            .rating span.checked label,
+            .rating span.checked ~ span label {
+                background: #F90;
+                color: #FFF;
+            }
+</style>
+@section scripts{
+    <script>
+        $('#comment').hide();
+        if (@Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0) {
+            $('#offeradd').hide();
+        }
+        if (@Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0) {
+            $('#comment').show();
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#addcomment').click(
+
+                function () {
+
+                    {
+                                var formData = new FormData();
+                        formData.append('file', $("[name='file']")[0].files[0]); // myFile is the input type="file" control
+                        formData.append('comment', $("[name='comment']").val()); // myFile is the input type="file" control
+                        formData.append('fid', @Model.FreelancerProject.Id); // myFile is the input type="file" control
+
+                            var _url = '@Url.Action("AddComment", "FreelancerProjects")';
+
+                            $.ajax({
+                                url: _url,
+                                type: 'POST',
+                                data: formData,
+                                processData: false,  // tell jQuery not to process the data
+                                contentType: false,  // tell jQuery not to set contentType
+                                success: function (result) {
+                                    $("body").html(result).find('.div').last().hide().fadeIn();
+                                    $('html, body').animate({
+                                        scrollTop: $('.div').last().prev().offset().top
+                                    }, 2500);
+                                },
+                                error: function (jqXHR) {
+                                },
+                                complete: function (jqXHR, status) {
+                                }
+
+                            });
+
+                    }
+                  });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('button[name=accept]').click(
+
+                function () {
+                    if (confirm('سيتم استقطاع المبلغ من رصيدكم وتعليقه لحين اكمال تسليم المشروع بالكامل. هل أنت متأكد من إختياركم لهذا العرض؟ '))
+                    {
+                        var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/FreelancerProjects/Accept/";
+                        //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                        FollowOptions.data = { id: $(this).val() };
+                        FollowOptions.success = function () {
+                            location.reload();
+                        };
+                        $.ajax(FollowOptions);
+                    }
+                  });
+        });
+    </script>
+    @*<script>
+            $(document).ready(function () {
+                $('input[name ="sub"]').click(
+                    function () {
+                        {
+                            var FollowOptions = {};
+                            FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/FreelancerProjects/AcceptService/";
+                            //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                            FollowOptions.data = { id: $(this).val() };
+                            FollowOptions.success = function () {
+                                location.reload();
+                            };
+                            $.ajax(FollowOptions);
+                        }
+                      });
+            });
+        </script>*@
+    <script>
+        $(document).ready(function () {
+            $('button[name=delvired]').click(
+
+                function () {
+                    if (confirm('هل أنت متأكد من تسليم المشروع المنجز؟'))
+                    {
+
+                        var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/FreelancerProjects/Delivered/";
+                        //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                        FollowOptions.data = { id: $(this).val() };
+                        FollowOptions.success = function () {
+                            location.reload();
+                        };
+                        $.ajax(FollowOptions);
+                    }
+                  });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('button[name=projaccept]').click(
+
+                function () {
+                    if (confirm('هل أنت متأكد من قبول العمل المنجز؟')) {
+
+                        var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/FreelancerProjects/ProjectAccept/";
+                        //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                        FollowOptions.data = { id:@Model.FreelancerProject.Id };
+                        FollowOptions.success = function () {
+                            location.reload();
+                        };
+                        $.ajax(FollowOptions);
+                    }
+                  });
+        });
+    </script>
+    @*<script>
+            $(document).ready(function () {
+                $('button[name=projrej]').click(
+
+                    function () {
+                        if (confirm('هل أنت متأكد من رفض العمل المنجز؟')) {
+
+                            var FollowOptions = {};
+                            FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/FreelancerProjects/ProjectReject/";
+                            //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                            FollowOptions.data = { id:@Model.FreelancerProject.Id };
+                            FollowOptions.success = function () {
+                                location.reload();
+                            };
+                            $.ajax(FollowOptions);
+                        }
+                      });
+            });
+        </script>*@
+    <script>
+        $(document).ready(function () {
+            $(".recruiterdelet").hide();
+
+            $(".recruiters").each(function () {
+                $(this).hover(function () {
+                    $(this).children(".recruiterdelet").fadeIn()
+                }, function () {
+                    $(this).children(".recruiterdelet").fadeOut()
+
+                });
+            });
+        })
+    </script>
+    <script>
+         $(document).ready(function () {
+             $(".delete").click(
+
+                 function () {
+                     if (confirm('هل تريد حذف المكلف فعلاً ؟'))
+                     {
+                        {
+                        var FollowOptions = {};
+                        @*FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Communities/Follow/";*@
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/FreelancerProjects/RecruiterDelete/";
+                             FollowOptions.data = { id: $(this).attr("name") };
+                             $.ajax(FollowOptions);
+                         }
+
+                         $(this).closest(".recruiters").hide();
+
+
+                     }
+
+                });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("")
+            $(".glyphicon-star-empty").change(function () {
+
+                $(".glyphicon-star-empty").each(function () {
+                    if ($(this).children(".checkbox").prop("checked") == true) {
+                        $(this).css("color", "#f2b01e")
+                    }
+                });
+            });
+            $(".glyphicon-star-empty").hover(
+                function () {
+                    $(this).css("color", "#f2b01e")
+                    $(this).prevAll(".glyphicon-star-empty").css("color", "#f2b01e")
+                }, function () {
+                    if ($(this).children(".checkbox").prop("checked") == false) {
+                        $(this).prevAll(".glyphicon-star-empty").each(function () {
+                            if ($(this).children(".checkbox").prop("checked") == false) {
+                                $(this).css("color", "black")
+                            }
+                        })
+                        $(this).css("color", "black")
+                    }
+                }
+            );
+
+            $(".glyphicon-star-empty").change(
+                function () {
+                    //$(".rating input:radio").attr("checked", false);
+                    if ($(this).attr("checked", false)) {
+                        $(this).siblings().each(function () {
+                            $(this).children(".checkbox").attr("checked", false);
+                        });
+                        $(this).prevAll().each(function () {
+                            $(this).children(".checkbox").prop("checked", true);
+                        });
+                        $(this).children(".checkbox").prop("checked", true)
+                        $(this).css("color", "#f2b01e")
+                        $(this).prevAll(".glyphicon-star-empty").css("color", "#f2b01e")
+                        $(this).nextAll(".glyphicon-star-empty").css("color", "black")
+                        $(this).siblings(".form-control").val($(this).children("input").val())
+                        //$(".formvalue").val($(this).children("input").val());
+
+                    }
+                }
+            );
+        });
+    </script>
+
+    @*<script>
+                if(@Model.FreelancerProposals.Where(a => a.IsAssigned == true).Count() > 0)
+                {
+                    function addDays(date, days) {
+                        var result = new Date(date);
+                        result.setDate(result.getDate() + days);
+                        return result;
+                    }
+                    // Set the date we're counting down to
+                    /**/
+                    var countDownDate = new Date("@Model.FreelancerProposal.DateofRecord.Month, @Model.FreelancerProposal.DateofRecord.Day, @Model.FreelancerProposal.DateofRecord.Year @Model.FreelancerProposal.DateofRecord.Hour:@Model.FreelancerProposal.DateofRecord.Minute:@Model.FreelancerProposal.DateofRecord.Second").getTime();
+                    countDownDate=addDays(countDownDate,@Model.FreelancerProposal.DaysRequired)    /**/
+                    // Update the count down every 1 second
+                    var x = setInterval(function () {
+
+                    // Get today's date and time
+                    var now = new Date().getTime();
+
+                    // Find the distance between now and the count down date
+                    var distance = countDownDate - now;
+
+                    // Time calculations for days, hours, minutes and seconds
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    // Display the result in the element with id="demo"
+                    document.getElementById("demo").innerHTML = days + "يوم " + hours + "س "
+                        + minutes + "د " + seconds + "ث ";
+
+                    // If the count down is finished, write some text
+                    if (distance < 0) {
+                        clearInterval(x);
+                        document.getElementById("demo").innerHTML = "إنتهى الوقت المدد";
+                    }
+                    }, 1000);
+                }
+        </script>*@
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

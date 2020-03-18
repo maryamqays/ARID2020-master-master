@@ -1,0 +1,149 @@
+﻿@model ARID.Models.Publisher
+@{
+    ViewData["Title"] = "Details";
+}
+<br />
+<h1>معلومات</h1>
+
+<dl class="dl-horizontal table-striped">
+    <dt>
+        @Html.DisplayNameFor(model => model.ArName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.ArName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.EnName)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.EnName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Description)
+    </dt>
+    <dd>
+        @Html.Raw(Model.Description)
+    </dd>
+    @if (Model.Logo != null)
+    {
+        <dt>
+            @Html.DisplayNameFor(model => model.Logo)
+        </dt>
+        <dd>
+            <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Logo)" />
+        </dd>
+    }
+    <dt>
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Email)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.EstablishmentDate)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.EstablishmentDate)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.RegistrationNumber)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.RegistrationNumber)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Address)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Address)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Website)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Website)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.Fb)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Fb)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Twitter)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Twitter)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ContactUs)
+    </dt>
+    <dd>
+        @Html.Raw(Model.ContactUs)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Languages)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Languages)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Tags)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Tags)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Status)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Status)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ApplicationUserId)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.ApplicationUser.ArName)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.CountryId)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Country.ArCountryName)
+    </dd>
+
+
+    <dt>
+        @Html.DisplayNameFor(model => model.SpecialityId)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Speciality.Name)
+    </dd>
+
+</dl>
+<div>
+    <a id="btnreport" class="btn btn-danger">ابلاغ</a>
+    <a class="btn btn-primary" asp-action="Index"> الى القائمةالعودة</a>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#btnreport").click(
+                function () {
+                    if ($("#btnreport").text() == "ابلاغ")
+                    {
+                        var FollowOptions = {};
+                        FollowOptions.url = "/ar-LY/Publishers/Report/";
+                        FollowOptions.data = { id: "@Model.Id" };
+                        FollowOptions.success = function () {
+                            $("#btnreport").prop("text", "تم بلاغ الادارة بنجاح");
+                                                  };
+              $.ajax(FollowOptions);
+                    }
+                });
+        });
+    </script>
+}

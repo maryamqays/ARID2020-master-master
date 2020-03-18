@@ -1,0 +1,70 @@
+﻿@model ARID.Models.CommitteeProfile
+
+@{
+    ViewData["Title"] = "التعديل على ملف العضو";
+}
+
+<h2>تعديل معلومات العضو</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <input asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"/>
+                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label class="control-label"> اسم العضو</label>
+                <br />
+                <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">
+                    @Html.DisplayFor(model => model.ApplicationUser.ArName)
+                    <br />
+                    <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + Model.ApplicationUser.ProfileImage)" width="50" height="50" /><br />
+                </a>
+            </div>
+            <div class="form-group">
+                <label asp-for="JoinDate" class="control-label"></label>
+                <input asp-for="JoinDate" class="form-control" />
+                <span asp-validation-for="JoinDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommitteeId" class="control-label"></label>
+                <select asp-for="CommitteeId" class="form-control" asp-items="ViewBag.CommitteeId"></select>
+                <span asp-validation-for="CommitteeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Task" class="control-label"></label>
+                <input asp-for="Task" class="form-control" />
+                <span asp-validation-for="Task" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsCommitteeAdmin" /> @Html.DisplayNameFor(model => model.IsCommitteeAdmin)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn btn-success" />
+                <a asp-controller="Committees" asp-action="Details" asp-route-id="@Model.CommitteeId" class="btn btn-primary">العودة الى قائمة الاعضاء</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

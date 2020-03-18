@@ -1,0 +1,55 @@
+@model ARID.Models.StatisticsViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>ARID Statistics</h2>
+
+
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Country.Flag)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country.ArCountryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country.EnCountryName)
+            </th>
+            <th>Universities</th>
+            <th>Cities</th>
+            <th>Users</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Countries) {
+        <tr>
+            <td>
+                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.CountryFlagFolder + "/" + item.Flag)" width="50" height="30" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArCountryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnCountryName)
+            </td>
+
+            <td>@Model.Universities.Where(a => a.CountryId == item.Id).Count()</td>
+            <td>@Model.Cities.Where(a => a.CountryId == item.Id).Count()</td>
+            <td>@Model.ApplicationUsers.Where(a => a.CountryId == item.Id).Count()</td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="Universities" asp-action="Index" asp-route-id="@item.Id">Universities</a>|
+                <a asp-controller="Cities" asp-action="Index" asp-route-id="@item.Id">Cities</a>|
+                <a asp-controller="ApplicationUsers" asp-action="Index" asp-route-id="@item.Id">Users</a>
+                @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

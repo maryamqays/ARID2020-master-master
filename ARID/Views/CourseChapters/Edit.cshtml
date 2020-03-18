@@ -1,0 +1,285 @@
+﻿@model ARID.Models.CourseViewModel
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currenUser = await UserManager.GetUserAsync(User); }
+
+@{
+    ViewData["Title"] = "التعديل على القسم";
+}
+
+<h3 class="text-center">التعديل على القسم"@Model.CourseChapter.Name"</h3>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <h4 class="text-center">@Model.CourseChapter.Name</h4>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CourseChapter.Id" />
+            <div class="form-group">
+                <label asp-for="CourseChapter.Name" class="control-label"></label>
+                <input asp-for="CourseChapter.Name" class="form-control input-sm" />
+                <span asp-validation-for="CourseChapter.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseChapter.Indx" class="control-label"></label>
+                <input asp-for="CourseChapter.Indx" class="form-control input-sm" />
+                <span asp-validation-for="CourseChapter.Indx" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="CourseChapter.Ishidden" /> @Html.DisplayNameFor(model => model.CourseChapter.Ishidden)
+                    </label>
+                </div>
+            </div>
+            <div hidden class="form-group">
+                <label asp-for="CourseChapter.CourseId" class="control-label"></label>
+                <select asp-for="CourseChapter.CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
+                <span asp-validation-for="CourseChapter.CourseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn-sm h5 btn-success" />
+                <a asp-action="Details" asp-controller="Courses" asp-route-id="@Model.CourseChapter.CourseId" class="pull-left btn-sm btn-info h5">رجوع</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-4" id="refresh">
+        @if (User.IsInRole("Admins") || Model.Course.ApplicationUserId == currenUser.Id)
+        {
+            <h4 class="text-center">أسئلة القسم</h4>
+            @if (Model.CourseChapterExams.Count() > 0)
+            {
+                var x = 1;
+                @foreach (var item in Model.CourseChapterExams)
+                {
+                    <div class="container table-bordered col-lg-12" style="background-color:ghostwhite;border-color:ActiveCaption;padding:2px;margin-top:2px;margin-bottom:2px">
+                        <a class="text-primary " asp-controller="CourseChapterExams" asp-action="Edit" asp-route-id="@item.Id">
+                            @if (item.Question.Length > 30)
+                            {<span class="h6">&nbsp; <strong>@item.Question.Substring(0, 30)</strong>&nbsp; &nbsp; &nbsp;</span>
+                        }
+                        else
+                        {<span class="h6">&nbsp; <strong>@item.Question</strong>&nbsp; &nbsp; &nbsp;</span>
+                    }
+                        </a>
+                        <a data-toggle="modal" data-target="#@item.CourseChapterId" class="h5"><span class="label label-success pull-left" style="margin-top:4px">إضافة خيارات</span></a>
+                        <div id="@item.CourseChapterId" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title text-center"><strong>إضافة خيارات</strong></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form asp-action="Create" asp-controller="CourseChapterChoices">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class="form-group">
+                                                <label asp-for="CourseChapterChoice.Option" class="control-label"></label>
+                                                <textarea required  placeholder="هذا الحقل ضروري-أدخل 5 أحرف على الأقل" rows="2" asp-for="CourseChapterChoice.Option" class="form-control" ></textarea>
+                                                <span asp-validation-for="CourseChapterChoice.Option" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="CourseChapterChoice.CourseChapterExamId" class="control-label"></label>
+                                                <input asp-for="CourseChapterChoice.CourseChapterExamId" class="form-control" asp-items="ViewBag.CourseChapterExamId" value="@item.Id" />
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input asp-for="CourseChapterChoice.IsCorrectAnswer" /> @Html.DisplayNameFor(model => model.CourseChapterChoice.IsCorrectAnswer)
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input asp-for="CourseChapterChoice.IsDeleted" /> @Html.DisplayNameFor(model => model.CourseChapterChoice.IsDeleted)
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="CourseChapterChoice.Mark" class="control-label"></label>
+                                                <input required placeholder="هذا الحقل ضروري" asp-for="CourseChapterChoice.Mark" class="form-control" />
+                                                <span asp-validation-for="CourseChapterChoice.Mark" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="إضافة" class="btn btn-success" />
+                                            </div>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.CourseChapterChoices.Where(c => c.CourseChapterExamId == item.Id).Any())
+                        {
+
+                            <a href="#@x" data-toggle="collapse" class="showcontents pull-right"><span style="margin-right:5px;" class="text-info glyphicon glyphicon-chevron-left"></span></a>
+                            <br />
+                            <div id="@x" class="collapse">
+                                @foreach (var i in Model.CourseChapterChoices.Where(c => c.CourseChapterExamId == item.Id))
+                                {
+                                    if (i.Option.Length > 35)
+                                    {<div class="col-lg-12 delete table-bordered" style="background-color:azure;border:1px solid black"><a class="h5 pull-right" asp-action="Edit" asp-controller="CourseChapterChoices" asp-route-id="@i.Id">@i.Option.Substring(0, 35)</a><form onsubmit="return confirm('هل تريد الحذف بالفعل؟');" asp-action="Delete" asp-controller="CourseChapterChoices" asp-route-id="@i.Id" method="post" class="pull-left form"><button title="حذف" class="btn-xs btn-danger" type="submit"><small><span class="glyphicon glyphicon-trash"></span></small></button></form></div><hr style="border:1px solid black" />}
+                                else
+                                { <div class="col-lg-12 delete table-bordered" style="background-color:azure;border:1px solid black"><a class="h5 pull-right" asp-action="Edit" asp-controller="CourseChapterChoices" asp-route-id="@i.Id">@i.Option</a><form onsubmit="return confirm('هل تريد الحذف بالفعل؟');" asp-action="Delete" asp-controller="CourseChapterChoices" asp-route-id="@i.Id" method="post" class="pull-left form"><button title="حذف" class="btn-xs btn-danger" type="submit"><small><span class="glyphicon glyphicon-trash"></span></small></button></form></div><hr style="border:1px solid black" />}
+                        }
+                            </div>
+                        }
+                    </div>
+                    x += 1;
+
+                }
+            }
+            else
+            {
+                <h6>لا توجد أسئلة</h6>
+            }
+
+            <a data-toggle="modal" data-target="#myModal" class="btn-sm btn-success h5 pull-right"><small><span class="glyphicon glyphicon-plus"></span></small>&nbsp;إضافة سؤال</a>
+            <!-- إضافة سؤال -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title text-center"><strong>إضافة سؤال</strong></h4>
+                        </div>
+                        <div class="modal-body">
+                            <form asp-controller="CourseChapterExams" asp-action="Create" enctype="multipart/form-data">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="CourseChapterExam.Question" class="h5"></label>
+                                    <textarea id="question" placeholder="هذا الحقل ضروري" asp-for="CourseChapterExam.Question" class="form-control input-sm" rows="3"></textarea>
+                                    <span asp-validation-for="CourseChapterExam.Question" class="text-danger"></span>
+                                </div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="CourseChapterExam.CourseChapterId" class="control-label"></label>
+                                    <input value="@Model.CourseChapter.Id" asp-for="CourseChapterExam.CourseChapterId" class="form-control input-sm" />
+                                    <span asp-validation-for="CourseChapterExam.CourseChapterId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CourseChapterExam.Indx" class="h5"></label>
+                                    <input id="indx" placeholder="هذا الحقل ضروري" asp-for="CourseChapterExam.Indx" class="form-control input-sm" />
+                                    <span asp-validation-for="CourseChapterExam.Indx" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CourseChapterExam.Description" class="h5"></label>
+                                    <textarea asp-for="CourseChapterExam.Description" class="form-control input-sm"></textarea>
+                                    <span asp-validation-for="CourseChapterExam.Description" class="text-danger"></span>
+                                </div>
+                                <div class="form-group" id="img">
+                                    <label asp-for="CourseChapterExam.Imgurl" class="h5"></label><br />
+                                    <img id="img1" class="img-rounded" src="" />
+                                    <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12" />
+                                    <input asp-for="CourseChapterExam.Imgurl" id="fileinput" class="form-control input-sm" />
+                                    <span asp-validation-for="CourseChapterExam.Imgurl" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" id="addquestion" value="إضافة" class="btn-sm btn-default h5" />
+                                    <button type="button" class="btn-sm btn-default h5 pull-left" data-dismiss="modal">إغلاق</button>
+                                </div>
+                            </form>
+                            <div class="form-group">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <a asp-action="Details" asp-controller="Courses" asp-route-id="@Model.CourseChapter.CourseId" class="btn-sm btn-info h5 pull-left">العودة الى قائمة الأقسام<small><span class="glyphicon glyphicon-menu-left"></span></small></a>}
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.form').hide();
+            $('.delete').hover(function () {
+                $(this).children('.form').fadeIn();
+            }, function () {
+                $(this).children('.form').fadeOut();
+            }
+            );
+        });
+        $(document).ready(function () {
+            $('input[name="file"]').change(function () {
+                if ($(this).val() != "") {
+                    $(this).siblings(".fileinput").prop("value", $(this).val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $('.showcontents').click(function () {
+            if ($(this).children('span').hasClass('glyphicon-chevron-left')) {
+                $(this).children('span').removeClass('glyphicon-chevron-left');
+                $(this).children('span').addClass('glyphicon-chevron-down');
+            }
+            else {
+                $(this).children('span').removeClass('glyphicon-chevron-down');
+                $(this).children('span').addClass('glyphicon-chevron-left');
+
+            }
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.addchoice').prop('disabled', true);
+            $('[name="option"],[name="degree"]').keyup(function () {
+                if ($(this).parent().parent().children('.option').children('[name="option"]').val().length > 4 && $(this).parent().parent().children('.degree').children('[name="degree"]').val().length > 0) {
+                    $(this).parent().siblings('.addchoice').prop('disabled', false);
+                    $(this).parent().siblings('.addchoice').removeClass('btn-default');
+                    $(this).parent().siblings('.addchoice').addClass('btn-success');
+                }
+                else {
+                    $(this).parent().siblings('.addchoice').prop('disabled', true);
+                    $(this).parent().siblings('.addchoice').removeClass('btn-success');
+                    $(this).parent().siblings('.addchoice').addClass('btn-default');
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#addquestion').prop('disabled', true);
+            $('#question,#indx').keyup(function () {
+                if ($('#question').val().length > 4 && $('#indx').val().length > 0) {
+                    $('#addquestion').prop('disabled', false);
+                    $('#addquestion').removeClass('btn-default');
+                    $('#addquestion').addClass('btn-success');
+                }
+                else {
+                    $('#addquestion').prop('disabled', true);
+                    $('#addquestion').removeClass('btn-success');
+                    $('#addquestion').addClass('btn-default');
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,245 @@
+﻿@model IEnumerable<ARID.Models.SubmissionReviewer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DueDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReviewerStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsCertificateOfReviewingGranted)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateRevisionCertificae)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EICInstructions)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReviewerInstructionsToEIC)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReviewerInstructionsToAuthor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfRecord)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReviewDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DecisionDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReviewerDecisionToReview)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsAccess)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsNewInfo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsWithinJournalScope)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AbstractCompatibility)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsFormsAccepted)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsPublishedPreviously)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsValuable)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsRepeatedInfo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ResearchLength)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TheoreticalResults)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Method)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsCommitted)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsMatchTitleContent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsModernSourcesAdopted)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsDiscussionDocumentedJustified)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsInterpretedResult)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Evaluation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RecommendationToPublish)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NotForPublicationReason)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Adjustments)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PublishLocation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReviewReportFile)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CieAeUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReviewerUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Submission)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DueDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewerStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCertificateOfReviewingGranted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateRevisionCertificae)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EICInstructions)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewerInstructionsToEIC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewerInstructionsToAuthor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfRecord)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DecisionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewerDecisionToReview)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAccess)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsNewInfo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsWithinJournalScope)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AbstractCompatibility)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFormsAccepted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPublishedPreviously)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsValuable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRepeatedInfo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResearchLength)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TheoreticalResults)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Method)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCommitted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsMatchTitleContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsModernSourcesAdopted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDiscussionDocumentedJustified)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsInterpretedResult)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Evaluation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecommendationToPublish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NotForPublicationReason)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adjustments)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewReportFile)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CieAeUser.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewerUser.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Submission.CoverLetter)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

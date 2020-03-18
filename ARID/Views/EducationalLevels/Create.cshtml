@@ -1,0 +1,181 @@
+﻿@model ARID.Models.EducationalLevel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Create"]</h2>
+
+<h4>@Localizer["Index"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ApplicationUserId" value="@ViewBag.ApplicationUserId" />
+            <div class="form-group">
+                <label asp-for="AcademicDegreeId" class="control-label"></label>
+                <select asp-for="AcademicDegreeId" class="form-control" asp-items="ViewBag.AcademicDegreeId">
+                    <option disabled selected value="">@Localizer["SelectAcademicDegree"]</option>
+                </select>
+                <span asp-validation-for="AcademicDegreeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialityId" class="control-label"></label>
+                <select asp-for="SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId">
+                    <option disabled selected value="">@Localizer["SelectSpeciality"]</option>
+                </select>
+                <span asp-validation-for="SpecialityId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CountryId"></label>
+                <select id="cntid" asp-for="CountryId" class="form-control"
+                        asp-items="@(ViewBag.CountryId)">
+                    <option>@Localizer["SelectCountry"]</option>
+                </select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group">
+            <label asp-for="CountryId" class="control-label"></label>
+            <select asp-for="CountryId" id="CountryId" class="form-control" asp-items="ViewBag.CountryId">
+                <option disabled selected value="">@Localizer["SelectCountry"]</option>
+            </select>
+            <span asp-validation-for="CountryId" class="text-danger"></span>
+        </div>*@
+
+            <div class="form-group">
+                <label asp-for="UniversityId" class="control-label"></label>
+                <select id="uniid" asp-for="UniversityId" class="form-control" asp-items="@(new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "ArUniversityName"))">
+                    <option disabled selected value="">@Localizer["SelectUniversity"]</option>
+                </select>
+                <span asp-validation-for="UniversityId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FacultyId" class="control-label"></label>
+
+                <select id="facid" asp-for="FacultyId" class="form-control"
+                        asp-items="@(new SelectList(Enumerable.Empty<SelectListItem>(), "Id", "ArFacultyName"))">
+                    <option value="">@Localizer["SelectFaculty"]</option>
+                </select>
+                <span asp-validation-for="FacultyId" class="text-danger"></span>
+
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="ArCertificateName" class="control-label"></label>
+                <input asp-for="ArCertificateName" class="form-control" />
+                <span asp-validation-for="ArCertificateName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArDescription" class="control-label"></label>
+                @Html.TextAreaFor(model => model.ArDescription, new { rows = 10, cols = 30, @class = "form-control", @maxlength = "200" })
+                <span asp-validation-for="ArDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnCertificateName" class="control-label"></label>
+                <input asp-for="EnCertificateName" class="form-control" />
+                <span asp-validation-for="EnCertificateName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EnDescription" class="control-label"></label>
+                @Html.TextAreaFor(model => model.EnDescription, new { rows = 10, cols = 30, @class = "form-control", @maxlength = "200" })
+                <span asp-validation-for="EnDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id="chkStatus" asp-for="IsCurrent" /> @Html.DisplayNameFor(model => model.IsCurrent)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" id="frmdate">
+                <label asp-for="FromYear" class="control-label"></label>
+                <input asp-for="FromYear" class="form-control" />
+                <span asp-validation-for="FromYear" class="text-danger"></span>
+            </div>
+            <div id="testdiv" class="form-group">
+                <label asp-for="ToYear" class="control-label"></label>
+                <input asp-for="ToYear" class="form-control" />
+                <span asp-validation-for="ToYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Indx" class="control-label"></label>
+                <input asp-for="Indx" value="@ViewData["Indx"]" class="form-control" />
+                <span asp-validation-for="Indx" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["BackToList"]</a>
+</div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $("#cntid").change(function () {
+                $("#uniid").empty();
+                $("#uniid").append($('<option>', { text: "Select Univercity" }));
+                $("#facid").empty();
+                $("#facid").append($('<option>', { text: "Select Faculty" }));
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetUniversitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#uniid").append($('<option>', {value: row.value, text: row.text}))
+                        });
+                    };
+                    CountryOptions.error = function () { alert("Error: can't retrieve the list of universities!!!!"); };
+                    $.ajax(CountryOptions);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#uniid").change(function () {
+                $("#facid").empty();
+                $("#facid").append($('<option>', { text: "Select Faculty" }));
+                if ($("#uniid").val() > 0) {
+                    var UniversityOptions = {};
+                    UniversityOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetFacultiesList/";
+                    UniversityOptions.data = { universityid: $("#uniid").val() };
+                    UniversityOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#facid").append($('<option>', { value: row.value, text: row.text }))
+                        });
+                    };
+                    UniversityOptions.error = function () { alert("Error: can't retrieve the list of faculties!!!!"); };
+                    $.ajax(UniversityOptions);
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+                        $('#chkStatus').change(function () {
+                if ($('#chkStatus').is(':checked'))
+                    $("#testdiv").fadeOut();
+                else
+                    $('#testdiv').fadeIn();
+            });
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,135 @@
+﻿@model ARID.Models.Manuscript
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Manuscript</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ArTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RunningTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RunningTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnAbstract)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnAbstract)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArAbstract)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArAbstract)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DueDateforAuthorResponse)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DueDateforAuthorResponse)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Keywords)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Keywords)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Areas)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Areas)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CurrentStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OpenAccess)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OpenAccess)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FundingInfo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FundingInfo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GraphicalAbstract)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GraphicalAbstract)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CorrespondingAuthor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CorrespondingAuthor.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Journal)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Journal.ArName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.JournalArticleType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.JournalArticleType.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Speciality)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Speciality.EnSpecialityName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SubmittedforIssue)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SubmittedforIssue.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

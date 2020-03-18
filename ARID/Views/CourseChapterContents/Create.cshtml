@@ -1,0 +1,120 @@
+﻿@model ARID.Models.CourseChapterContent
+@{
+    ViewData["Title"] = "أضافة محتوى";
+}
+<h2>أضافة محتوى</h2>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                @Html.TextAreaFor(model => model.Description, new { rows = 10, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Indx" class="control-label"></label>
+                <input asp-for="Indx" class="form-control" />
+                <span asp-validation-for="Indx" class="text-danger"></span>
+            </div>
+            <div hidden class="form-group">
+                <label asp-for="CourseChapterId" class="control-label"></label>
+                <select asp-for="CourseChapterId" class="form-control" asp-items="ViewBag.CourseChapterId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContentType" class="control-label"></label>
+                <select id="conttype" asp-for="ContentType" asp-items="Html.GetEnumSelectList<ContentType>()" class="form-control"><option>اختر نوع المحتوى</option></select>
+                <span asp-validation-for="ContentType" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="filepath">
+                <label id="contlab"></label>
+                <input type="file" name="myfile" id="file" accept=".pdf" class="btn btn-primary col-lg-12" />
+                <input asp-for="FilePath" id="fileinput" class="form-control" />
+                <span asp-validation-for="FilePath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsFree" /> @Html.DisplayNameFor(model => model.IsFree)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsDownloadable" /> @Html.DisplayNameFor(model => model.IsDownloadable)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="إنشاء" class="btn btn-success" />
+                <a asp-action="Details" asp-controller="CourseChapters" asp-route-id="@ViewData["CourseChpterId"]" class="btn btn-primary">العودة الىى القائمة</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                //to show new image at a time of image selected from file input type
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#filepath").hide();
+            $("#linkpath").hide();
+            $(document).on('change', '#conttype', function (e) {
+                var selectedtype = $(this).val();
+                if (selectedtype == 0) {
+                    $("#filepath").slideDown();
+                    $("#file").hide();
+                    $("#contlab").text("مقطع فيديو (فيميو) رابط");
+
+                }
+                if (selectedtype == 1) {
+                    $("#filepath").slideDown();
+                    $("#file").hide();
+                    $("#contlab").text("مقطع فيديو (يوتيوب) رابط");
+
+                }
+                if (selectedtype == 2) {
+                    $("#contlab").text("اضف الملف");
+                    $("#file").show();
+                    $("#filepath").slideDown();
+
+                }
+                if (selectedtype == 3) {
+                    $("#filepath").slideDown();
+                    $("#file").hide();
+                    $("#contlab").text("الرابط");
+
+                }
+            });
+        });
+    </script>
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

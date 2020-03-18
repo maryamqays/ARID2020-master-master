@@ -1,0 +1,104 @@
+@model IEnumerable<Faculty>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="UnIndexed">ﬂ·Ì«  ﬁÌœ «·„Ê«›ﬁ…</a>
+</p>
+<table id="table1" class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArFacultyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnFacultyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasPostGraduation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.University)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Speciality)
+            </th>
+            <th>
+                @Localizer["Edit"]
+            </th>
+            <th>
+                @Localizer["Delete"]
+            </th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#table1').DataTable({
+                "serverSide": true,
+                "oredr": [1, "asc"],
+                "processing": true,
+                ajax: {
+                    url: "/api/GetFaculties",
+                    // dataSrc: "", // this must not be used
+                    datatype: "json",
+                    type: "POST"
+                },
+                columns: [
+                    { data: "id" },
+                    { data: "arFacultyName" },
+                    { data: "enFacultyName" },
+                    { data: "hasPostGraduation" },
+                    { data: "university" },
+                    { data: "speciality" },
+                    { data: "city" },
+                    {
+                        data: "edit",
+                        render: function (data, type, faculty) {
+                            return "<a href='"
+                                + "Faculties/Edit/"
+                                + faculty.id + "' target='blank'>"
+                                + "@Localizer["Edit"]</a>";
+                        }
+                    },
+                    {
+                        data: "delete",
+                        render: function (data, type, faculty) {
+                            return "<a href='"
+                                + "Faculties/Delete/"
+                                + faculty.id + "' target='blank'>"
+                                + "@Localizer["Delete"]</a>";
+                        }
+                    }
+                ],
+                "oLanguage":
+                {
+                    "processing": "@Localizer["Processing"]",
+                    "sSearch": "@Localizer["Search"]",
+                    "oPaginate":
+                    {
+                        "sPrevious": "@Localizer["Previous"]",
+                        "sNext": "@Localizer["Next"]"
+                    },
+                    "sLengthMenu": "@Localizer["Show"] _MENU_ @Localizer["Records"]",
+                    "sInfo": "@Localizer["Show"] _START_ @Localizer["To"] _END_ @Localizer["OFTotal"] _TOTAL_ @Localizer["Records"]"
+                }
+            });
+        });
+    </script>
+}

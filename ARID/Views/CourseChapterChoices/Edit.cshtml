@@ -1,0 +1,56 @@
+﻿@model ARID.Models.CourseChapterChoice
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-center">تعديل على الخيار</h3>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <h4 class="text-center">@Model.Option</h4>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Option" class="control-label"></label>
+                <textarea asp-for="Option" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Option" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseChapterExamId" class="control-label"></label>
+                <select asp-for="CourseChapterExamId" class="form-control" asp-items="ViewBag.CourseChapterExamId"></select>
+                <span asp-validation-for="CourseChapterExamId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsCorrectAnswer" /> @Html.DisplayNameFor(model => model.IsCorrectAnswer)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mark" class="control-label"></label>
+                <input asp-for="Mark" class="form-control" />
+                <span asp-validation-for="Mark" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn-sm btn-success h5" />
+                <a asp-action="Edit" asp-controller="CourseChapters" asp-route-id="@Model.CourseChapterExam.CourseChapterId" class="btn-sm btn-info h5 pull-left">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+

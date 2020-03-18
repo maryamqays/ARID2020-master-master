@@ -1,0 +1,129 @@
+﻿@model ARID.Models.FreelancerProposal
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<h2>تعديل العرض</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea rows="5" asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DaysRequired" class="control-label"></label>
+                <input min="1" asp-for="DaysRequired" class="form-control" />
+                <span asp-validation-for="DaysRequired" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+
+                <label asp-for="BidAmount" class="control-label"></label>
+                @if (Model.FreelancerProject.BugetType == BugetType.قليل)
+                {
+                    <input type="number" min="10" max="30" asp-for="BidAmount" class="form-control" />
+                    <span asp-validation-for="BidAmount" class="text-danger"></span>
+                }
+                @if (Model.FreelancerProject.BugetType == BugetType.متوسط)
+                {
+                    <input type="number" min="30" max="100" asp-for="BidAmount" class="form-control" />
+                    <span asp-validation-for="BidAmount" class="text-danger"></span>
+                }
+                @if (Model.FreelancerProject.BugetType == BugetType.عالي)
+                {
+                    <input type="number" min="100" max="300" asp-for="BidAmount" class="form-control" />
+                    <span asp-validation-for="BidAmount" class="text-danger"></span>
+                }
+            </div>
+            @if (User.IsInRole("Admins"))
+            {
+                <h4 class="text-danger">هذا الجزء خاص بالادمن</h4>
+                <hr style="border:2px solid red" />
+                <div class="form-group" hidden>
+                    <label asp-for="ApplicationUserId" class="control-label"></label>
+                    <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                    <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsNameVisible" /> @Html.DisplayNameFor(model => model.IsNameVisible)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsPrivate" /> @Html.DisplayNameFor(model => model.IsPrivate)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsAssigned" /> @Html.DisplayNameFor(model => model.IsAssigned)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsReported" /> @Html.DisplayNameFor(model => model.IsReported)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="Isvisible" /> @Html.DisplayNameFor(model => model.Isvisible)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReportedByUserId" class="control-label"></label>
+                    <select asp-for="ReportedByUserId" class="form-control" asp-items="ViewBag.ReportedByUserId"></select>
+                    <span asp-validation-for="ReportedByUserId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FreelancerProjectId" class="control-label"></label>
+                    <input asp-for="FreelancerProjectId" class="form-control" />
+                    <span asp-validation-for="FreelancerProjectId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateofRecord" class="control-label"></label>
+                    <input asp-for="DateofRecord" class="form-control" />
+                    <span asp-validation-for="DateofRecord" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateOfAssignment" class="control-label"></label>
+                    <input asp-for="DateOfAssignment" class="form-control" />
+                    <span asp-validation-for="DateOfAssignment" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DeliveredDate" class="control-label"></label>
+                    <input asp-for="DeliveredDate" class="form-control" />
+                    <span asp-validation-for="DeliveredDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProposalStatus" class="control-label"></label>
+                    <select asp-for="ProposalStatus" asp-items="Html.GetEnumSelectList<ProposalStatus>()" class="form-control"></select>
+                    <span asp-validation-for="ProposalStatus" class="text-danger"></span>
+                </div><hr style="border:2px solid red" />
+            }
+            <div class="form-group">
+                <h4 style="display:inline"><input type="submit" value="حفظ" class="btn btn-success" /></h4>
+                <h4 style="display:inline;float:left"><a asp-action="Details" asp-controller="FreelancerProjects" asp-route-id="@Model.FreelancerProjectId" class="btn btn-info">رجوع</a></h4>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+

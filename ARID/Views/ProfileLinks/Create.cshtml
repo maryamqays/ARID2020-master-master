@@ -1,0 +1,54 @@
+﻿@model ARID.Models.ProfileLink
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Create"]</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>@Localizer["Index"]</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ApplicationUserId" value="@ViewBag.ApplicationUserId" />
+        <div class="form-group">
+            <label asp-for="ProfileType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="ProfileType" class="form-control"
+                        asp-items="Html.GetEnumSelectList<ProfileType>()">
+                    <option disabled selected value="">@Localizer["SelectProfileType"]</option>
+                </select>
+                <span asp-validation-for="ProfileType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProfileUrl" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ProfileUrl" class="form-control" />
+                <span asp-validation-for="ProfileUrl" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="AccessType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="AccessType" class="form-control"
+                        asp-items="Html.GetEnumSelectList<AccessType>()">
+                    <option disabled selected value="">@Localizer["SelectAccessType"]</option>
+                </select>
+                <span asp-validation-for="AccessType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="@Localizer["Create"]" class="btn btn-default" />
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">@Localizer["BackToList"]</a>
+</div>
+

@@ -1,0 +1,290 @@
+﻿@model ARID.Models.CommunityViewModel
+@{
+    ViewData["Title"] = "المجموعات العلمية";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+<h2>المجاميع البحثية </h2>
+<h2>
+    <a asp-action="Create" class="btn btn-success">إنشاء مجموعة جديدة</a>
+</h2>
+@if (Model.Communities.Where(c => c.ApplicationUserId == currentUser.Id).Count() > 0 || User.IsInRole("Admins"))
+{
+    <h3 class="text-center">مجاميع انت مدير فيها</h3>
+    <table class="table-hover table table-striped table-bordered dt-responsive">
+        <thead>
+            <tr>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.Logo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.SecurityLevel)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.CreationDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FollowersCount)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.PostsCount)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Communities)
+            {
+                if (currentUser.Id == item.ApplicationUserId && item.IsSuspended == false)
+                {
+                    <tr>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Logo)*@
+                            @if (item.Logo != null)
+                            {
+                                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.Community + "/" + item.Logo)" width="50" height="50" />
+                            }
+
+
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id">  @Html.DisplayFor(modelItem => item.Name)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SecurityLevel)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+
+                        <td>
+                            @Model.CommunityFollower.Where(a => a.CommunityId == item.Id).Count()
+                        </td>
+
+                        <td>@Model.Posts.Where(a => a.CommunityId == item.Id).Count()</td>
+
+                        <td>
+                            @if (User.IsInRole("Admins") || currentUser.Id == item.ApplicationUserId)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <hr />
+}
+@if (Model.CommunityFollower.Where(c=>c.ApplicationUserId==currentUser.Id&&c.IsAccepted==true && Model.Communities.Where(a=>a.Id==c.CommunityId).Count()>0).Any() || User.IsInRole("Admins"))
+{
+    <h3 class="text-center">مجاميع انت عضو فيها</h3>
+    <table class="table-hover table table-striped table-bordered dt-responsive">
+        <thead>
+            <tr>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.Logo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.SecurityLevel)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.CreationDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FollowersCount)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.PostsCount)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Communities)
+            {
+                if (currentUser.Id != item.ApplicationUserId && Model.CommunityFollower.Where(a => a.CommunityId == item.Id && a.ApplicationUserId == currentUser.Id && a.IsAccepted == true).Count() > 0 && item.IsSuspended == false)
+                {
+                    <tr>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Logo)*@
+                            @if (item.Logo != null)
+                            {
+                                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.Community + "/" + item.Logo)" width="50" height="50" />
+                            }
+
+
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id">  @Html.DisplayFor(modelItem => item.Name)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SecurityLevel)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreationDate)
+                        </td>
+
+                        <td>
+                            @Model.CommunityFollower.Where(a => a.CommunityId == item.Id).Count()
+                        </td>
+
+                        <td>@Model.Posts.Where(a => a.CommunityId == item.Id).Count()</td>
+
+                        <td>
+                            @if (User.IsInRole("Admins"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <hr />
+}
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Community.Logo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Community.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Community.SecurityLevel)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Community.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FollowersCount)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.PostsCount)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Communities)
+        {
+            if (item.SecurityLevel == SecurityLevel.Open && item.IsSuspended == false)
+            {
+                <tr>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Logo)*@
+                        @if (item.Logo != null)
+                        {
+                            <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.Community + "/" + item.Logo)" width="50" height="50" />
+                        }
+
+
+                    </td>
+                    @if (User.IsInRole("Admins"))
+                    {
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id">  @Html.DisplayFor(modelItem => item.Name)</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SecurityLevel)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreationDate)
+                    </td>
+
+                    <td>
+                        @Model.CommunityFollower.Where(a => a.CommunityId == item.Id).Count()
+                    </td>
+
+                    <td>@Model.Posts.Where(a => a.CommunityId == item.Id).Count()</td>
+
+                    <td>
+                        @if (User.IsInRole("Admins") || item.ApplicationUserId == currentUser.Id)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                        }
+                        else if (Model.CommunityFollower.Where(c => c.CommunityId == item.Id && c.ApplicationUserId == currentUser.Id).Count() == 0)
+                        {
+                            <a name="@item.Id" id="join" class="join btn btn-info">إنضمام</a>
+                        }
+                        else if (Model.CommunityFollower.Where(c => c.CommunityId == item.Id && c.ApplicationUserId == currentUser.Id && c.IsAccepted == false).Count() > 0)
+                        {
+                            <a name="@item.Id" id="join" class="join btn btn-danger">إلغاء الإنضمام</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".join").click(
+                function () {
+                    if ($(this).text() == "إنضمام")
+                    {
+                        var FollowOptions = {};
+                        @*FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Communities/Follow/";*@
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Groups/Join/";
+                        FollowOptions.data = { id: $(this).attr("name") };
+                        FollowOptions.success = () => {
+                            $(this).prop("text", "إلغاء الإنضمام");
+                            $(this).removeClass("btn btn-info");
+                            $(this).addClass("btn btn-danger");
+                        };
+
+              $.ajax(FollowOptions);
+                    }
+                    else
+                    {
+                        var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Groups/UnJoin/";
+                        FollowOptions.data = { id: $(this).attr("name") };
+                        FollowOptions.success = () => {
+                            $(this).prop("text", "إنضمام");
+                            $(this).removeClass("btn btn-danger");
+                            $(this).addClass("btn btn-info");
+                        };
+                        $.ajax(FollowOptions);
+                    }
+                });
+        });
+    </script>
+}

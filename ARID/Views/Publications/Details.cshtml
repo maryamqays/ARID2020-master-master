@@ -1,0 +1,152 @@
+﻿@model ARID.Models.Publication
+
+@{
+    ViewData["Title"] = Html.DisplayFor(model => model.ArTitle);
+}
+<br/><br />
+
+<h2>@Html.DisplayFor(model => model.ArTitle)  @Html.DisplayFor(model => model.EnTitle)</h2>
+
+<div>
+    <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@Model.ApplicationUserId">
+
+        <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + Model.ApplicationUser.ProfileImage)" width="36" height="36" />
+        @Model.ApplicationUser.ArName |   @Model.ApplicationUser.EnName  | <span class="glyphicon glyphicon-eye-open"></span>  @Model.ApplicationUser.Visitors
+
+
+    </a>
+  
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PublicationType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublicationType)
+        </dd>
+
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArAuthors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArAuthors)
+        </dd>
+        @if (!string.IsNullOrEmpty(Model.EnAuthors))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.EnAuthors)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EnAuthors)
+            </dd>}
+        @if (!string.IsNullOrEmpty(Model.ArAbstract))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ArAbstract)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ArAbstract)
+            </dd>}
+        @if (!string.IsNullOrEmpty(Model.EnAbstract))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.EnAbstract)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EnAbstract)
+            </dd>}
+        <dt>
+            @Html.DisplayNameFor(model => model.PublicationDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublicationDate)
+        </dd>
+        @if (!string.IsNullOrEmpty(Model.Publisher))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Publisher)
+            </dd>}
+
+        @if (Model.VolumeNo != 0)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.VolumeNo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.VolumeNo)
+            </dd>}
+
+        @if (Model.IssueNo != 0)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.IssueNo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IssueNo)
+            </dd>}
+
+        @if (!string.IsNullOrEmpty(Model.ISSN))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ISSN)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ISSN)
+            </dd>}
+
+        @if (!string.IsNullOrEmpty(Model.DOI))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.DOI)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DOI)
+            </dd>}
+
+        @if (!string.IsNullOrEmpty(Model.Pages))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Pages)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Pages)
+            </dd>}
+            @if (!string.IsNullOrEmpty(Model.FileLink))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.FileLink)
+                </dt>
+                <dd>
+                    <a href="@Url.Content("~/" + @ARID.Properties.Resources.PublicationFiles + "/" + @Model.FileLink)" target="_blank">Download</a>
+
+                </dd>}
+
+            @if (!string.IsNullOrEmpty(Model.ExternalLink))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.ExternalLink)
+                </dt>
+                <dd>
+                    <a target="_blank" href="@Url.Content(@Model.ExternalLink)">@Model.ExternalLink</a>
+                </dd>}
+
+            @if (!string.IsNullOrEmpty(Model.Keywords))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Keywords)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Keywords)
+                </dd>}
+
+        </dl>
+</div>
+<div>
+    @*<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |*@
+    <a asp-controller="Home" asp-action="Index">Back</a>
+</div>

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<ARID.Models.Statement>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*<h1>Balance : @ViewData["Balance"]</h1>*@
+
+<form asp-action="Index">
+    <div class="form-group ">
+        <input name="ss" class="form-control" placeholder="كلمة البحث" />
+        <input type="submit" class="form-control btn btn-info" value="إبحث" />
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Details)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUser)
+            </th>
+           
+        
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Details)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Destination)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId">@Html.DisplayFor(modelItem => item.ApplicationUser.ArName)</a>
+                </td>
+            
+               
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,28 @@
+﻿@model ARID.Models.UserExpertise
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Delete"]</h2>
+
+<h3>@Localizer["Sure"]</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpertiseId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Expertise.Name)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="submit" value="@Localizer["Delete"]" class="btn btn-default" />
+        <a asp-action="Index">@Localizer["BackToList"]</a>
+    </form>
+</div>

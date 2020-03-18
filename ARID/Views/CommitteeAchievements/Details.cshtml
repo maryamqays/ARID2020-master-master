@@ -1,0 +1,40 @@
+﻿@model ARID.Models.CommitteeViewModel
+@{
+    ViewData["Title"] =  @Html.DisplayFor(model => model.CommitteeAchievement.AchievementType);
+}
+
+<h2>
+    @Html.DisplayFor(model => model.CommitteeAchievement.AchievementType)
+</h2>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CommitteeAchievement.DateOfRecord)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CommitteeAchievement.DateOfRecord)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CommitteeAchievement.AchievementType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CommitteeAchievement.AchievementType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CommitteeAchievement.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CommitteeAchievement.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CommitteeAchievement.CommitteeProfileId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CommitteeAchievement.CommitteeProfile.ApplicationUser.ArName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-controller="CommitteeProfiles" asp-action="Details" asp-route-id="@Model.CommitteeAchievement.CommitteeProfileId" class="btn btn-success">العودة الى الإنجازات</a>
+</div>

@@ -1,0 +1,133 @@
+﻿@model ARID.Models.FreelancerProject
+@{
+    ViewData["Title"] = "التعديل على المشروع";
+}
+<h2 class="text-center">التعديل على المشروع</h2>
+<hr />
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-md-8">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="File" class="control-label"></label>
+                <input type="file" name="myfile" id="file" accept=".docx" class="btn btn-primary col-lg-12" />
+                <input asp-for="File" id="fileinput" class="form-control" />
+                <span asp-validation-for="File" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialityId" class="control-label"></label>
+                <select asp-for="SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId"></select>
+                <span asp-validation-for="SpecialityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Skills" class="control-label"></label>
+                <input asp-for="Skills" class="form-control" />
+                <span asp-validation-for="Skills" class="text-danger"></span>
+            </div>
+            @if (Model.FixedPrice == 0)
+            {
+                <div class="form-group">
+                    <label asp-for="BugetType" class="control-label"></label>
+                    <select asp-for="BugetType" asp-items="Html.GetEnumSelectList<BugetType>()" class="form-control"></select>
+                    <span asp-validation-for="BugetType" class="text-danger"></span>
+                </div>
+            }
+            else
+            {<div class="form-group">
+                    <label asp-for="FixedPrice" class="control-label"></label>
+                    <input asp-for="FixedPrice" class="form-control" />
+                    <span asp-validation-for="FixedPrice" class="text-danger"></span>
+                </div>}
+
+            <div class="form-group">
+                <label asp-for="SkillCategoryType" class="control-label"></label>
+                <select asp-for="SkillCategoryType" asp-items="Html.GetEnumSelectList<SkillCategoryType>()" class="form-control"></select>
+                <span asp-validation-for="SkillCategoryType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DaysRequired" class="control-label"></label>
+                <input asp-for="DaysRequired" class="form-control" />
+                <span asp-validation-for="DaysRequired" class="text-danger"></span>
+            </div>
+            @if (User.IsInRole("Admins"))
+            {<h4 class="text-danger">معلومات للادمن فقط</h4><hr />
+                <div class="form-group" >
+                    <label asp-for="DateOfRecord" class="control-label"></label>
+                    <input asp-for="DateOfRecord"  class="form-control" />
+                    <span asp-validation-for="DateOfRecord" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PurposeType" class="control-label"></label>
+                    <select asp-for="PurposeType" asp-items="Html.GetEnumSelectList<PurposeType>()" class="form-control"></select>
+                    <span asp-validation-for="PurposeType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RecruiterProjectType" class="control-label"></label>
+                    <select asp-for="RecruiterProjectType" asp-items="Html.GetEnumSelectList<RecruiterProjectType>()" class="form-control"></select>
+                    <span asp-validation-for="RecruiterProjectType" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FreelancerProjectStatus" class="control-label"></label>
+                    <select asp-for="FreelancerProjectStatus" asp-items="Html.GetEnumSelectList<FreelancerProjectStatus>()" class="form-control"></select>
+                    <span asp-validation-for="FreelancerProjectStatus" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AdminNotification" class="control-label"></label>
+                    <input asp-for="AdminNotification" class="form-control" />
+                    <span asp-validation-for="AdminNotification" class="text-danger"></span>
+                </div><hr />
+            }
+            <div class="form-group">
+                <h4 style="display:inline"><input type="submit" value="حفظ" class="btn btn-success" /></h4>
+                <h4 style="display:inline;float:left"><a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">رجوع إلى المشروع</a></h4>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link",
+            mode: "textareas",
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+            toolbar: false,
+            menubar: false
+            //plugins: "table,contextmenu,paste,-externalplugin"
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

@@ -1,0 +1,79 @@
+﻿@model ARID.Models.Committee
+@{
+    ViewData["Title"] = "Create";
+}
+<h2>إضافة لجنة</h2>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+            </div>
+            <br />
+            <input id="btn" type="button" class="btn btn-primary" value="اضف صورة" />
+            <br />
+            <div class="form-group" id="img">
+                <img id="img1" class="img-rounded" />
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-default col-lg-12" />
+                <input asp-for="Image" id="fileinput" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="إضافة" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">العودة الى القائمة</a>
+
+            </div>
+        </form>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                //to show new image at a time of image selected from file input type
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#img").hide();
+            $("#btn").click(function () {
+                $("#img").slideToggle();
+            });
+
+        });
+    </script>
+
+
+}

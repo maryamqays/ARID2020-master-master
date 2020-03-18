@@ -1,0 +1,69 @@
+﻿@model ARID.Models.ArticleAuthorship
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ArticleAuthorship</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfRecord)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateOfRecord)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Indx)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Indx)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Contribution)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Contribution)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AuthorUser.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country.ArCountryName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Manuscript)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Manuscript.ArAbstract)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.University)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.University.ArUniversityName)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

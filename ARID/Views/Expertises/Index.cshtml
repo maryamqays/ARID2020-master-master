@@ -1,0 +1,71 @@
+﻿@model ARID.Models.ExpertiseViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h3>@Localizer["Index"]</h3>
+<hr />
+<p>
+    <a asp-action="Create" class="btn btn-default" style="color:black;font-weight:800">@Localizer["CreateNew"]</a>
+</p>
+@using (Html.BeginForm("Delete", "Expertises", FormMethod.Post))
+{
+    <table class="table-hover table table-striped table-bordered dt-responsive">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Expertise.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Expertise.Speciality)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Expertise.User)
+                </th>
+                <th>عدد الاعضاء</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Expertises)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkboxes" value="@item.Id" name="ExamPolicyIDs" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Speciality.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.ArName)
+                    </td>
+                    <td>
+                        @Model.UserExpertise.Where(a => a.ExpertiseId == item.Id).Count()
+                    </td>
+
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                    </td>
+
+
+                </tr>
+            }
+
+
+        </tbody>
+
+
+    </table>
+        <input type="submit" value="Delete All" />
+        }

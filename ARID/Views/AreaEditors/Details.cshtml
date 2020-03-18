@@ -1,0 +1,55 @@
+﻿@model ARID.Models.AreaEditor
+@{
+    ViewData["Title"] = "Details";
+}
+<h2>تفاصيل المساعد</h2>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.JoinDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.JoinDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.ArName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.JournalId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Journal.ArName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RoleId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RoleId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index" asp-route-id="@Model.JournalId" class="btn btn-primary bold">رجوع</a>
+</div>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>

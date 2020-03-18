@@ -1,0 +1,214 @@
+﻿@model ARID.Models.PublisherViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+<br />
+<br />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="form-group row col-lg-7">
+            <div class="col-lg-1">
+                <span class="glyphicon glyphicon-search" id="span" title="بحث"></span>
+                <span class="glyphicon glyphicon-remove" id="spanx" title="الغاء نتائج البحث"></span>
+            </div>
+            <div class="col-lg-6">
+                <form asp-controller="publishers" asp-action="Index" id="form" class="row">
+                    <p>
+                        <input id="in" type="text" name="SearchString">
+                        <input type="submit" value="بحث" id="search" />
+                    </p>
+                </form>
+            </div>
+        </div>
+        @if (User.IsInRole("Admins"))
+        {
+            <div class="col-lg-5">
+                <input type="submit" value="جميع دور النشر" id="all" />
+                <input type="submit" value="طلبات تحتاج موافقة" id="acceptance" />
+                <input type="submit" value="المبلغ عنه" id="searchreported" />
+                <input type="submit" value="دور النشر المميزة" id="searchfeature" />
+            </div>
+
+        }
+    </div>
+</div>
+<h1>القائمة</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">أضف دار نشر</a>
+</p>
+<div class="row">
+    <div class="col-lg-8">
+        <table class="table-hover table table-striped table-bordered dt-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Publisher.ArName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Publisher.EstablishmentDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Publisher.Country)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Publisher.Speciality)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.publishers)
+                {
+                    @if (!User.IsInRole("Admins"))
+                    {
+                        @if (item.IsAdminAccepted == true && item.IsVisible == false)
+                        {
+
+
+                            <tr>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ArName)</a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EstablishmentDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Speciality.Name)
+                                </td>
+                                <td>
+                                    @if (item.ApplicationUserId == currentUser.Id)
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else if (User.IsInRole("Admins"))
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.ArName)</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EstablishmentDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Speciality.Name)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                            </td>
+                        </tr>
+                    }
+
+                }
+
+            </tbody>
+        </table>
+        <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+             page-class="btn border" page-class-normal="btn btn-default active"
+             page-class-selected="btn btn-success active" class="btn-group m-1"></div>
+        <br />
+    </div>
+    <div class="col-lg-4">
+        <p style="font-size:32px;text-align:center;">دور نشر مميزة</p>
+        <hr style=" border-top:3px solid #275bad;">
+
+        @foreach (var item in Model.publishers)
+        {
+            @if (item.IsFeatured == true && item.IsAdminAccepted == true)
+            {
+                @if (item.Logo != "")
+                {
+                    <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + item.Logo)" width="380" height="200" />
+                }
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => item.ArName)
+                    </dt>
+                    <dd>
+                        <a asp-action="Details" asp-route-id="@item.Id">  @Html.DisplayFor(modelItem => item.ArName)</a>
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => item.SpecialityId)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => item.Speciality.Name)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => item.ApplicationUserId)
+                    </dt>
+                    <dd>
+                        <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUser.Id">
+                            @Html.DisplayFor(model => item.ApplicationUser.ArName)
+                        </a>
+                        <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + item.ApplicationUser.ProfileImage)" width="300" /><br />
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => item.CountryId)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => item.Country.ArCountryName)
+                    </dd>
+                </dl>
+                <hr style=" border-top:3px solid #275bad;">
+            }
+        }
+
+    </div>
+
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $("#form").hide();
+            $("#span").css('cursor', 'pointer');
+            $("#spanx").css('cursor', 'pointer');
+            $("#span").click(function () {
+                $("#form").slideToggle("slow");
+
+                //$("#span").toggleClass(".glyphicon glyphicon-remove");
+
+            });
+            $("#spanx").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+            $("#all").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+            $("#searchreported").click(function () {
+                $("#in").attr('value', 'reported')
+                $('#search').trigger('click');
+            });
+            $("#searchfeature").click(function () {
+                $("#in").attr('value', 'featured')
+                $('#search').trigger('click');
+            });
+            $("#acceptance").click(function () {
+                $("#in").attr('value', 'acceptance')
+                $('#search').trigger('click');
+            });
+        });
+
+    </script>
+
+}

@@ -1,0 +1,165 @@
+﻿@model ARID.Models.AddressViewModel
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+
+@{
+    ViewData["Title"] = "عناويني";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-center">عناويني</h3>
+
+<h4>
+    <a asp-action="Create" class="btn btn-info">&nbsp; <span class="glyphicon glyphicon-plus"></span> إضافة عنوان</a>
+</h4>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Address.FullAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address.AddressSaveName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address.ArName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address.ApplicationUserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address.Country)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.UserAddresses)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.FullAddress)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddressSaveName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.ArName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                </td>
+                <td>
+                    <small><a asp-action="Edit" title="تعديل" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a></small>
+                    <form asp-action="Deleting" method="post">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <small class="text-danger"><button style="padding:0;border:none;background:none" type="submit" onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بعملية الحذف؟');" asp-action="Delete" title="حذف"><span class="glyphicon glyphicon-trash"></span></button></small>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (User.IsInRole("Admins"))
+{
+    <hr />
+    <h4 class="text-danger">الجزء الخاص ب الادمن</h4>
+    <h3 class="text-center">كل العناوين</h3>
+    <form asp-action="Index" id="formname">
+        <input value="@ViewData["search"]" name="ss" placeholder="إبحث" type="text" class="form-control col-lg-11">
+        @if (ViewData["search"] != null)
+        {
+            <a href="#" id="remove" title="إلغاء البحث" class="form-control btn-danger col-lg-1"><small><span class="glyphicon glyphicon-remove"></span></small></a>
+        }
+        else
+        {
+            <a title="إبحث" href="javascript:{}" onclick="document.getElementById('formname').submit();" class="form-control btn-info col-lg-1"><small><span class="glyphicon glyphicon-search"></span></small></a>
+            @*<button title="إبحث" class="form-control btn-info col-lg-3"><small><span class="glyphicon glyphicon-search"></span></small></button>*@
+        }
+    </form>
+
+<br />
+<br />
+    <table class="table-hover table table-striped table-bordered dt-responsive">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address.FullAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address.PhoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address.AddressSaveName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address.ArName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address.ApplicationUserId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address.Country)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Addresses)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.FullAddress)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AddressSaveName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.ArName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                    </td>
+                    <td>
+                        <small><a asp-action="Edit" title="تعديل" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a></small>
+                        <form asp-action="Deleting" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <small class="text-danger"><button style="padding:0;border:none;background:none" type="submit" onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بعملية الحذف؟');" asp-action="Delete" title="حذف"><span class="glyphicon glyphicon-trash"></span></button></small>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+         page-class="btn border" page-class-normal="btn btn-info"
+         page-class-selected="btn btn-info active" class="btn-group m-1"></div>
+
+
+}
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#remove").click(function () {
+                $('input[name=ss]').val("")
+                $("#formname").submit();
+            });
+        });
+
+    </script>
+}

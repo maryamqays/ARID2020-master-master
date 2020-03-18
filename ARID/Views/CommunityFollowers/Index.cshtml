@@ -1,0 +1,257 @@
+﻿@model ARID.Models.CommunityFollowersViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@inject IJsonHelper Json;
+
+@{
+    ViewData["Title"] = "Index";
+}
+<h2>@ViewData["CommunityName"]</h2>
+@if (currentUser.Id == Model.Community.ApplicationUserId || User.IsInRole("Admins"))
+{
+    <form class="col-lg-12" style="margin-top:20px;border-radius:10px" asp-action="Index">
+        <h3>أضف متابعين جدد إلى مجتمعك</h3>
+        <input class="col-lg-10" style="border-radius:5px" name="ss" placeholder=" أدخل إسم أو تخصص الباحث" />
+        <input style="padding:3px;" type="submit" value="بحث" class="btn btn-info col-lg-2" />
+    </form>
+}
+<div class="row">
+    <div class="col-lg-12" id="users">
+        @if (Model.ApplicationUsers.Count() > 0)
+        {
+            <table class="table-hover table table-striped table-bordered dt-responsive">
+                <caption><h3>اختر أحد الباحثين ثم اضغط زر إضافة</h3></caption>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser.ArName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser.EnName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser.CountryId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser.UniversityId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser.Email)
+                        </th>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.ApplicationUser.Id)
+                            </th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ApplicationUsers)
+                    {
+                        <tr>
+                            @if (Model.CommunityFollowers.Where(a => a.ApplicationUserId == item.Id).Count() > 0)
+                            {
+                                <td>
+                                    <input disabled type="checkbox" name="IdsToAdd" value="@item.Id">
+                                    <input hidden name="itmname" value="@item.ArName" />
+                                    <input hidden name="itmcnt" value="@item.UniversityId" />
+                                    <input hidden name="itmuni" value="@item.CountryId" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" name="IdsToAdd" value="@item.Id">
+                                    <input hidden name="itmname" value="@item.ArName" />
+                                    <input hidden name="itmmail" value="@item.Email" />
+                                    <input hidden name="itmcnt" value="@item.UniversityId" />
+                                    <input hidden name="itmuni" value="@item.CountryId" />
+                                </td>}
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ArName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EnName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>*@
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+            <form asp-action="Index">
+                <input type="hidden" id="appuser" name="userid" />
+                <input id="add" type="submit" class="btn btn-info" value="إضافة" />
+                <button id="remove" class="btn btn-danger">إلغاء البحث</button>
+            </form>
+
+        }
+    </div>
+    <div class="col-lg-12">
+        @if (Model.ApplicationUsers.Count() == 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommunityFollower.IsAdmin)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApplicationUser)
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CommunityFollowers.Where(c => c.IsAccepted == true))
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsAdmin)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId">@Html.DisplayFor(modelItem => item.ApplicationUser.ArName)</a>
+                            </td>
+
+                            <td>
+                                @if (User.IsInRole("Admins") || currentUser.Id==Model.Community.ApplicationUserId)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    @if (Model.CommunityFollower.Community.CommunityType == CommunityType.Group)
+    {
+        @if (Model.CommunityFollowers.Where(c => c.IsAccepted == false).Count() > 0)
+        {
+            <h3>طلبات الإنضمام</h3>
+            <div class="col-lg-12">
+                <hr />
+                @if (Model.ApplicationUsers.Count() == 0)
+                {
+                    <table class="table-hover table table-striped table-bordered dt-responsive">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CommunityFollower.ApplicationUserId)
+                                </th>
+                                <th>
+                                    الإجراءات
+                                </th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.CommunityFollowers.Where(c => c.IsAccepted == false))
+                            {
+                                <tr>
+
+                                    <td>
+                                        <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId">@Html.DisplayFor(modelItem => item.ApplicationUser.ArName)</a>
+                                    </td>
+                                    <td>
+                                        <a name="@item.ApplicationUserId" class="join btn btn-info">موافقة</a>
+                                        <a name="@item.ApplicationUserId" class="unjoin btn btn-danger">رفض</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-12">
+
+                <h3>لا توجد طلبات إنضمام</h3>
+
+            </div>
+        }
+    }
+</div>
+
+<style>
+    label, h2, input[type='submit'], .bold, button {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+@section scripts{
+    <script>
+        $('.req').hide();
+        $("input[name=IdsToAdd]").change(function () {
+            $('#appuser').val($(this).val());
+            $("input[name=IdsToAdd]").not(this).attr('checked', false);
+
+
+        });
+        $("#remove").click(function () {
+            $("#users").hide();
+        });
+
+    </script>
+    <script>
+         $(document).ready(function () {
+            $(".join").click(
+                function () {
+                     {
+                        var FollowOptions = {};
+                        @*FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Communities/Follow/";*@
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/CommunityFollowers/Join/";
+                        FollowOptions.data = { id: @ViewData["Communityid"],uid: $(this).attr("name") };
+                        $(this).prop("text", "تمت الموافقة");
+                        $(this).siblings().hide();
+
+              $.ajax(FollowOptions);
+                    }
+                });
+        });
+    </script>
+    <script>
+         $(document).ready(function () {
+            $(".unjoin").click(
+                function () {
+                     {
+                        var FollowOptions = {};
+                        @*FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Communities/Follow/";*@
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/CommunityFollowers/UnJoin/";
+                        FollowOptions.data = { id: @ViewData["Communityid"], uid: $(this).attr("name") };
+                        $(this).prop("text", "تم الرفض");
+                        $(this).removeClass("btn btn-info");
+                        $(this).addClass("btn btn-danger");
+                        $(this).siblings().hide();
+
+              $.ajax(FollowOptions);
+                    }
+                });
+        });
+    </script>
+}

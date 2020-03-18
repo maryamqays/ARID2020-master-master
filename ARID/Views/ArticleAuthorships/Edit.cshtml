@@ -1,0 +1,96 @@
+﻿@model ARID.Models.ArticleAuthorship
+@{
+    ViewData["Title"] = "التعديل على مؤلف المقالة";
+}
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+<h2>التعديل على مؤلف المقالة</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ManuscriptId" class="control-label"></label>
+                <select asp-for="ManuscriptId" class="form-control" asp-items="ViewBag.ManuscriptId"></select>
+                <span asp-validation-for="ManuscriptId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AuthorUserId" class="control-label"></label>
+                <select asp-for="AuthorUserId" class="form-control" asp-items="ViewBag.AuthorUserId"></select>
+                <span asp-validation-for="AuthorUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select id="cntid" asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UniversityId" class="control-label"></label>
+                <select id="uniid" asp-for="UniversityId" class="form-control" ></select>
+                <span asp-validation-for="UniversityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Indx" class="control-label"></label>
+                <input asp-for="Indx" class="form-control" />
+                <span asp-validation-for="Indx" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contribution" class="control-label"></label>
+                <input asp-for="Contribution" class="form-control" />
+                <span asp-validation-for="Contribution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn btn-success" />
+                <a asp-action="create" asp-route-mid="@Model.ManuscriptId" class="btn btn-primary bold">رجوع</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-3">
+        <h2></h2>
+        @if (Model.AuthorUserId != Model.Manuscript.CorrespondingAuthorId)
+        {
+            <a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ولن تتمكن من الولوج لاكمال عملية الارسال ، هل تود نقل صلاحية المؤلف المعني بالتواصل الى هذا المؤلف؟');" id="subm" asp-action="changecorrepondingauthor" asp-route-id="@Model.Id" class="btn btn-danger bold">نقل صلاحية المؤلف المعني بالتواصل</a>
+        }
+    </div>
+    @*onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ولن تتمكن من الولوج لاكمال عملية الارسال ، هل تود نقل صلاحية المؤلف المعني بالتواصل الى هذا المؤلف؟');"*@
+</div>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+@section scripts{
+<script>
+        $(document).ready(function () {
+            $("#cntid").change(function () {
+                $("#uniid").empty();
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetUniversitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#uniid").append($('<option>', {value: row.value, text: row.text}))
+                        });
+                    };
+                    CountryOptions.error = function () { alert("@Localizer["UniError"]"); };
+                    $.ajax(CountryOptions);
+                }
+            });
+        });
+</script>
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

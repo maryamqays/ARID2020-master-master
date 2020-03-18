@@ -1,0 +1,66 @@
+﻿@model ARID.Models.Badge
+@{
+    ViewData["Title"] = "Details";
+}
+<h2>Details</h2>
+<div>
+    <h4>Badge</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ArBadgeName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArBadgeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnBadgeName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnBadgeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArBadgeDesc)
+        </dt>
+        <dd>
+            @Html.Raw(Model.ArBadgeDesc)
+        </dd>
+        @*<dt>
+                @Html.DisplayNameFor(model => model.EnBadgeDesc)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EnBadgeDesc)
+            </dd>*@
+        <dt>
+            @Html.DisplayNameFor(model => model.BadgeLogo)
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.BadgeLogo)*@
+            <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.BadgeLogoFolder + "/" + Model.BadgeLogo)" width="50" height="50" />
+        </dd>
+
+    </dl>
+</div>
+<div>
+    @if (Model.Id == 1 || Model.Id == 2 || Model.Id == 4 || Model.Id == 9 || Model.Id == 10 || Model.Id == 11 || Model.Id == 13)
+    {
+
+        <a style="color:red;" asp-action="Apply" asp-controller="UserBadges" asp-route-id="@Model.Id">تقديم طلب الحصول على الوسام</a> <br />
+        <a asp-action="Index">عرض جميع الاوسمة</a>
+    }
+    else if (Model.Id == 3)
+    {
+        <a style="color:red;" asp-action="InnovativeBadge" asp-controller="UserBadges" asp-route-id="@Model.Id">تقديم فكرة لتطوير المنصة</a><br />
+        <a asp-action="Index">عرض جميع الاوسمة</a>
+    }
+
+    else if (Model.Id == 8)
+    {
+        <a style="color:red;" asp-action="BackerBadge" asp-controller="UserBadges" asp-route-id="@Model.Id">ادعم المنصة</a><br />
+        <a asp-action="Index">عرض جميع الاوسمة</a>
+    }
+    else
+    { <p style="color:red;">هذا الوسام يمنح مباشرة من قبل الامانة العامة عند تحقق شروطه</p><br/><a asp-action="Index">عرض جميع الاوسمة</a>}
+
+
+</div>

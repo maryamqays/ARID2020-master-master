@@ -1,0 +1,549 @@
+﻿@model ARID.Models.ProfileViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Print</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div style="text-align:center" class="form-group">
+
+
+                @if (Model.ApplicationUser.ProfileImage != null)
+                {
+                    <img id="img1" class="img-rounded"
+                         src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder +
+                                            "/" + Model.ApplicationUser.ProfileImage)" width="200" height="200" />
+                }
+                <br />
+                @foreach (var item in Model.UserBadges.Where(a => a.IsGranted == true))
+                {
+                    <img class="img-rounded"
+                         src="@Url.Content("~/" + ARID.Properties.Resources.BadgeLogoFolder +
+                                                                "/" + item.Badge.BadgeLogo)" width="75" height="75" />
+                }
+                <br />
+
+                arid.my/@Common.ARIDFormat(Model.ApplicationUser.ARID)
+                <br />
+                @Html.DisplayFor(model => model.ApplicationUser.ArName)
+                <br />
+                @Html.DisplayFor(model => model.ApplicationUser.EnName)
+                <br />
+                @Html.DisplayFor(model => model.ApplicationUser.Email)
+                <br />
+                @Html.DisplayFor(model => model.ApplicationUser.PhoneNumber)
+                <br />
+
+                @Html.DisplayFor(model => model.ApplicationUser.Country.ArCountryName)
+                <span> - </span>
+                @Html.DisplayFor(model => model.ApplicationUser.City.ArCityName)
+                <br />
+
+
+                @Model.ApplicationUser.University.ArUniversityName
+                <span> - </span>
+                @Html.DisplayFor(model => model.ApplicationUser.Faculty.ArFacultyName)
+
+
+
+                <br />
+                <div>
+
+                    @if (!string.IsNullOrEmpty(Model.ApplicationUser.University.LogoHD) &&
+!string.IsNullOrWhiteSpace(Model.ApplicationUser.University.LogoHD))
+                    {
+                        <br />
+                        <img class="img-rounded"
+                             src="@Url.Content("~/" + ARID.Properties.Resources.UniversityLogoFolder +
+                                                         "/" + Model.ApplicationUser.University.LogoHD)" height="75" />
+                    }
+
+                </div>
+
+            </div>
+
+
+           
+            @if (!string.IsNullOrEmpty(Model.ApplicationUser.Summary)
+&& !string.IsNullOrWhiteSpace(Model.ApplicationUser.Summary))
+            {
+
+                @*@Html.DisplayNameFor(model => model.ApplicationUser.Summary)*@
+                <h3>النبذة المختصرة</h3>
+                @Html.DisplayFor(model => model.ApplicationUser.Summary)
+
+            }
+
+
+            <hr />
+            @if (Model.EducationalLevels.Count > 0)
+            {
+                <div>
+                    <h3>المؤهلات الأكاديمية</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].AcademicDegreeId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].SpecialityId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].ArCertificateName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].EnCertificateName)
+                                </th>
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.EducationalLevels[0].IsCurrent)
+                                    </th>*@
+                                @*<th>
+                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].FromYear)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].ToYear)
+                                </th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.EducationalLevels)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AcademicDegree.ArDegreeName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Speciality.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArCertificateName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EnCertificateName)
+                                    </td>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.IsCurrent)
+                                        </td>*@
+                                    @*<td>
+                                        @Html.DisplayFor(modelItem => item.FromYear)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ToYear)
+                                    </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+            }
+            @if (Model.AcademicPositions.Count > 0)
+            {
+                <div>
+                    <h3>ألمناصب الأكاديمية</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.AcademicPositions[0].Indx)
+                                    </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicPositions[0].PositionTypeId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicPositions[0].ArDescription)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicPositions[0].EnDescription)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicPositions[0].FacultyId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicPositions[0].UniversityId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicPositions[0].CountryId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicPositions[0].CityId)
+                                </th>
+                                @*<th>
+                                    @Html.DisplayNameFor(model => model.AcademicPositions[0].IsCurrent)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicPositions[0].FromYear)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicPositions[0].ToYear)
+                                </th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.AcademicPositions)
+                            {
+                                <tr>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.Indx)
+                                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PositionType.ArPositionName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArDescription)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EnDescription)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Faculty.ArFacultyName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.City.ArCityName)
+                                    </td>
+                                    @*<td>
+                                        @Html.DisplayFor(modelItem => item.IsCurrent)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FromYear)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ToYear)
+                                    </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+            }
+            @if (Model.TeachingExperiences.Count > 0)
+            {
+                <div>
+                    <h3>الخبرة التدريسية</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.TeachingExperiences[0].Indx)
+                                    </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TeachingExperiences[0].ArTitle)
+                                </th>
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.TeachingExperiences[0].EnTitle)
+                                    </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TeachingExperiences[0].ArDescription)
+                                </th>
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.TeachingExperiences[0].EnDescription)
+                                    </th>*@
+                                @*<th>
+                                    @Html.DisplayNameFor(model => model.TeachingExperiences[0].IsCurrent)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TeachingExperiences[0].FromYear)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TeachingExperiences[0].ToYear)
+                                </th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.TeachingExperiences)
+                            {
+                                <tr>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.Indx)
+                                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArTitle)
+                                    </td>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.EnTitle)
+                                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArDescription)
+                                    </td>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.EnDescription)
+                                        </td>*@
+                                    @*<td>
+                                        @Html.DisplayFor(modelItem => item.IsCurrent)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FromYear)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ToYear)
+                                    </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+            }
+            @if (Model.Publications.Count > 0)
+            {
+                <div>
+                    <h3> النشر العلمي</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Publications[0].PublicationType)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Publications[0].ArTitle)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Publications[0].ArAuthors)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Publications[0].PublicationDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Publications[0].Publisher)
+                                </th>
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.Publications[0].DOI)
+                                    </th>*@
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.Publications[0].FileLink)
+                                    </th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Publications)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PublicationType)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArTitle)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArAuthors)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PublicationDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Publisher)
+                                    </td>
+                                    @*<td>
+                                            <a href="@item.DOI" target="_blank">@item.DOI</a>
+                                        </td>*@
+                                    @*<td>
+                                            @if (!string.IsNullOrEmpty(item.FileLink))
+                                            {
+                                                <a href="@Url.Content("~/" + @ARID.Properties.Resources.PublicationFiles + "/" + @item.FileLink)" target="_blank">@Localizer["Download"]</a>
+                                            }
+                                        </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+            }
+            @if (Model.AcademicActivities.Count > 0)
+            {
+                <div>
+                    <h3> الأنشطة والفعاليات</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicActivities.First().ActivityType)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicActivities[0].ArTitle)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicActivities[0].EnTitle)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicActivities[0].ArDescription)
+                                </th>
+                                @*<th>
+                                    @Html.DisplayNameFor(model => model.AcademicActivities[0].EnDescription)
+                                </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicActivities[0].ActivityDate)
+                                </th>
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.AcademicActivities[0].ActivityURL)
+                                    </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicActivities[0].RelationType)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicActivities[0].Language)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AcademicActivities[0].CountryId)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.AcademicActivities)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ActivityType)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArTitle)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EnTitle)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArDescription)
+                                    </td>
+                                    @*<td>
+                                        @Html.DisplayFor(modelItem => item.EnDescription)
+                                    </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ActivityDate)
+                                    </td>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.ActivityURL)
+                                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.RelationType)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Language)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+            }
+
+            @if (Model.Projects.Count > 0)
+            {
+                <div>
+                    <h3>المشاريع البحثية</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Projects[0].ArProjectName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Projects[0].ArDescription)
+                                </th>
+                                @*<th>
+                                    @Html.DisplayNameFor(model => model.Projects[0].ArDetails)
+                                </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Projects[0].CountryId)
+                                </th>
+                                @*<th>
+                                    @Html.DisplayNameFor(model => model.Projects[0].FromYear)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Projects[0].ToYear)
+                                </th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Projects)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArProjectName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArDescription)
+                                    </td>
+                                    @*<td>
+                                        @Html.DisplayFor(modelItem => item.ArDetails)
+                                    </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                                    </td>
+                                    @*<td>
+                                        @Html.DisplayFor(modelItem => item.FromYear)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ToYear)
+                                    </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <hr />
+            }
+
+   
+
+
+
+            @if (Model.UserExpertises.Count > 0)
+            {
+                <div>
+                    <h3>الخبرات</h3>
+                    @foreach (var item in Model.UserExpertises)
+                    {
+                        <span> - </span> @item.Expertise.Name
+                    }
+                </div>
+                <hr />
+            }
+            @if (Model.UserSkills.Count > 0)
+            {
+                <div>
+                    <h3>المهارات</h3>
+                    @foreach (var item in Model.UserSkills)
+                    {
+                        <span> - </span> @item.Skill.Name
+                    }
+                </div>
+
+            }
+        </div>
+    </div>
+
+</body>
+</html>

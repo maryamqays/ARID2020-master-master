@@ -1,0 +1,315 @@
+﻿@model ARID.Models.Course
+@{
+    ViewData["Title"] = "التعديل على الدورة";
+}
+<h3 class="text-center">التعديل على الدورة</h3>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ArName" class="control-label"></label>
+                <input asp-for="ArName" class="form-control input-sm" />
+                <span asp-validation-for="ArName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnName" class="control-label"></label>
+                <input asp-for="EnName" class="form-control input-sm" />
+                <span asp-validation-for="EnName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartingDate" class="control-label"></label>
+                <input asp-for="StartingDate" class="form-control input-sm" />
+                <span asp-validation-for="StartingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndingDate" class="control-label"></label>
+                <input asp-for="EndingDate" class="form-control input-sm" />
+                <span asp-validation-for="EndingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label"> الصورةالحالية</label>
+                <br />
+                <img id="img1" class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Image)" width="280" height="200" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="Image"></label>
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12 input-sm" />
+                <input asp-for="Image" id="fileinput" class="form-control input-sm" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="IntroductoryVideo"></label>
+                <input asp-for="IntroductoryVideo" class="form-control input-sm" />
+                <span asp-validation-for="IntroductoryVideo" class="text-danger"></span>
+            </div>            <br />
+            <div class="form-group">
+                <label class="control-label">النشرة الإعلانية الحالية</label>
+                <br />
+                <img id="img2" class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Flyer)" width="280" height="200" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="Flyer"></label>
+                <input type="file" name="myfile1" id="file1" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12 input-sm" />
+                <input asp-for="Flyer" id="fileinput1" class="form-control input-sm" />
+                <span asp-validation-for="Flyer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" asp-for="FilePdf"></label>
+                <input type="file" name="myfile2" id="file2" accept=".pdf" class="btn btn-info col-lg-12 input-sm" />
+                <input asp-for="FilePdf" class="form-control input-sm" />
+                <span asp-validation-for="FilePdf" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Effort" class="control-label"></label>
+                @Html.TextAreaFor(model => model.Effort, new { rows = 10, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="Effort" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsPaid" id="ispaid" /> @Html.DisplayNameFor(model => model.IsPaid)
+                    </label>
+                </div>
+            </div>
+            @if (Model.IsPaid == true)
+            {
+                <div class="form-group" id="coursefees">
+                    <label asp-for="CourseFees" class="control-label"></label>
+                    <input asp-for="CourseFees" class="form-control input-sm" />
+                    <span asp-validation-for="CourseFees" class="text-danger"></span>
+                </div>}
+            <div class="form-group">
+                <label asp-for="Certificate" class="control-label"></label>
+                <select id="crfct" asp-for="Certificate" asp-items="Html.GetEnumSelectList<Certificate>()" class="form-control input-sm"></select>
+                <span asp-validation-for="Certificate" class="text-danger"></span>
+            </div>
+            @if (Model.Certificate == Certificate.Paid)
+            {
+                <div class="form-group" id="CertificateCost">
+                    <label asp-for="CertificateCost" class="control-label"></label>
+                    <input id="crtcost" asp-for="CertificateCost" class="form-control input-sm" />
+                    <span asp-validation-for="CertificateCost" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="Overview" class="control-label"></label>
+                @Html.TextAreaFor(model => model.Overview, new { rows = 10, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="Overview" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Introduction" class="control-label"></label>
+                @Html.TextAreaFor(model => model.Introduction, new { rows = 10, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="Introduction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LearningOutcomes" class="control-label"></label>
+                @Html.TextAreaFor(model => model.LearningOutcomes, new { rows = 10, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="LearningOutcomes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Requirements" class="control-label"></label>
+                @Html.TextAreaFor(model => model.Requirements, new { rows = 10, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="Requirements" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input asp-for="Tags" class="form-control input-sm" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialityId" class="control-label"></label>
+                <select asp-for="SpecialityId" class="form-control input-sm" asp-items="ViewBag.SpecialityId"></select>
+                <span asp-validation-for="SpecialityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TargetStudents" class="control-label"></label>
+                <input asp-for="TargetStudents" class="form-control input-sm" />
+                <span asp-validation-for="TargetStudents" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImportantDates" class="control-label"></label>
+                @Html.TextAreaFor(model => model.ImportantDates, new { rows = 10, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="ImportantDates" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Language" class="control-label"></label>
+                <select asp-for="Language" asp-items="Html.GetEnumSelectList<Language>()" class="form-control input-sm"></select>
+                <span asp-validation-for="Language" class="text-danger"></span>
+            </div>
+            @if (User.IsInRole("Admins"))
+            {
+                <div class="label-danger">
+                    <h4>الجزء الخاص بالادمن</h4>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsAdminApproved" /> @Html.DisplayNameFor(model => model.IsAdminApproved)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsFeatured" /> @Html.DisplayNameFor(model => model.IsFeatured)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">إسم مقدم الطلب</label>
+                        <br />
+                        @*<a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">
+                            @Html.DisplayFor(model => Model.ApplicationUser.ArName)
+                        </a>*@
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ApplicationUserId" class="control-label"></label>
+                        <input asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId" />
+                        <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+                    </div>
+                    <br />
+                </div><br />
+            }
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn-sm btn-success h5" />
+                <a asp-action="Index" class="btn-sm btn-info h5 pull-left">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $("#img").hide();
+            $("#btn").click(function () {
+                $("#img").slideToggle();
+            });
+            $("#imgtwo").hide();
+            $("#btn2").click(function () {
+                $("#imgtwo").slideToggle();
+            });
+            $("#fileform").hide();
+            $("#btn3").click(function () {
+                $("#fileform").slideToggle();
+            });
+            $("#crsfees").hide();
+            $("#ispaid").click(function () {
+                $("#crsfees").slideToggle();
+            });
+            $("#videoform").hide();
+            $("#btn4").click(function () {
+                $("#videoform").slideToggle();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#ispaid').change(function () {
+                $("#coursefees").slideToggle(this.checked);
+                $("#coursefees").children('input').removeAttr('value');
+            });
+
+        });
+    </script>
+    <script>
+        var certificate = {
+            None : 0,
+            Paid : 1,
+            Free : 2,
+        };
+        $(document).ready(function () {
+            $('#crfct').change(function () {
+                var value = $(this).children('option:selected').val();
+                if (value == certificate.Free || value == certificate.None) {
+                    $('#CertificateCost').slideUp();
+                    $('#CertificateCost').children('input').removeAttr('value');
+                }
+                else {
+                    $('#CertificateCost').slideDown();
+                }
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file1").change(function () {
+                if ($("#file1").val() != "") {
+                    $("#fileinput1").prop("value", $("#file1").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img2').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file2").change(function () {
+                if ($("#file2").val() != "") {
+                    $("#fileinput2").prop("value", $("#file2").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file3").change(function () {
+                if ($("#file3").val() != "") {
+                    $("#fileinput3").prop("value", $("#file3").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#video').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link",
+            mode: "textareas",
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+            toolbar: false,
+            menubar: false
+            //plugins: "table,contextmenu,paste,-externalplugin"
+        });
+    </script>
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

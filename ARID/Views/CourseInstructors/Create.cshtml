@@ -1,0 +1,45 @@
+﻿@model ARID.Models.CourseInstructor
+
+@{
+    ViewData["Title"] = "إضافة محاضر";
+}
+
+<h2>إضافة محاضر</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Indx" class="control-label"></label>
+                <input asp-for="Indx" class="form-control" />
+                <span asp-validation-for="Indx" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseId" class="control-label"></label>
+                <select asp-for="CourseId" class ="form-control" asp-items="ViewBag.CourseId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                @Html.TextAreaFor(model => model.Description, new { rows = 10, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class ="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="إنشاء" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">العودة الى القائمة</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

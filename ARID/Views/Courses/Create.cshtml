@@ -1,0 +1,301 @@
+﻿@model ARID.Models.Course
+@{
+    ViewData["Title"] = "إضافة دورة";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+<h2 class="text-center">الدورات</h2>
+<hr />
+<div class="row">
+    <div class="col-lg-8">
+        <h3 class="text-center">إضافة دورة</h3>
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ArName" class="control-label"></label>
+                <input required asp-for="ArName" class="form-control input-sm" />
+                <span asp-validation-for="ArName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnName" class="control-label"></label>
+                <input required asp-for="EnName" class="form-control input-sm" />
+                <span asp-validation-for="EnName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartingDate" class="control-label"></label>
+                <input asp-for="StartingDate" class="form-control input-sm" />
+                <span asp-validation-for="StartingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndingDate" class="control-label"></label>
+                <input asp-for="EndingDate" class="form-control input-sm" />
+                <span asp-validation-for="EndingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="videoform">
+                @*<video id="video" class="img-rounded" src="" />*@
+                <label asp-for="IntroductoryVideo" class="control-label"></label>
+                @*<input type="file" name="myfile3" id="file3" accept=".mp4" class="btn btn-info col-lg-12" />*@
+                <input type="url" asp-for="IntroductoryVideo" id="fileinput3" class="form-control input-sm" />
+                <span asp-validation-for="IntroductoryVideo" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="img">
+                <label asp-for="Image" class="control-label"></label><br />
+                <img id="img1" class="img-rounded" src="" />
+                <input required type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12 input-sm" />
+                <input asp-for="Image" id="fileinput" class="form-control input-sm" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="imgtwo">
+                <label asp-for="Flyer" class="control-label"></label><br />
+                <img id="img2" class="img-rounded" src="" />
+                <input type="file" name="myfile1" id="file1" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12 input-sm" />
+                <input asp-for="Flyer" id="fileinput1" class="form-control input-sm" />
+                <span asp-validation-for="Flyer" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="fileform">
+                <label asp-for="FilePdf" class="control-label"></label>
+                <input type="file" name="myfile2" id="file2" accept=".pdf" class="btn btn-info col-lg-12 input-sm" />
+                <input asp-for="FilePdf" id="fileinput2" class="form-control input-sm" />
+                <span asp-validation-for="FilePdf" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Effort" class="control-label"></label>
+                <textarea required asp-for="Effort" rows="3" class="form-control"></textarea>
+                <span asp-validation-for="Effort" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsPaid" id="ispaid" /> @Html.DisplayNameFor(model => model.IsPaid)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" id="crsfees">
+                <label asp-for="CourseFees" class="control-label"></label>
+                <input value="0.00" asp-for="CourseFees" class="form-control input-sm" />
+                <span asp-validation-for="CourseFees" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Certificate" class="control-label"></label>
+                <select id="crfct" asp-for="Certificate" asp-items="Html.GetEnumSelectList<Certificate>()" class="form-control input-sm"></select>
+                <span asp-validation-for="Certificate" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="crfctcost">
+                <label asp-for="CertificateCost" class="control-label"></label>
+                <input id="crtcost" value="0.00" asp-for="CertificateCost" class="form-control input-sm" />
+                <span asp-validation-for="CertificateCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Overview" class="control-label"></label>
+                <textarea required asp-for="Overview" rows="3" class="form-control"></textarea>
+                <span asp-validation-for="Overview" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Introduction" class="control-label"></label>
+                <textarea required asp-for="Introduction" rows="3" class="form-control"></textarea>
+                <span asp-validation-for="Introduction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LearningOutcomes" class="control-label"></label>
+                <textarea required asp-for="LearningOutcomes" rows="3" class="form-control"></textarea>
+                <span asp-validation-for="LearningOutcomes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Requirements" class="control-label"></label>
+                <textarea required asp-for="Requirements" rows="3" class="form-control"></textarea>
+                <span asp-validation-for="Requirements" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input required asp-for="Tags" class="form-control input-sm" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialityId" class="control-label"></label>
+                <select required asp-for="SpecialityId" class="form-control input-sm" asp-items="ViewBag.SpecialityId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="TargetStudents" class="control-label"></label>
+                <input required asp-for="TargetStudents" class="form-control input-sm" />
+                <span asp-validation-for="TargetStudents" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImportantDates" class="control-label"></label>
+                <textarea required asp-for="ImportantDates" rows="3" class="form-control"></textarea>
+                <span asp-validation-for="ImportantDates" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Language" class="control-label"></label>
+                <select required asp-for="Language" asp-items="Html.GetEnumSelectList<Language>()" class="form-control input-sm"></select>
+                <span asp-validation-for="Language" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsPrerecorded" /> @Html.DisplayNameFor(model => model.IsPrerecorded)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id="isprivate" asp-for="IsPrivate" /> @Html.DisplayNameFor(model => model.IsPrivate)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" id="accesspasswaord">
+                <label asp-for="AccessPassword" class="control-label"></label>
+                <input asp-for="AccessPassword" class="form-control input-sm" />
+                <span asp-validation-for="AccessPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PassingMark" class="control-label"></label>
+                <input asp-for="PassingMark" class="form-control input-sm" />
+                <span asp-validation-for="PassingMark" class="text-danger"></span>
+            </div>
+            @if (User.IsInRole("Admins"))
+            {<div class="label-danger">
+                    خاص بالادمن
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="Ishidden" /> @Html.DisplayNameFor(model => model.Ishidden)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsReported" /> @Html.DisplayNameFor(model => model.IsReported)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsAdminApproved" /> @Html.DisplayNameFor(model => model.IsAdminApproved)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsFeatured" /> @Html.DisplayNameFor(model => model.IsFeatured)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="إضافة" class="btn-sm btn-success h5" />
+                <a asp-action="Index" class="btn-sm btn-primary pull-left h5">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $('#crsfees').hide()
+        $(document).ready(function () {
+            $('#ispaid').change(function () {
+                $("#crsfees").slideToggle(this.checked);
+                $("#crsfees").children('input').val('');
+            });
+        });
+    </script>
+    <script>
+        $('#accesspasswaord').hide()
+        $(document).ready(function () {
+            $('#isprivate').change(function () {
+                $("#accesspasswaord").slideToggle(this.checked);
+                $("#accesspasswaord").children('input').val('');
+            });
+        });
+    </script>
+    <script>
+        var certificate = {
+            None: 0,
+            Paid: 1,
+            Free: 2,
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#crfctcost").hide();
+            $('#crfct').change(function () {
+                var value = $(this).children('option:selected').val()
+                if (value == certificate.Free || value == certificate.None) {
+                    $("#crfctcost").fadeOut();
+                    $("#crfctcost").children('input').val(0.00);
+                }
+                else {
+                    $("#crfctcost").fadeIn();
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file1").change(function () {
+                if ($("#file1").val() != "") {
+                    $("#fileinput1").prop("value", $("#file1").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img2').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file2").change(function () {
+                if ($("#file2").val() != "") {
+                    $("#fileinput2").prop("value", $("#file2").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file3").change(function () {
+                if ($("#file3").val() != "") {
+                    $("#fileinput3").prop("value", $("#file3").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#video').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,152 @@
+﻿@model ARID.Models.EventViewModel
+@{
+    ViewData["Title"] = "دليل الاحداث العلمية";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+<br /><br />
+<div class="form-group row col-lg-12" hidden>
+    <div class="col-lg-2">
+        <span class="glyphicon glyphicon-search" id="span" title="بحث"></span>
+    </div>
+    <div class="col-lg-4">
+        <form asp-controller="ScientificEvents" asp-action="Index" id="form" class="row">
+            <p>
+                <input id="in" type="text" name="SearchString">
+                <input type="submit" value="بحث" id="search" />
+
+            </p>
+        </form>
+        <p>
+            <input hidden id="details1" type="text" name="SearchString">
+            <input hidden type="submit" value="بحث" id="searchdetails" />
+        </p>
+    </div>
+</div>
+@if (User.IsInRole("Admins"))
+{
+    <div class="col-lg-12">
+        <input class="btn-xs btn-danger pull-left" type="submit" value="الاحداث المبلغ عنها" id="searchreported" />
+        <input class="btn-xs btn-warning pull-left" type="submit" value="الاحداث المميزة" id="searchfeature" />
+        <input class="btn-xs btn-info pull-left" type="submit" value="كل الاحداث" id="all" />
+    </div>
+
+}
+<br />
+<h3 class="text-center">الأحداث العلمية</h3>
+
+@if ((Model.UserBadge) != null || (User.IsInRole("Admins")))
+{
+    <a asp-action="Create" class="btn btn-success h6">إضافة حدث جديد</a>
+}
+else
+{ <h5>خيار الاعلان عن حدث في منصة اريد متاح لمن حصل على وسام باحث مبادر</h5>}
+
+<div class="row">
+    <div class="col-lg-8">
+        @foreach (var item in Model.ScientificEvents)
+        {
+            <div class="container table-bordered col-lg-12" style="background-color:ghostwhite;border-color:ActiveCaption;padding:10px;margin-top:10px;margin-bottom:10px">
+                <a class="text-primary" asp-controller="ScientificEvents" asp-action="Details" asp-route-id="@item.Id">
+                    <img class="img-rounded  pull-right" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + item.Image)" width="100" height="100" />
+                    <h4>&nbsp; <strong>@item.EventNameAr</strong></h4>
+                </a>
+                <div class="pull-left" style="position:absolute;bottom:10px;left:10px">
+                    @if (item.IsFeatured == true)
+                    {<h5 style="display:inline"><span class="label label-warning">"مميز"</span></h5>}
+                    <h5 style="display:inline"><span class="label label-default">@Html.DisplayFor(e => item.EventType)</span></h5>
+                    <h5 style="display:inline"><span class="label label-info">@item.EventDate.ToString("dd/M/yyyy")</span></h5>
+                    <h5 style="display:inline"><span class="label label-primary">@item.Country.ArCountryName</span></h5>
+                    <h5 style="display:inline"><span class="label label-success">@item.Speciality.Name</span></h5>
+                    @if (User.IsInRole("Admins")|| currentUser.Id==item.ApplicationUserId)
+                    {
+
+                        <div class="dropdown" style="display:inline;">
+                            <button class="btn-xs btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+                                <small><span class="glyphicon glyphicon-cog"></span></small>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a asp-action="Edit" asp-controller="ScientificEvents" asp-route-id="@item.Id">تعديل</a></li>
+                                @if (User.IsInRole("Admins")) { 
+                                <li><a asp-action="Edit" asp-controller="ScientificEvents" asp-route-id="@item.Id">حذف</a></li>}
+                            </ul>
+                        </div>
+                    }
+                </div>
+                <br />
+            </div>
+        }
+        @if (Model.ScientificEvents.Count() > 10)
+        {
+            <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+                 page-class="btn border" page-class-normal="btn btn-default active"
+                 page-class-selected="btn btn-success active" class="btn-group m-1"></div>
+        }
+
+    </div>
+    <div class="col-lg-4">
+        <h3 class="text-center">أحداث مميزة</h3>
+        <hr style=" border-top:3px solid #275bad;">
+
+        @foreach (var item in Model.ScientificEvents)
+        {
+            @if (item.IsFeatured == true)
+            {
+                <div class="text-center">
+                    <h5 style="display:inline"><span class="label label-default">@Html.DisplayFor(e => item.EventType)</span></h5>
+                    <h5 style="display:inline"><span class="label label-info">@item.EventDate.ToString("dd/M/yyyy")</span></h5>
+                    <h5 style="display:inline"><span class="label label-primary">@item.Country.ArCountryName</span></h5>
+                    <h5 style="display:inline"><span class="label label-success">@item.Speciality.Name</span></h5>
+                </div><br />
+                <div class="text-center">
+                    <a class="text-center text-primary" asp-action="Details" asp-route-id="@item.Id">
+                        <img class="img-rounded center-block" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + item.Image)" width="300" height="200" />
+                        <h4 style="display:inline"><strong>@item.EventNameAr</strong></h4>
+                    </a>
+                </div>
+                <hr style="border-top:3px solid #275bad;">
+
+            }
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            $("#form").hide();
+            $("#span").css('cursor', 'pointer');
+            $("#spanx").css('cursor', 'pointer');
+            $("#span").click(function () {
+                $("#form").slideToggle("slow");
+
+                //$("#span").toggleClass(".glyphicon glyphicon-remove");
+
+            });
+            $("#spanx").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+            $("#searchreported").click(function () {
+                $("#in").attr('value', 'reported')
+                $('#search').trigger('click');
+            });
+            $("#searchfeature").click(function () {
+                $("#in").attr('value', 'featured')
+                $('#search').trigger('click');
+            });
+            $("#all").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+        });
+    </script>
+
+}

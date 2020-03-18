@@ -1,0 +1,112 @@
+﻿@model ARID.Models.CourseChapterContent
+
+@{
+    ViewData["Title"] = "التعديل على المحتوى";
+}
+
+<h3 class="text-center">التعديل على المحتوى</h3>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <h4 class="text-center">@Model.Title</h4>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control input-sm" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" rows="5" class="form-control  input-sm"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Indx" class="control-label"></label>
+                <input asp-for="Indx" class="form-control input-sm" />
+                <span asp-validation-for="Indx" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseChapterId" class="control-label"></label>
+                <select asp-for="CourseChapterId" class="form-control input-sm" asp-items="ViewBag.CourseChapterId"></select>
+                <span asp-validation-for="CourseChapterId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContentType" class="control-label"></label>
+                <select disabled asp-for="ContentType" asp-items="Html.GetEnumSelectList<ContentType>()" class="form-control input-sm"></select>
+                <span asp-validation-for="ContentType" class="text-danger"></span>
+            </div>
+            @if (Model.ContentType == ContentType.website)
+            {
+                <div class="form-group">
+                    <label class="control-label">الرابط</label>
+                    <input type="url" asp-for="FilePath" class="form-control  input-sm" />
+                    <span asp-validation-for="FilePath" class="text-danger"></span>
+                </div>}
+            @if (Model.ContentType == ContentType.youtube)
+            {
+                <div class="form-group">
+                    <label class="control-label">youtube</label>
+                    <input type="url" asp-for="FilePath" class="form-control  input-sm" />
+                    <span asp-validation-for="FilePath" class="text-danger"></span>
+                </div>}
+            @if (Model.ContentType == ContentType.vimeo)
+            {
+                <div class="form-group">
+                    <label class="control-label">vimeo</label>
+                    <input type="url" asp-for="FilePath" class="form-control  input-sm" />
+                    <span asp-validation-for="FilePath" class="text-danger"></span>
+                </div>}
+            @if (Model.ContentType == ContentType.file)
+            {
+                <label class="control-label">الملف الحالي</label><br />
+                <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.FilePath)" width="280" height="200">
+                    @Html.DisplayFor(model => model.FilePath)
+                </a>
+                <div class="form-group">
+                    <label class="control-label">إضافة ملف</label>
+                    <input type="file" name="myfile" id="file" accept=".pdf" class="btn btn-primary col-lg-12" />
+                    <input asp-for="FilePath" id="fileinput" class="form-control" />
+                    <span asp-validation-for="FilePath" class="text-danger"></span>
+                </div>}
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control input-sm" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsFree" /> @Html.DisplayNameFor(model => model.IsFree)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsDownloadable" /> @Html.DisplayNameFor(model => model.IsDownloadable)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn-sm btn-success h5" />
+                <a asp-action="Details" asp-controller="Courses" asp-route-id="@Model.CourseChapter.CourseId" class="pull-left h5 btn-sm btn-primary">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

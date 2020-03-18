@@ -1,0 +1,36 @@
+﻿@model ARID.Models.UserExpertise
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Edit"]</h2>
+
+<h4>@Localizer["Index"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ApplicationUserId" />
+            <div class="form-group">
+                <label asp-for="ExpertiseId" class="control-label"></label>
+                <select asp-for="ExpertiseId" class="form-control" asp-items="ViewBag.ExpertiseId">
+                    <option disabled selected value="">@Localizer["SelectExpertise"]</option>
+                </select>
+                <span asp-validation-for="ExpertiseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["BackToList"]</a>
+</div>

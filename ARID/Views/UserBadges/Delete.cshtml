@@ -1,0 +1,77 @@
+@model ARID.Models.UserBadge
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>UserBadge</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="Id" />
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.ArName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BadgeId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Badge.ArBadgeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateofRequest)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateofRequest)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateofGrant)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateofGrant)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsGranted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsGranted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsRejected)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsRejected)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RejectCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RejectCount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RejectReason)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RejectReason)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Disabled)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Disabled)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

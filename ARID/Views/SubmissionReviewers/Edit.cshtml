@@ -1,0 +1,228 @@
+﻿@model ARID.Models.SubmissionReviewer
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>SubmissionReviewer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddAreaEditor">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="SubmissionId" class="control-label"></label>
+                <select asp-for="SubmissionId" class="form-control" asp-items="ViewBag.SubmissionId"></select>
+                <span asp-validation-for="SubmissionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewerUserId" class="control-label"></label>
+                <select asp-for="ReviewerUserId" class="form-control" asp-items="ViewBag.ReviewerUserId"></select>
+                <span asp-validation-for="ReviewerUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DueDate" class="control-label"></label>
+                <input asp-for="DueDate" class="form-control" />
+                <span asp-validation-for="DueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewerStatus" class="control-label"></label>
+                <select asp-for="ReviewerStatus" class="form-control"></select>
+                <span asp-validation-for="ReviewerStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsCertificateOfReviewingGranted" /> @Html.DisplayNameFor(model => model.IsCertificateOfReviewingGranted)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateRevisionCertificae" class="control-label"></label>
+                <input asp-for="DateRevisionCertificae" class="form-control" />
+                <span asp-validation-for="DateRevisionCertificae" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EICInstructions" class="control-label"></label>
+                <input asp-for="EICInstructions" class="form-control" />
+                <span asp-validation-for="EICInstructions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewerInstructionsToEIC" class="control-label"></label>
+                <input asp-for="ReviewerInstructionsToEIC" class="form-control" />
+                <span asp-validation-for="ReviewerInstructionsToEIC" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewerInstructionsToAuthor" class="control-label"></label>
+                <input asp-for="ReviewerInstructionsToAuthor" class="form-control" />
+                <span asp-validation-for="ReviewerInstructionsToAuthor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfRecord" class="control-label"></label>
+                <input asp-for="DateOfRecord" class="form-control" />
+                <span asp-validation-for="DateOfRecord" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewDate" class="control-label"></label>
+                <input asp-for="ReviewDate" class="form-control" />
+                <span asp-validation-for="ReviewDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CieAeUserId" class="control-label"></label>
+                <select asp-for="CieAeUserId" class="form-control" asp-items="ViewBag.CieAeUserId"></select>
+                <span asp-validation-for="CieAeUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DecisionDate" class="control-label"></label>
+                <input asp-for="DecisionDate" class="form-control" />
+                <span asp-validation-for="DecisionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewerDecisionToReview" class="control-label"></label>
+                <select asp-for="ReviewerDecisionToReview" class="form-control"></select>
+                <span asp-validation-for="ReviewerDecisionToReview" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsAccess" /> @Html.DisplayNameFor(model => model.IsAccess)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsNewInfo" /> @Html.DisplayNameFor(model => model.IsNewInfo)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsWithinJournalScope" /> @Html.DisplayNameFor(model => model.IsWithinJournalScope)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="AbstractCompatibility" /> @Html.DisplayNameFor(model => model.AbstractCompatibility)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsFormsAccepted" /> @Html.DisplayNameFor(model => model.IsFormsAccepted)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsPublishedPreviously" /> @Html.DisplayNameFor(model => model.IsPublishedPreviously)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsValuable" /> @Html.DisplayNameFor(model => model.IsValuable)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsRepeatedInfo" /> @Html.DisplayNameFor(model => model.IsRepeatedInfo)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResearchLength" class="control-label"></label>
+                <select asp-for="ResearchLength" class="form-control"></select>
+                <span asp-validation-for="ResearchLength" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TheoreticalResults" class="control-label"></label>
+                <select asp-for="TheoreticalResults" class="form-control"></select>
+                <span asp-validation-for="TheoreticalResults" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Method" class="control-label"></label>
+                <select asp-for="Method" class="form-control"></select>
+                <span asp-validation-for="Method" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsCommitted" class="control-label"></label>
+                <select asp-for="IsCommitted" class="form-control"></select>
+                <span asp-validation-for="IsCommitted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsMatchTitleContent" class="control-label"></label>
+                <select asp-for="IsMatchTitleContent" class="form-control"></select>
+                <span asp-validation-for="IsMatchTitleContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsModernSourcesAdopted" class="control-label"></label>
+                <select asp-for="IsModernSourcesAdopted" class="form-control"></select>
+                <span asp-validation-for="IsModernSourcesAdopted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsDiscussionDocumentedJustified" /> @Html.DisplayNameFor(model => model.IsDiscussionDocumentedJustified)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsInterpretedResult" /> @Html.DisplayNameFor(model => model.IsInterpretedResult)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Evaluation" class="control-label"></label>
+                <select asp-for="Evaluation" class="form-control"></select>
+                <span asp-validation-for="Evaluation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RecommendationToPublish" class="control-label"></label>
+                <select asp-for="RecommendationToPublish" class="form-control"></select>
+                <span asp-validation-for="RecommendationToPublish" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NotForPublicationReason" class="control-label"></label>
+                <input asp-for="NotForPublicationReason" class="form-control" />
+                <span asp-validation-for="NotForPublicationReason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Adjustments" class="control-label"></label>
+                <input asp-for="Adjustments" class="form-control" />
+                <span asp-validation-for="Adjustments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublishLocation" class="control-label"></label>
+                <input asp-for="PublishLocation" class="form-control" />
+                <span asp-validation-for="PublishLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewReportFile" class="control-label"></label>
+                <input asp-for="ReviewReportFile" class="form-control" />
+                <span asp-validation-for="ReviewReportFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -1,0 +1,718 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	
+
+	<PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>aspnet-ARID-416b1e41-7cde-484b-a9f3-c39bd47c0255</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Extensions\Controller.cs" />
+    <Compile Remove="Migrations\20180101140134_TD_Country_Members.cs" />
+    <Compile Remove="Migrations\20180101140134_TD_Country_Members.Designer.cs" />
+    <Compile Remove="Resources\Views.ApplicationUsers.Details.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
+  </ItemGroup>
+
+
+
+
+  <ItemGroup>
+    <PackageReference Include="cloudscribe.Web.Pagination" Version="2.1.0" />
+    <PackageReference Include="CoreCompat.System.Drawing.v2" Version="5.2.0-preview1-r131" />
+    <PackageReference Include="HangFire" Version="1.6.19" />
+    <PackageReference Include="jquery-qrcode" Version="1.0.0" />
+    <PackageReference Include="jquery.datatables" Version="1.10.15" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Localization.Routing" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Localization" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
+    <PackageReference Include="ReflectionIT.Mvc.Paging" Version="2.3.0" />
+    <PackageReference Include="Sendgrid" Version="9.9.0" />
+    <PackageReference Include="wilx.System.Linq.Dynamic.Core" Version="1.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Shared\SharedLang - Copy.Designer.cs">
+      <DependentUpon>SharedLang.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Views\Shared\SharedLang - Copy.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SharedLang.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Controllers\AccountController - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Controllers\AccountController.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Controllers\AccountController.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Controllers\ManageController - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Controllers\ManageController.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Controllers\ManageController.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AcademicActivity - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AcademicPosition - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccessType - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccessType.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccessType.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\ForgotPasswordViewModel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\LoginViewModel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\LoginWith2faViewModel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\LoginWithRecoveryCodeViewModel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\RegisterViewModel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\ResetPasswordViewModel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ActivityType - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ActivityType.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ActivityType.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ApplicationUser - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Badge - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\CalenderType - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\CalenderType.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\CalenderType.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\EducationalLevel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\GenderType - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\ChangePasswordViewModel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\EnableAuthenticatorViewModel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\IndexViewModel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\SetPasswordViewModel - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ProfileLink - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ProfileType - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ProfileType.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ProfileType.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Project - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ProjectState - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Publication - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\PublicationType - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\PublicationType.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\PublicationType.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\RelationType - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\RelationType.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\RelationType.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\StatusType - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\StatusType.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AcademicActivity.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AcademicActivity.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AcademicPosition.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AcademicPosition.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\ForgotPasswordViewModel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\ForgotPasswordViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\LoginViewModel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\LoginViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\LoginWith2faViewModel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\LoginWith2faViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\LoginWithRecoveryCodeViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\LoginWithRecoveryCodeViewModel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\RegisterViewModel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\RegisterViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\ResetPasswordViewModel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\AccountViewModels\ResetPasswordViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ApplicationUser.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ApplicationUser.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Badge.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Badge.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\EducationalLevel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\EducationalLevel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\GenderType.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\GenderType.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\ChangePasswordViewModel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\ChangePasswordViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\EnableAuthenticatorViewModel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\EnableAuthenticatorViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\IndexViewModel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\IndexViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\SetPasswordViewModel.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ManageViewModels\SetPasswordViewModel.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ProfileLink.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ProfileLink.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Project.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Project.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ProjectState.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ProjectState.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Publication.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Publication.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UILanguageType - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UILanguageType.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UILanguageType.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UserBadge - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UserBadge.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UserBadge.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\StatusType.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UserExpertise - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UserExpertise.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UserExpertise.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UserSkill - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UserSkill.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\UserSkill.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\AccessDenied - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\AccessDenied.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\AccessDenied.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ConfirmEmail - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ConfirmEmail.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ConfirmEmail.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ForgotPassword - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ForgotPasswordConfirmation - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\Lockout - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\Login - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\LoginWith2fa - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\LoginWithRecoveryCode - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\Register - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ResetPassword - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ResetPasswordConfirmation - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\SendDAL - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\SendDAL.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\SendDAL.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ForgotPassword.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ForgotPassword.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ForgotPasswordConfirmation.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ForgotPasswordConfirmation.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\Lockout.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\Lockout.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\Login.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\Login.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\LoginWith2fa.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\LoginWith2fa.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\LoginWithRecoveryCode.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\LoginWithRecoveryCode.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\Register.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\Register.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ResetPassword.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ResetPassword.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ResetPasswordConfirmation.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\ResetPasswordConfirmation.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\SignedOut - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\SignedOut.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Account\SignedOut.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\Badges - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\Details - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\Details.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\Details.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\Badges.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\Badges.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\RegisteredByMe - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\RegisteredByMe.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\RegisteredByMe.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\Search - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\Search.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\ApplicationUsers\Search.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\ChangePassword - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\ChangePassword.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\ChangePassword.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\EnableAuthenticator - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\EnableAuthenticator.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\EnableAuthenticator.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\GenerateRecoveryCodes - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\GenerateRecoveryCodes.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\GenerateRecoveryCodes.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\Index - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\Index.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\Index.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\ResetAuthenticator - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\ResetAuthenticator.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\ResetAuthenticator.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\SendVerificationEmail - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\SendVerificationEmail.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\SendVerificationEmail.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\SetPassword - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\SetPassword.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\SetPassword.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\TwoFactorAuthentication - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\TwoFactorAuthentication.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\TwoFactorAuthentication.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\_ManageNav - Copy.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\_ManageNav.ar.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Manage\_ManageNav.en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\lib\BootStrapTemplates\" />
+    <Folder Include="wwwroot\Community\" />
+    <Folder Include="wwwroot\Publications\" />
+    <Folder Include="wwwroot\Secured\" />
+    <Folder Include="wwwroot\ScientificEvent\" />
+    <Folder Include="wwwroot\Temp\" />
+    <Folder Include="wwwroot\NotificationsPhoto\" />
+    <Folder Include="wwwroot\UniversityLogos\" />
+    <Folder Include="wwwroot\ProfileImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\FreelancerComments\Create.cshtml" />
+    <None Include="Views\FreelancerComments\Delete.cshtml" />
+    <None Include="Views\FreelancerComments\Details.cshtml" />
+    <None Include="Views\FreelancerComments\Edit.cshtml" />
+    <None Include="Views\FreelancerComments\Index.cshtml" />
+    <None Include="Views\FreelancerPortfolios\Create.cshtml" />
+    <None Include="Views\FreelancerPortfolios\Delete.cshtml" />
+    <None Include="Views\FreelancerPortfolios\Details.cshtml" />
+    <None Include="Views\FreelancerPortfolios\Edit.cshtml" />
+    <None Include="Views\FreelancerPortfolios\Index.cshtml" />
+    <None Include="Views\FreelancerProjects\Create.cshtml" />
+    <None Include="Views\FreelancerProjects\Delete.cshtml" />
+    <None Include="Views\FreelancerProjects\Details.cshtml" />
+    <None Include="Views\FreelancerProjects\Edit.cshtml" />
+    <None Include="Views\FreelancerProjects\Index.cshtml" />
+    <None Include="Views\FreelancerProposals\Create.cshtml" />
+    <None Include="Views\FreelancerProposals\Delete.cshtml" />
+    <None Include="Views\FreelancerProposals\Details.cshtml" />
+    <None Include="Views\FreelancerProposals\Edit.cshtml" />
+    <None Include="Views\FreelancerProposals\Index.cshtml" />
+    <None Include="Views\FreelancerRatings\Create.cshtml" />
+    <None Include="Views\FreelancerRatings\Delete.cshtml" />
+    <None Include="Views\FreelancerRatings\Details.cshtml" />
+    <None Include="Views\FreelancerRatings\Edit.cshtml" />
+    <None Include="Views\FreelancerRatings\Index.cshtml" />
+    <None Include="Views\FreelancerRecruiters\Create.cshtml" />
+    <None Include="Views\FreelancerRecruiters\Delete.cshtml" />
+    <None Include="Views\FreelancerRecruiters\Details.cshtml" />
+    <None Include="Views\FreelancerRecruiters\Edit.cshtml" />
+    <None Include="Views\FreelancerRecruiters\Index.cshtml" />
+    <None Include="Views\FreelancerSkillVerifications\Create.cshtml" />
+    <None Include="Views\FreelancerSkillVerifications\Delete.cshtml" />
+    <None Include="Views\FreelancerSkillVerifications\Details.cshtml" />
+    <None Include="Views\FreelancerSkillVerifications\Edit.cshtml" />
+    <None Include="Views\FreelancerSkillVerifications\Index.cshtml" />
+    <None Include="Views\MOOCLists\Create.cshtml" />
+    <None Include="Views\MOOCLists\Delete.cshtml" />
+    <None Include="Views\MOOCLists\Details.cshtml" />
+    <None Include="Views\MOOCLists\Edit.cshtml" />
+    <None Include="Views\MOOCLists\Index.cshtml" />
+    <None Include="Views\MOOCProviderFollowers\Create.cshtml" />
+    <None Include="Views\MOOCProviderFollowers\Delete.cshtml" />
+    <None Include="Views\MOOCProviderFollowers\Details.cshtml" />
+    <None Include="Views\MOOCProviderFollowers\Edit.cshtml" />
+    <None Include="Views\MOOCProviderFollowers\Index.cshtml" />
+    <None Include="Views\MOOCProviders\Create.cshtml" />
+    <None Include="Views\MOOCProviders\Delete.cshtml" />
+    <None Include="Views\MOOCProviders\Details.cshtml" />
+    <None Include="Views\MOOCProviders\Edit.cshtml" />
+    <None Include="Views\MOOCProviders\Index.cshtml" />
+    <None Include="Views\PublicationTitles\Create.cshtml" />
+    <None Include="Views\PublicationTitles\Delete.cshtml" />
+    <None Include="Views\PublicationTitles\Details.cshtml" />
+    <None Include="Views\PublicationTitles\Edit.cshtml" />
+    <None Include="Views\PublicationTitles\Index.cshtml" />
+    <None Include="Views\Publishers\Create.cshtml" />
+    <None Include="Views\Publishers\Delete.cshtml" />
+    <None Include="Views\Publishers\Details.cshtml" />
+    <None Include="Views\Publishers\Edit.cshtml" />
+    <None Include="Views\Publishers\Index.cshtml" />
+    <None Include="Views\ScientificEvents\Create.cshtml" />
+    <None Include="Views\ScientificEvents\Delete.cshtml" />
+    <None Include="Views\ScientificEvents\Edit.cshtml" />
+    <None Include="Views\ScientificEvents\Index.cshtml" />
+    <None Include="Views\Shared\_ArInformationPart.cshtml" />
+    <None Include="Views\TicketReplies\Create.cshtml" />
+    <None Include="Views\TicketReplies\Delete.cshtml" />
+    <None Include="Views\TicketReplies\Details.cshtml" />
+    <None Include="Views\TicketReplies\Edit.cshtml" />
+    <None Include="Views\TicketReplies\Index.cshtml" />
+    <None Include="Views\Tickets\Create.cshtml" />
+    <None Include="Views\Tickets\Delete.cshtml" />
+    <None Include="Views\Tickets\Details.cshtml" />
+    <None Include="Views\Tickets\Edit.cshtml" />
+    <None Include="Views\Tickets\Index.cshtml" />
+    <None Include="Views\Tickets\List.cshtml" />
+    <None Include="wwwroot\DinkToPdf\libwkhtmltox.dll" />
+    <None Include="wwwroot\Rotativa\wkhtmltoimage.exe" />
+    <None Include="wwwroot\Rotativa\wkhtmltopdf.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Communities\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Posts\Featured.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Posts\UnSolved.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Posts\Solved.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Posts\List.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+</Project>

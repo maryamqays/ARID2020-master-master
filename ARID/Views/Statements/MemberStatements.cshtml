@@ -1,0 +1,57 @@
+﻿@model ARID.Models.StatementViewModel
+
+@{
+    ViewData["Title"] = "معلومات التحويل";
+}
+
+<h1>العمليات التي قمت بإجرائها في بوابة فلسبي</h1>
+<h2>&nbsp;</h2><hr />
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Statement.RecordDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statement.Details)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statement.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Statement.Destination)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Statement.ApplicationUserId)
+            </th>*@
+          
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Statements)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Details)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Destination)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.ArName)
+                </td>*@
+             
+            </tr>
+        }
+    </tbody>
+</table>
+<div page-model="@Model.PagingInfo" page-action="MemberStatements" page-classes-enabled="true"
+     page-class="btn border" page-class-normal="btn btn-primary active"
+     page-class-selected="btn btn-success active" class=" text-center"></div>
+

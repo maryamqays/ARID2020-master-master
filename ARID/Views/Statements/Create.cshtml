@@ -1,0 +1,54 @@
+﻿@model ARID.Models.Statement
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>إضافة عملية</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" asp-route-uid="@ViewData["userid"]">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RecordDate" class="control-label"></label>
+                <input asp-for="RecordDate" class="form-control" />
+                <span asp-validation-for="RecordDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Details" class="control-label"></label>
+                <textarea asp-for="Details" class="form-control"></textarea>
+                <span asp-validation-for="Details" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Destination" /> @Html.DisplayNameFor(model => model.Destination)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <input asp-for="ApplicationUserId" value="@ViewData["userid"]" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BalanceType" class="control-label"></label>
+                <select asp-for="BalanceType" class="form-control" asp-items="Html.GetEnumSelectList<BalanceType>()"></select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="معالجة" class="btn btn-success" />
+                <a class="btn btn-primary" asp-action="UserStatements" asp-route-id="@ViewData["userid"]">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

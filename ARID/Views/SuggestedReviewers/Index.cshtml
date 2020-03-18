@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ARID.Models.SuggestedReviewer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CanReviewEnglish)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CanReviewArabic)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReasonForSuggesion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SuggestionStatus)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Manuscript)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReviewerUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanReviewEnglish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CanReviewArabic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReasonForSuggesion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SuggestionStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manuscript.ArAbstract)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewerUser.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

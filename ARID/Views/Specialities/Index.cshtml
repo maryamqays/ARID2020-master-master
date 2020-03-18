@@ -1,0 +1,42 @@
+@model IEnumerable<ARID.Models.Speciality>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Title"]</h2>
+
+
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnSpecialityName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnSpecialityName)
+                </td>
+                <td>
+
+                    <a asp-controller="ApplicationUsers" asp-action="FilterBySpeciality" asp-route-specialityAr="@item.Name" asp-route-specialityEn="@item.EnSpecialityName" asp-route-specialityId="@item.Id">@Localizer["Users"]</a>
+
+                  
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

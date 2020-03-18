@@ -1,0 +1,141 @@
+﻿@model IEnumerable<ARID.Models.ApplicationUser>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Index";
+}
+@*@section styles{
+        <link href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css" type="text/css" rel="stylesheet" />
+    }*@
+<br>
+
+<table id="table1" class="table-hover table table-striped table-bordered dt-responsive">
+    <thead class="display">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ARID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UniversityId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacultyId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CityId)
+            </th>
+        </tr>
+    </thead>
+    <tfoot class="thin-border-bottom">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ARID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UniversityId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacultyId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CityId)
+            </th>
+        </tr>
+    </tfoot>
+    <tbody></tbody>
+</table>
+
+@section Scripts {
+    <script>
+            $(document).ready(function () {
+                $('#table1').DataTable({
+                    "serverSide": true,
+                    "oredr": [1, "asc"],
+                    "processing": true,
+                    ajax: {
+                        url: "/api/ApplicationUsers",
+                       // dataSrc: "", // this must not be used
+                        datatype: "json",
+                        type: "POST"
+                    },
+                    columns: [
+                        {
+                            data: "arid",
+                            render: function (data, type, appuser) {
+                                if (data == "0000-0000") {
+                                    return "<a href='"
+                                        + "Details/"
+                                        + appuser.id + "' target='blank'>"
+                                        + appuser.arid + "</a>";
+                                }
+                                else {
+                                    return "<a href='"
+                                        + "Details/"
+                                        + appuser.id + "' target='blank'>"
+                                        + appuser.arid + "</a>";
+                                }
+                            }
+                        },
+                        {
+                            data: "arName",
+                            render: function (data, type, appuser) {
+                                return "<a href='"
+                                    + "Details/"
+                                    + appuser.id + "' target='blank'>"
+                                    + appuser.arName + "</a>";
+                            }
+                        },
+                        {
+                            data: "enName",
+                            render: function (data, type, appuser) {
+                                return "<a href='"
+                                    + "Details/"
+                                    + appuser.id + "' target='blank'>"
+                                    + appuser.enName + "</a>";
+                            }
+                        },
+                        { data: "university" },
+                        { data: "faculty" },
+                        { data: "country" },
+                        { data: "city" }
+                    ],
+                    "oLanguage":
+                    {
+                        "processing": "@Localizer["Processing"]",
+                        "sSearch": "@Localizer["Search"]",
+                        "oPaginate":
+                        {
+                            "sPrevious": "@Localizer["Previous"]",
+                            "sNext": "@Localizer["Next"]"
+                        },
+                        "sLengthMenu": "@Localizer["Show"] _MENU_ @Localizer["Records"]",
+                        //"sLengthMenu": '@Localizer["Show"] <select>'+
+                        //'<option value="1">1</option>' +
+                        //'<option value="2">2</option>' +
+                        //'</select> @Localizer["Records"]',
+                        "sInfo": "@Localizer["Show"] _START_ @Localizer["To"] _END_" @*@Localizer["OFTotal"] _TOTAL_ @Localizer["Records"]"*@
+                    }
+                });
+            });
+    </script>
+}

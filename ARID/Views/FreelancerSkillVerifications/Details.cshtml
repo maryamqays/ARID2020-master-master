@@ -1,0 +1,78 @@
+﻿@model ARID.Models.FreelancerSkillVerification
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FreelancerSkillVerification</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Details)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Details)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVerified)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsVerified)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsArabic)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsArabic)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsEnglish)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsEnglish)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SinceDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SinceDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Certificates)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Certificates)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExternalLink)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExternalLink)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Skill)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Skill.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VerifiedByUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VerifiedByUser.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

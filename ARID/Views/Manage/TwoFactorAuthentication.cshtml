@@ -1,0 +1,52 @@
+@model TwoFactorAuthenticationViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = @Localizer["Title"];
+    ViewData.AddActivePage(ManageNavPages.TwoFactorAuthentication);
+}
+
+<h4>@ViewData["Title"]</h4>
+@if (Model.Is2faEnabled)
+{
+    if (Model.RecoveryCodesLeft == 0)
+    {
+        <div class="alert alert-danger">
+            <strong>@Localizer["Youhavenorecoverycodesleft"]</strong>
+            <p>@Localizer["Youmust"] <a asp-action="GenerateRecoveryCodes">@Localizer["generate1"]</a> @Localizer["beforeyoucan"].</p>
+        </div>
+    }
+    else if (Model.RecoveryCodesLeft == 1)
+    {
+        <div class="alert alert-danger">
+            <strong>@Localizer["Youhave1recoverycodeleft"]</strong>
+            <p>@Localizer["Youcan"] <a asp-action="GenerateRecoveryCodes">@Localizer["generate1"]</a>.</p>
+        </div>
+    }
+    else if (Model.RecoveryCodesLeft <= 3)
+    {
+        <div class="alert alert-warning">
+            <strong>@Localizer["Youhave"] @Model.RecoveryCodesLeft @Localizer["recoverycodesleft"].</strong>
+            <p>@Localizer["Youshould"] <a asp-action="GenerateRecoveryCodes">@Localizer["generate1"]</a>.</p>
+        </div>
+    }
+
+    <a asp-action="Disable2faWarning" class="btn btn-default">@Localizer["Disable2FA"]</a>
+    <a asp-action="GenerateRecoveryCodes" class="btn btn-default">@Localizer["Resetrecoverycodes"]</a>
+}
+
+<h5>@Localizer["Authenticatorapp"]</h5>
+@if (!Model.HasAuthenticator)
+{
+    <a asp-action="EnableAuthenticator" class="btn btn-default">@Localizer["Configureauthenticatorapp"]</a>
+}
+else
+{
+    <a asp-action="EnableAuthenticator" class="btn btn-default">@Localizer["Configureauthenticatorapp"]</a>
+    <a asp-action="ResetAuthenticatorWarning" class="btn btn-default">@Localizer["Addauthenticatorapp"]</a>
+}
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

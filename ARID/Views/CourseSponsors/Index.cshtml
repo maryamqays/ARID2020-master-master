@@ -1,0 +1,93 @@
+﻿@model ARID.Models.CourseSponsorViewModel
+@{
+    ViewData["Title"] = "قائمة الجهات الراعية";
+}
+<br />
+<br />
+<div class="form-group row col-lg-12">
+    <div class="col-lg-2">
+        <span class="glyphicon glyphicon-search" id="span" title="بحث"></span>
+        <span class="glyphicon glyphicon-remove" id="spanx" title="الغاء نتائج البحث"></span>
+    </div>
+    <div class="col-lg-6">
+        <form asp-controller="Courses" asp-action="Index" id="form" class="row">
+            <p>
+                <input id="in" type="text" name="SearchString">
+                <input type="submit" value="بحث" id="search" />
+            </p>
+        </form>
+    </div>
+</div>
+<h2>قائمة الجهات الراعية</h2>
+<p>
+    <a asp-action="Create" class="btn btn-success">أضف جهة راعية </a>
+</p>
+<div class="row">
+    <div class="col-lg-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CourseSponsor.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CourseSponsor.Indx)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CourseSponsor.CourseId)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CourseSponsors)
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Name)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Indx)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course.ArName)
+                        </td>
+                        <td>
+                            @if (User.IsInRole("Admins"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn border" page-class-normal="btn btn-default active"
+     page-class-selected="btn btn-success active" class="btn-group m-1"></div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $("#form").hide();
+            $("#span").css('cursor', 'pointer');
+            $("#spanx").css('cursor', 'pointer');
+            $("#span").click(function () {
+                $("#form").slideToggle("slow");
+
+                //$("#span").toggleClass(".glyphicon glyphicon-remove");
+
+            });
+            $("#spanx").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+
+        });
+    </script>
+
+}

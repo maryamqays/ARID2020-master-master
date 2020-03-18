@@ -1,0 +1,113 @@
+﻿@model ARID.Models.CommitteeViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+<hr />
+<div class="col-lg-12">
+    <div class="col-lg-6">
+        <h2>إنجازات العضو</h2>
+        <div class="row">
+            <table class="table-hover table table-striped table-bordered dt-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommitteeAchievement.DateOfRecord)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommitteeAchievement.AchievementType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CommitteeAchievement.Description)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CommitteeAchievements)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateOfRecord)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AchievementType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @if (User.IsInRole("Admins") || item.ApplicationUserId == currentUser.Id)
+                                {
+                                    <a asp-action="Edit" asp-controller="CommitteeProfiles" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+
+                                }
+                                @if (User.IsInRole("Admins"))
+                                {
+                                    <a asp-action="Delete" asp-controller="CommitteeProfiles" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <p>
+            <a asp-action="Create" asp-controller="CommitteeAchievements" asp-route-cid="@ViewData["CommitteeProfileId"]" class="btn btn-success">أضف إنجاز</a>
+        </p>
+
+    </div>
+    <div class="col-lg-2"></div>
+    <div class="col-lg-4">
+        <h2>معلومات عن العضو</h2>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.ApplicationUserId)
+            </dt>
+            <dd>
+                <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.CommitteeProfile.ApplicationUser.Id">
+                    @Html.DisplayFor(model => model.CommitteeProfile.ApplicationUser.ArName)
+                </a>
+                <br />
+                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + Model.CommitteeProfile.ApplicationUser.ProfileImage)" width="50" height="50" /><br />
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.Committee)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CommitteeProfile.Committee.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.JoinDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CommitteeProfile.JoinDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.Task)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CommitteeProfile.Task)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.IsActive)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CommitteeProfile.IsActive)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.IsCommitteeAdmin)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CommitteeProfile.IsCommitteeAdmin)
+            </dd>
+        </dl>
+        <a asp-controller="Committees" asp-action="Details" asp-route-id="@Model.CommitteeProfile.CommitteeId" class="btn btn-success">العودة الى قائمة الاعضاء</a>
+    </div>
+</div>

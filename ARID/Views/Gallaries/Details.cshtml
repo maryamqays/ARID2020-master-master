@@ -1,0 +1,42 @@
+﻿@model ARID.Models.Gallary
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Gallary</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OriginalImage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OriginalImage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ThumbImage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ThumbImage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

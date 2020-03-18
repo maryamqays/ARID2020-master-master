@@ -1,0 +1,137 @@
+﻿@model ARID.Models.RegistrationFormViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+@{
+    ViewData["Title"] = Html.DisplayFor(model => model.RegistrationForm.Name);
+}
+<h2> @Html.DisplayFor(model => model.RegistrationForm.Name)</h2>
+<div class="row">
+    <div class="col-12">
+
+        <hr />
+        <div class="col-lg-8">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.RegistrationForm.Description)
+                </dt>
+                <dd>
+                    @Html.Raw(Model.RegistrationForm.Description)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RegistrationForm.IsActive)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RegistrationForm.IsActive)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RegistrationForm.CreationDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RegistrationForm.CreationDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RegistrationForm.ExpiryDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RegistrationForm.ExpiryDate)
+                </dd>
+            </dl>
+
+            @{
+                ApplicationUser currentUser = null;
+                currentUser = await UserManager.GetUserAsync(User);
+            }
+            @if (Model.RegistrationForm.IsActive == true)
+            {
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+
+                    if (Model.UserExpressInterests.Where(f => f.RegistrationFormId == Model.RegistrationForm.Id && f.ApplicationUserId == currentUser.Id).Count() > 0)
+                    {
+                        <a id="registerbtn" class="btn btn-default">الغاء التسجيل</a>
+                    }
+                    else
+                    {
+                        @if (Model.RegistrationForm.IsEntBadgeRequired == true)
+                        {
+                            if (ViewData["BadgeStatus"] == "false")
+                            {
+                                <h3 align="center" style="color:red">لايمكنك التسجيل. التسجيل متاح لمن حصل على وسام باحث مبادر</h3>
+                            }
+                            else
+                            { <h4>نسعد بتسجيلك، ان كنت متيقنا من رغبتكم في ذلك؛ حيث أن التسجيل العشوائي يسبب إرباكا لإدارة المنصة.</h4>
+                                <a OnClientClick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بعملية الحذف؟');" id="registerbtn" class="btn btn-success">تسجيل</a>}
+                        }
+                        else
+                        { <h4>نسعد بتسجيلك، ان كنت متيقنا من رغبتكم في ذلك؛ لأن المقاعد محدودة، و التسجيل العشوائي قد يسبب إرباكا لإدارة المنصة.</h4>
+                            <a OnClientClick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بعملية الحذف؟');" id="registerbtn" class="btn btn-success">تسجيل</a>}
+                                            }
+                }
+            }
+            else
+            {<h3 align="center" style="color:red">تم اغلاق التسجيل</h3>}
+
+
+        </div>
+        <div class="col-lg-4">
+            <h3>الاعضاء المسجلون</h3>
+            @foreach (var item in Model.UserExpressInterests)
+            {
+
+                <a title="@Html.DisplayFor(modelitem => item.ApplicationUser.ArName)" target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId">
+                    @if (item.ApplicationUser.ProfileImage != null)
+                    {
+                        <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + item.ApplicationUser.ProfileImage)" width="50" height="50" />
+                    }
+                    else
+                    { <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + "149071.png")" width="50" height="50" />}
+                </a>
+            }
+        </div>
+    </div>
+    @*<a id="registerbtn" class="btn btn-success">تسجيل جديد</a>*@
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#registerbtn").click(
+                function () {
+                    if ($("#registerbtn").text() == "تسجيل")
+                    {
+                        if (confirm('الرجاء تأكيد التسجيل')) {
+                              var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/RegistrationForms/Register/";
+                        //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                        FollowOptions.data = { id: "@Model.RegistrationForm.Id" };
+                        FollowOptions.success = function () {
+                            $("#registerbtn").prop("text", "الغاء التسجيل");
+                        };
+
+                   $.ajax(FollowOptions);
+                            alert('تم تسجيلكم بنجاح');
+                        } else {
+                            alert('لم يتم التسجيل');
+                        }
+                      
+                    }
+                    else
+                    {
+                        var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/RegistrationForms/UnRegister/";
+                        FollowOptions.data = { id: "@Model.RegistrationForm.Id" };
+                        FollowOptions.success = function () {
+                            $("#registerbtn").prop("text", "تسجيل");
+                        };
+                        $.ajax(FollowOptions);
+                    }
+                });
+        });
+
+      
+    </script>
+}

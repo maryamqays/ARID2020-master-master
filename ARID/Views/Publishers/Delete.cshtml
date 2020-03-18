@@ -1,0 +1,175 @@
+﻿@model ARID.Models.Publisher
+@{
+    ViewData["Title"] = "Delete";
+}
+<div>
+    <h1>حذف دار النشر</h1>
+    <hr />
+    <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ArName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ArName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EnName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EnName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd>
+                @Html.Raw(Model.Description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Logo)
+            </dt>
+            <dd>
+                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Logo)" width="280" height="200" />
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EstablishmentDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EstablishmentDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateOfRecord)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DateOfRecord)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.RegistrationNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.RegistrationNumber)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IsAdminAccepted)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsAdminAccepted)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IsVisible)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsVisible)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IsFeatured)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsFeatured)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Website)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Website)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Fb)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Fb)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Twitter)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Twitter)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ContactUs)
+            </dt>
+            <dd>
+                @Html.Raw(Model.ContactUs)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Languages)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Languages)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Tags)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Tags)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ReportType)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ReportType)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ApplicationUser)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ApplicationUser.Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Country)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Country.ArCountryName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Speciality)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Speciality.Name)
+            </dd>
+        </div>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="حذف" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-primary">العودة لاى القائمة</a>
+    </form>
+</div>
+<style>
+    .form-border {
+        border: 1px solid #bbb9b9;
+        border-radius: 5px;
+        padding-top: 30px;
+        padding-bottom: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .custom-label {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 20px;
+        line-height: 1.4285;
+        color: #555;
+    }
+</style>

@@ -1,0 +1,130 @@
+﻿@model ARID.Models.Publication
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Delete"]</h2>
+
+<h3>@Localizer["Sure"]</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PublicationType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublicationType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArAuthors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArAuthors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnAuthors)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnAuthors)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArAbstract)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArAbstract)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnAbstract)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnAbstract)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Keywords)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Keywords)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PublicationDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PublicationDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.VolumeNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.VolumeNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IssueNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IssueNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ISSN)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ISSN)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DOI)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DOI)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pages)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pages)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FileLink)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FileLink)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExternalLink)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExternalLink)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DownloadHits)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DownloadHits)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="submit" value="@Localizer["Delete"]" class="btn btn-default" />
+        <a asp-action="Index">@Localizer["BackToList"]</a>
+    </form>
+</div>

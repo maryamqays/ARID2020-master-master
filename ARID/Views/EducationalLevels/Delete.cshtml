@@ -1,0 +1,46 @@
+﻿@model ARID.Models.EducationalLevel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Delete"]</h2>
+
+<h3>@Localizer["Sure"]</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Indx)</dt>
+        <dd>@Html.DisplayFor(model => model.Indx)</dd>
+        <dt>@Html.DisplayNameFor(model => model.AcademicDegreeId)</dt>
+        <dd>@Html.DisplayFor(model => model.AcademicDegree.ArDegreeName)</dd>
+        <dt>@Html.DisplayNameFor(model => model.SpecialityId)</dt>
+        <dd>@Html.DisplayFor(model => model.Speciality.Name)</dd>
+        <dt>@Html.DisplayNameFor(model => model.FacultyId)</dt>
+        <dd>@Html.DisplayFor(model => model.Faculty.ArFacultyName)</dd>
+        <dt>@Html.DisplayNameFor(model => model.UniversityId)</dt>
+        <dd>@Html.DisplayFor(model => model.University.ArUniversityName)</dd>
+        <dt>@Html.DisplayNameFor(model => model.ArCertificateName)</dt>
+        <dd>@Html.DisplayFor(model => model.ArCertificateName)</dd>
+        <dt>@Html.DisplayNameFor(model => model.EnCertificateName)</dt>
+        <dd>@Html.DisplayFor(model => model.EnCertificateName)</dd>
+        <dt>@Html.DisplayNameFor(model => model.ArDescription)</dt>
+        <dd>@Html.DisplayFor(model => model.ArDescription)</dd>
+        <dt>@Html.DisplayNameFor(model => model.EnDescription)</dt>
+        <dd>@Html.DisplayFor(model => model.EnDescription)</dd>
+        <dt>@Html.DisplayNameFor(model => model.IsCurrent)</dt>
+        <dd>@Html.DisplayFor(model => model.IsCurrent)</dd>
+        <dt>@Html.DisplayNameFor(model => model.FromYear)</dt>
+        <dd>@Html.DisplayFor(model => model.FromYear)</dd>
+        <dt>@Html.DisplayNameFor(model => model.ToYear)</dt>
+        <dd>@Html.DisplayFor(model => model.ToYear)</dd>        
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="submit" value="@Localizer["Delete"]" class="btn btn-default"/>
+        <a asp-action="Index">@Localizer["BackToList"]</a>
+    </form>
+</div>

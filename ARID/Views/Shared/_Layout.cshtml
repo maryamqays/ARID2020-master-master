@@ -1,0 +1,865 @@
+﻿<!DOCTYPE html>
+@*
+              7:12 م
+    الأحد، 15 مارس 2020 (غرينتش+8)
+    الوقت في Kajang, سلانغور
+*@
+
+@using Microsoft.AspNetCore.Identity
+@using ARID.Models
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@inject IViewLocalizer Localizer
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Localization
+@{ ApplicationUser currenUser = await UserManager.GetUserAsync(User); }
+
+@using Microsoft.AspNetCore.Localization.Routing
+@{
+    string urlsuffix = "";
+    @if (Url.ActionContext.RouteData.Values["id"] != null)
+    {
+        urlsuffix = "/" + ViewContext.RouteData.Values["controller"].ToString() +
+               "/" + ViewContext.RouteData.Values["action"].ToString() +
+               "/" + Url.ActionContext.RouteData.Values["id"].ToString();
+    }
+    else
+    {
+        urlsuffix = "/" + ViewContext.RouteData.Values["controller"].ToString() +
+               "/" + ViewContext.RouteData.Values["action"].ToString();
+    }
+}
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    List<SelectListItem> cultureItems = new List<SelectListItem>();
+    cultureItems.Add(new SelectListItem { Text = "عر", Value = "ar-LY" });
+    cultureItems.Add(new SelectListItem { Text = "En", Value = "en" });
+    //try
+    //{
+    //    cultureItems = ((RouteDataRequestCultureProvider)requestCulture.Provider).Options.SupportedCultures
+    //        .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName }).ToList();
+    //    cultureItems.Add(new SelectListItem { Text = "المملكة العربية السعودية", Value = "ar-LY" });
+    //    cultureItems.Add(new SelectListItem { Text = "اللغة العربية (عام)", Value = "ar-LY" });
+    //}
+    //catch (Exception ex)
+    //{
+    //    cultureItems.Add(new SelectListItem { Text = "العربية", Value = "ar-LY" });
+    //    cultureItems.Add(new SelectListItem { Text = "ENGLISH", Value = "en" });
+    //}
+}
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@{
+    ApplicationUser currentUser = null;
+    @if (SignInManager.IsSignedIn(User))
+    {
+        currentUser = await UserManager.GetUserAsync(User);
+    }
+}
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - @Localizer["AppName"]</title>
+    @*<link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.common-nova.min.css" />
+        <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.nova.min.css" />*@
+    @Html.Raw(JavaScriptSnippet.FullScript)
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+    </script>
+    @* Place Kendo UI scripts after jQuery *@
+    @*<script src="https://kendo.cdn.telerik.com/2019.1.115/js/kendo.all.min.js"
+                asp-fallback-src="~/lib/kendo-ui/js/kendo.all.min.js"
+                asp-fallback-test="window.kendo">
+        </script>*@
+    @*<script src="https://kendo.cdn.telerik.com/2019.1.115/js/kendo.aspnetmvc.min.js"
+                asp-fallback-src="~/lib/kendo-ui/js/kendo.aspnetmvc.min.js"
+                asp-fallback-test="kendo.data.transports['aspnetmvc-ajax']">
+        </script>*@
+    <environment names="Development">
+        @if (CultureInfo.CurrentCulture.Name.Contains("ar"))
+        {
+            @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-flatly.css" />
+                <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-rtl.css" />*@
+
+            <link rel="stylesheet" href="https://etangsto.sirv.com/Images/bootstrap-flatly.css" />
+            <link rel="stylesheet" href="https://etangsto.sirv.com/Images/bootstrap-rtl.css" />
+
+
+
+            @*<link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.common-nova.min.css" />
+                <link rel="stylesheet" href="~/lib/kendo-ui/styles/kendo.nova.min.css" />*@
+
+        }
+        else
+        {
+            @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-flatly.css" />*@
+            <link rel="stylesheet" href="https://etangsto.sirv.com/Images/bootstrap-flatly.css" />
+        }
+    </environment>
+    <environment names="Staging,Production">
+        @if (CultureInfo.CurrentCulture.Name.Contains("ar"))
+        {
+            @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-flatly.css" />
+                <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-rtl.css" />*@
+
+            <link rel="stylesheet" href="https://etangsto.sirv.com/Images/bootstrap-flatly.css" />
+            <link rel="stylesheet" href="https://etangsto.sirv.com/Images/bootstrap-rtl.css" />
+
+            @*<link rel="stylesheet"
+                href="https://kendo.cdn.telerik.com/2019.1.115/styles/kendo.common-nova.min.css"
+                asp-fallback-href="~/lib/kendo-ui/styles/kendo.common-nova.min.css"
+                asp-fallback-test-class="k-common-test-class"
+                asp-fallback-test-property="opacity" asp-fallback-test-value="0" />*@
+
+            @*<link rel="stylesheet"
+                href="https://kendo.cdn.telerik.com/2019.1.115/styles/kendo.nova.min.css"
+                asp-fallback-href="~/lib/kendo-ui/styles/kendo.nova.min.css"
+                asp-fallback-test-class="k-theme-test-class"
+                asp-fallback-test-property="opacity" asp-fallback-test-value="0" />*@
+
+
+
+        }
+        else
+        {
+            @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-flatly.css" />*@
+            <link rel="stylesheet" href="https://etangsto.sirv.com/Images/bootstrap-flatly.css" />
+        }
+        <link rel="stylesheet" href="~/css/site.css" />
+
+    </environment>
+
+    <style>
+
+        input::-webkit-input-placeholder,
+        textarea::-webkit-input-placeholder {
+            font-size: 16px;
+            line-height: 1;
+            text-align: center;
+            font-weight: 900;
+        }
+
+        body {
+            margin-top: 20px;
+        }
+    </style>
+
+</head>
+<body>
+    <div style="font-family:Calibri, Calibri;font-size:large;font-synthesis:weight">
+        @*<div class="container">
+                <div id="myCarousel2" class="carousel slide" style="background-color:darkseagreen">
+                    <a class="left carousel-control"></a>
+                    <a class="right carousel-control"></a>
+                    <div class="carousel-inner" role="listbox">
+                        <br />
+                        <table align="center">
+                            <tr>
+                                <td align="center">
+                                    <select id="cultureselect" name="culture" class="form-control"
+                                            asp-for="@requestCulture.RequestCulture.UICulture.Name"
+                                            asp-items="@cultureItems">
+                                        <option disabled selected value="">@Localizer["SelectLanguage"]</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <a style="color:white">(@DateTime.Now.Date.ToLongDateString()) (@DateTime.Now.ToLongTimeString())</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>*@
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse col-lg-12">
+                    <ul class="nav navbar-nav col-lg-11">
+                        <li>
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                                <img src="https://etangsto.sirv.com/Images/logo.png" alt="@Localizer["AppName"]" />
+                            </a>
+                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            if (await UserManager.IsInRoleAsync(currentUser, RoleName.Admins))
+                            {
+                                <li class="dPopdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-dashboard"></span>
+                                    </a>
+                                    <ul class="dropdown-menu nav" role="menu" aria-labelledby="dLabel">
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>المجلات</a>
+                                            <ul class="dropdown-menu sub">
+                                                <li><a asp-area="" asp-controller="Journals" asp-action="Index"> المجلات</a></li>
+                                                <li><a asp-area="" asp-controller="Volumes" asp-action="Index">مجلدات المجلات</a></li>
+                                                <li><a asp-area="" asp-controller="JournalIssues" asp-action="Index">اعداد المجلات</a></li>
+                                                <li><a asp-area="" asp-controller="AreaEditors" asp-action="Index">محرري الاقسام</a></li>
+                                                <li><a asp-area="" asp-controller="JournalPages" asp-action="Index">الصفحات</a></li>
+                                                <li><a asp-area="" asp-controller="JournalRepositories" asp-action="Index">الابحاث الجديدة </a></li>
+                                                <li><a asp-area="" asp-controller="JournalArticleTypes" asp-action="Index">مقالات المجلة </a></li>
+                                                <li><a asp-area="" asp-controller="ArticleTypes" asp-action="Index"> نوع المقالة</a></li>
+                                                <li><a asp-area="" asp-controller="FileTypes" asp-action="Index">نوع الملف </a></li>
+                                                <li><a asp-area="" asp-controller="JournalFileTypes" asp-action="Index">ملفات المجلة </a></li>
+                                                <li><a asp-area="" asp-controller="messages" asp-action="Index">الرسائل </a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>المجتمعات</a>
+                                            <ul class="dropdown-menu sub">
+                                                <li><a asp-area="" asp-controller="Communities" asp-action="Index">المجتمعات</a></li>
+                                                <li><a asp-area="" asp-controller="Posts" asp-action="List">مواضيع المجتمعات</a></li>
+                                                <li><a asp-area="" asp-controller="PostComments" asp-action="Index">التعليقات</a></li>
+                                                <li><a asp-area="" asp-controller="CommunityFollowers" asp-action="Index">المتابعون</a></li>
+                                                <li><a asp-area="" asp-controller="PostMetrics" asp-action="Index">سجل المواضيع</a></li>
+                                                <li><a asp-area="" asp-controller="CommentMetrics" asp-action="Index">سجل التعليقات</a></li>
+                                                <li><a asp-area="" asp-controller="PostRevisions" asp-action="Index">@Localizer["تعديل المنشور"]</a></li>
+                                                <li><a asp-area="" asp-controller="ScoreValues" asp-action="Index">نقاط السمعة</a></li>
+                                                <li><a asp-area="" asp-controller="ScoreLogs" asp-action="Index">سجل النقاط</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <b class="caret"></b>
+                                                مركز خدمات الباحثين
+                                            </a>
+                                            <ul class="dropdown-menu sub">
+                                                <li><a asp-area="" asp-controller="FreelancerReadyServices" asp-action="Index"> خدمات جاهزة</a></li>
+                                                <li><a asp-area="" asp-controller="FreelancerReadyServiceExtensions" asp-action="Index"> إضافات</a></li>
+                                                <li><a asp-area="" asp-controller="FreelancerProjects" asp-action="Index"> اضافة مشروع</a></li>
+                                                <li><a asp-area="" asp-controller="FreelancerProposals" asp-action="Index">المقترحات</a></li>
+                                                <li><a asp-area="" asp-controller="FreelancerRecruiters" asp-action="Index">الموكلين بالبحث</a></li>
+                                                <li><a asp-area="" asp-controller="FreelancerPortfolios" asp-action="Index">الاعمال المنجزة</a></li>
+                                                <li><a asp-area="" asp-controller="FreelancerSkillVerifications" asp-action="Index">كشف صحة معلومات المقدم</a></li>
+                                                <li><a asp-area="" asp-controller="FreelancerRatings" asp-action="Index"> تقييم العمل المنجز</a></li>
+                                                <li><a asp-area="" asp-controller="FreelancerComments" asp-action="Index">التعليقات</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>الأدلة</a>
+                                            <ul class="dropdown-menu sub">
+                                                <li><a asp-area="" asp-controller="ScientificEvents" asp-action="Index"> دليل الاحداث والمحافل العلمية</a></li>
+                                                <li><a asp-area="" asp-controller="PublicationTitles" asp-action="Index"> دليل المجلات العلمية</a></li>
+                                                <li><a asp-area="" asp-controller="Publishers" asp-action="Index"> دليل دور النشر العربية</a></li>
+                                                <li><a asp-area="" asp-controller="MOOCProviders" asp-action="Index"> دليل المساقات الهائلة المفتوحة عبر الإنترنت</a></li>
+                                                <li><a asp-area="" asp-controller="MOOCLists" asp-action="Index">الدورات والمحاضرات وورش العمل </a></li>
+                                                <li><a asp-area="" asp-controller="Committees" asp-action="Index">لجان منصة اريد </a></li>
+                                                <li><a asp-area="" asp-controller="RegistrationForms" asp-action="Index">استمارة جديدة</a></li>
+                                                <li><a asp-area="" asp-controller="UserExpressInterests" asp-action="Index">التسجيل</a></li>
+                                                <li><a asp-area="" asp-controller="SideAds" asp-action="Index">الاعلانات</a></li>
+                                                <li><a asp-area="" asp-controller="#" asp-action="Index"> دليل المجلات العلمية</a></li>
+                                                <li><a asp-area="" asp-controller="#" asp-action="Index"> دليل المراكز البحثية التطبيقية</a></li>
+                                                <li><a asp-area="" asp-controller="#" asp-action="Index"> دليل معارض الكتب العربية</a></li>
+                                                <li><a asp-area="" asp-controller="#" asp-action="Index"> دليل دور النشر العربية</a></li>
+                                                <li><a asp-area="" asp-controller="Blogs" asp-action="List">عرض المدونات</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>إدارة المستخدمين</a>
+                                            <ul class="dropdown-menu sub">
+                                                <li><a asp-area="" asp-controller="RoleAdmin" asp-action="Adduser">إضافة ادمن</a></li>
+                                                <li><a asp-area="" asp-controller="ApplicationUsers" asp-action="CheckBadgeRequirements">نقوصات باحث مبادر</a></li>
+                                                <li><a asp-area="" asp-controller="ApplicationUsers" asp-action="AdminSearch">@Localizer["ManageUsers"]</a></li>
+                                                <li><a asp-area="" asp-controller="ApplicationUsers" asp-action="Last100">@Localizer["Latest100"]</a></li>
+                                                <li><a asp-area="" asp-controller="ApplicationUsers" asp-action="FastSearch"><span class="glyphicon glyphicon-search"></span> @Localizer["FastSearch"]</a></li>
+                                                <li><a asp-area="" asp-controller="RoleAdmin" asp-action="Index">@Localizer["ManageRoles"]</a></li>
+                                                <li><a asp-area="" asp-controller="Notifications" asp-action="AdminIndex">@Localizer["Notifications"]</a></li>
+                                                <li><a asp-area="" asp-controller="NotificationLogs" asp-action="Index">@Localizer["NotificationLogs"]</a></li>
+                                                <li><a asp-area="" asp-controller="TicketCategories" asp-action="Index">مركز المساعدة</a></li>
+                                                <li><a asp-area="" asp-controller="Tickets" asp-action="List">جميع التذاكر</a></li>
+                                                <li><a asp-area="" asp-controller="Statements" asp-action="Search">كشف حساب عام</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> الدول و المدن</a>
+                                            <ul class="dropdown-menu sub">
+                                                <li><a asp-area="" asp-controller="Countries" asp-action="Index">@Localizer["Countries"]</a></li>
+                                                <li><a asp-area="" asp-controller="Cities" asp-action="Search">@Localizer["Cities"]</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b> التخصصات</a>
+                                            <ul class="dropdown-menu sub">
+                                                <li><a asp-area="" asp-controller="Specialities" asp-action="AdminIndex">@Localizer["Specialities"]</a></li>
+                                                <li><a asp-area="" asp-controller="Expertises" asp-action="Index">@Localizer["Expertises"]</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>الأوسمة</a>
+                                            <ul class="dropdown-menu sub">
+                                                <li><a asp-area="" asp-controller="Badges" asp-action="IndexAdmin">@Localizer["Badges"]</a></li>
+                                                <li><a asp-area="" asp-controller="UserBadges" asp-action="Index">@Localizer["UserBadges"]</a></li>
+                                                <li><a asp-area="" asp-controller="UserBadges" asp-action="Unapproved">@Localizer["Unapproved"]</a></li>
+                                                <li><a asp-area="" asp-controller="UserBadges" asp-action="UnGranted">@Localizer["UnGranted"]</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>المرسلين</a>
+                                            <ul class="dropdown-menu sub">
+                                                <li><a asp-area="" asp-controller="Senders" asp-action="Index">@Localizer["Senders"]</a></li>
+                                                <li><a asp-area="" asp-controller="EmailContents" asp-action="Index">@Localizer["EmailContents"]</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b>الجامعات والكليات </a>
+                                            <ul class="dropdown-menu sub">
+                                                <li><a asp-area="" asp-controller="Universities" asp-action="Search">@Localizer["Universities"]</a></li>
+                                                <li><a asp-area="" asp-controller="Faculties" asp-action="Search">@Localizer["Faculties"]</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="Skills" asp-action="Index">@Localizer["Skills"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="AcademicDegrees" asp-action="Index">@Localizer["AcademicDegrees"]</a></li>
+                                        <li><a asp-area="" asp-controller="PositionTypes" asp-action="Index">@Localizer["PositionTypes"]</a></li>
+                                        <li class="divider"></li>
+
+                                    </ul>
+                                </li>
+
+
+
+                            }
+                        }
+
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="dPopdown">
+                                <a href="#" title="خدمات المنصة" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <small><span class="glyphicon glyphicon-list-alt"></span></small>
+                                    <span class="caPet"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="dropdown">
+
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <small>
+                                                <span class="glyphicon glyphicon-education"></span>
+                                            </small>
+                                            مجلات علمية<b class="caret"></b>
+                                        </a>
+                                        <ul class="dropdown-menu sub">
+                                            <li><a asp-area="" asp-route-id="AIJST" asp-controller="Journals" asp-action="Home"><span class="glyphicon glyphicon-duplicate"></span> مجلة أريد الدولية للعلوم والتكنولوجيا</a></li>
+                                            <li><a asp-area="" asp-route-id="aijssh" asp-controller="Journals" asp-action="Home"><span class="glyphicon glyphicon-duplicate"></span> مَجلةُ أُريد الدَّوليةُ للعُلومِ الإنسانية والإجتماعية</a></li>
+                                            <li><a asp-area="" asp-route-id="AIJMSCS" asp-controller="Journals" asp-action="Home"><span class="glyphicon glyphicon-duplicate"></span> مَجلةُ أُريد الدَّوليةُ للدراسات الإعلامية وعلوم الإتصال</a></li>
+                                            <li><a asp-area="" asp-route-id="AIJI" asp-controller="Journals" asp-action="Home"><span class="glyphicon glyphicon-duplicate"></span> مجلة أُريد الدَّوليةُ لقياسات المعلومات</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a asp-area="" asp-controller="Blogs" asp-action="Index"><span class="glyphicon glyphicon-cog"></span> مدونة عالم</a></li>
+                                    <li><a asp-area="" asp-controller="Blogs" asp-action="List"><span class="glyphicon glyphicon-th"></span> عرض المدونات</a></li>
+                                    <li class="divider"></li>
+                                    <li><a asp-area="" asp-controller="Communities" asp-action="Index"><span class="glyphicon glyphicon-th"></span> المجتمعات العلمية</a></li>
+                                    <li class="divider"></li>
+                                    <li><a asp-area="" asp-controller="Groups" asp-action="Index"><span class="glyphicon glyphicon-th"></span> المجاميع البحثية</a></li>
+                                    <li class="divider"></li>
+                                    <li><a asp-area="" asp-controller="freelancerprojects" asp-action="Index"><span class="glyphicon glyphicon-th"></span> مركز خدمات الباحثين</a></li>
+                                </ul>
+                            </li>
+                            <li class="dPopdown">
+                                <a title="الملف الشخصي" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <small><span class="glyphicon glyphicon-user"></span></small>
+                                    <span class="caPet"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a asp-area="" asp-controller="Manage" asp-action="Index"><span class="glyphicon glyphicon-edit"></span> @Localizer["ProfileData"]</a></li>
+                                    <li><a href="~/@CultureInfo.CurrentCulture.Name/ApplicationUsers/Details/@currentUser.Id" target="_blank"><span class="glyphicon glyphicon-eye-open"></span> @Localizer["PublicProfile"]</a></li>
+                                    <li class="divider"></li>
+                                    <li><a asp-area="" asp-controller="EducationalLevels" asp-action="Index"><span class="glyphicon glyphicon-education"></span> @Localizer["EducationalLevels"]</a></li>
+                                    <li><a asp-area="" asp-controller="AcademicPositions" asp-action="Index"><span class="glyphicon glyphicon-menu-hamburger"></span> @Localizer["AcademicPositions"]</a></li>
+                                    <li><a asp-area="" asp-controller="TeachingExperiences" asp-action="Index"><span class="glyphicon glyphicon-text-size"></span> @Localizer["TeachingExperiences"]</a></li>
+                                    <li class="divider"></li>
+                                    <li><a asp-area="" asp-controller="Publications" asp-action="Index"><span class="glyphicon glyphicon-book"></span> @Localizer["Publications"]</a></li>
+                                    <li><a asp-area="" asp-controller="AcademicActivities" asp-action="Index"><span class="glyphicon glyphicon-tasks"></span> @Localizer["AcademicActivities"]</a></li>
+                                    <li><a asp-area="" asp-controller="Projects" asp-action="Index"><span class="glyphicon glyphicon-folder-close"></span> @Localizer["Projects"]</a></li>
+                                    <li class="divider"></li>
+                                    <li><a asp-area="" asp-controller="ProfileLinks" asp-action="Index"><span class="glyphicon glyphicon-new-window"></span> @Localizer["ExternalProfiles"]</a></li>
+                                    <li class="divider"></li>
+                                    <li><a asp-area="" asp-controller="UserExpertises" asp-action="Index"><span class="glyphicon glyphicon-indent-left"></span> @Localizer["UserExpertises"]</a></li>
+                                    <li><a asp-area="" asp-controller="UserSkills" asp-action="Index"><span class="glyphicon glyphicon-tags"></span> @Localizer["UserSkills"]</a></li>
+                                    <li class="divider"></li>
+                                    <li><a asp-area="" asp-controller="ApplicationUsers" asp-action="RegisteredByMe"><span class="glyphicon glyphicon-transfer"></span> @Localizer["RegisteredByMe"]</a></li>
+                                    <li><a asp-area="" asp-controller="Badges" asp-action="Index"><span class="glyphicon glyphicon-asterisk"></span> @Localizer["Badges"]</a></li>
+                                    <li><a asp-area="" asp-controller="Addresses" asp-action="Index"><span class="glyphicon glyphicon-asterisk"></span> @Localizer["Address"]</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dPopdown">
+                                <a title="الاسهامات" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <small><span class="glyphicon glyphicon-plus"></span></small>
+                                    <span class="caPet"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a title="دعوة باحث" class="nav-link text-dark" asp-area="" asp-controller="ApplicationUsers" asp-action="InviteFriend"><small><span class="glyphicon glyphicon-send"></span></small> دعوة باحث </a></li>
+                                    <li><a title="مركز المساعدة" class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index"><small><span class="glyphicon glyphicon-question-sign"></span></small> إضافة بطاقة دعم فني </a></li>
+                                    <li><a asp-area="" asp-controller="Blogs" asp-action="Index"><span class="glyphicon glyphicon-th"></span> نشر تدوينة</a></li>
+                                    <li><a asp-area="" asp-controller="Posts" asp-action="Create" asp-route-id="1420"><span class="glyphicon glyphicon-th"></span> سؤال في مجتمع البحث العلمي</a></li>
+                                    <li><a asp-area="" asp-controller="Publications" asp-action="Create"><span class="glyphicon glyphicon-th"></span> منشور علمي</a></li>
+                                    <li><a asp-area="" asp-controller="AcademicActivities" asp-action="Create"><span class="glyphicon glyphicon-th"></span> نشاط اكاديمي</a></li>
+                                    <li><a asp-area="" asp-controller="Projects" asp-action="Create"><span class="glyphicon glyphicon-th"></span> مشروع علمي</a></li>
+                                    <li><a asp-area="" asp-controller="freelancerprojects" asp-action="Create"><span class="glyphicon glyphicon-th"></span> مشروع في مركز خدمات الباحثين</a></li>
+                                </ul>
+                            </li>
+
+
+
+                            @*<li class="dPopdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        اللجان<span class="caPet"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a asp-area="" asp-controller="Committees" asp-action="Index"> اللجان</a></li>
+                                        <li><a asp-area="" asp-controller="CommitteeProfiles" asp-action="Index"> أضافة عضو الى اللجنة</a></li>
+                                    </ul>
+                                </li>*@
+                            @*<li class="dPopdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        @Localizer["Profile"]<span class="caPet"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a asp-area="" asp-controller="Manage" asp-action="Index"><span class="glyphicon glyphicon-edit"></span> @Localizer["ProfileData"]</a></li>
+                                        <li><a href="~/@CultureInfo.CurrentCulture.Name/ApplicationUsers/Details/@currentUser.Id" target="_blank"><span class="glyphicon glyphicon-eye-open"></span> @Localizer["PublicProfile"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="EducationalLevels" asp-action="Index"><span class="glyphicon glyphicon-education"></span> @Localizer["EducationalLevels"]</a></li>
+                                        <li><a asp-area="" asp-controller="AcademicPositions" asp-action="Index"><span class="glyphicon glyphicon-menu-hamburger"></span> @Localizer["AcademicPositions"]</a></li>
+                                        <li><a asp-area="" asp-controller="TeachingExperiences" asp-action="Index"><span class="glyphicon glyphicon-text-size"></span> @Localizer["TeachingExperiences"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="Publications" asp-action="Index"><span class="glyphicon glyphicon-book"></span> @Localizer["Publications"]</a></li>
+                                        <li><a asp-area="" asp-controller="AcademicActivities" asp-action="Index"><span class="glyphicon glyphicon-tasks"></span> @Localizer["AcademicActivities"]</a></li>
+                                        <li><a asp-area="" asp-controller="Projects" asp-action="Index"><span class="glyphicon glyphicon-folder-close"></span> @Localizer["Projects"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="ProfileLinks" asp-action="Index"><span class="glyphicon glyphicon-new-window"></span> @Localizer["ExternalProfiles"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="UserExpertises" asp-action="Index"><span class="glyphicon glyphicon-indent-left"></span> @Localizer["UserExpertises"]</a></li>
+                                        <li><a asp-area="" asp-controller="UserSkills" asp-action="Index"><span class="glyphicon glyphicon-tags"></span> @Localizer["UserSkills"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="ApplicationUsers" asp-action="RegisteredByMe"><span class="glyphicon glyphicon-transfer"></span> @Localizer["RegisteredByMe"]</a></li>
+                                        <li><a asp-area="" asp-controller="Badges" asp-action="Index"><span class="glyphicon glyphicon-asterisk"></span> @Localizer["Badges"]</a></li>
+                                    </ul>
+                                </li>*@
+
+
+                            @*<li class="dPopdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <small><span class="glyphicon glyphicon-chevron-down"></span></small>
+                                        <span class="caPet"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a asp-area="" asp-controller="Manage" asp-action="Index"><span class="glyphicon glyphicon-edit"></span> @Localizer["ProfileData"]</a></li>
+                                        <li><a href="~/@CultureInfo.CurrentCulture.Name/ApplicationUsers/Details/@currentUser.Id" target="_blank"><span class="glyphicon glyphicon-eye-open"></span> @Localizer["PublicProfile"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="EducationalLevels" asp-action="Index"><span class="glyphicon glyphicon-education"></span> @Localizer["EducationalLevels"]</a></li>
+                                        <li><a asp-area="" asp-controller="AcademicPositions" asp-action="Index"><span class="glyphicon glyphicon-menu-hamburger"></span> @Localizer["AcademicPositions"]</a></li>
+                                        <li><a asp-area="" asp-controller="TeachingExperiences" asp-action="Index"><span class="glyphicon glyphicon-text-size"></span> @Localizer["TeachingExperiences"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="Publications" asp-action="Index"><span class="glyphicon glyphicon-book"></span> @Localizer["Publications"]</a></li>
+                                        <li><a asp-area="" asp-controller="AcademicActivities" asp-action="Index"><span class="glyphicon glyphicon-tasks"></span> @Localizer["AcademicActivities"]</a></li>
+                                        <li><a asp-area="" asp-controller="Projects" asp-action="Index"><span class="glyphicon glyphicon-folder-close"></span> @Localizer["Projects"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="ProfileLinks" asp-action="Index"><span class="glyphicon glyphicon-new-window"></span> @Localizer["ExternalProfiles"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="UserExpertises" asp-action="Index"><span class="glyphicon glyphicon-indent-left"></span> @Localizer["UserExpertises"]</a></li>
+                                        <li><a asp-area="" asp-controller="UserSkills" asp-action="Index"><span class="glyphicon glyphicon-tags"></span> @Localizer["UserSkills"]</a></li>
+                                        <li class="divider"></li>
+                                        <li><a asp-area="" asp-controller="ApplicationUsers" asp-action="RegisteredByMe"><span class="glyphicon glyphicon-transfer"></span> @Localizer["RegisteredByMe"]</a></li>
+                                        <li><a asp-area="" asp-controller="Badges" asp-action="Index"><span class="glyphicon glyphicon-asterisk"></span> @Localizer["Badges"]</a></li>
+                                    </ul>
+                                </li>*@
+
+                            @*<li class="dPopdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        @Localizer["Nurture"]<span class="caPet"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a asp-area="" asp-controller="Universities" asp-action="CreateUnIndexed">@Localizer["AddUniversity"]</a></li>
+                                        <li><a asp-area="" asp-controller="Universities" asp-action="SearchByUser">@Localizer["AddCollege"]</a></li>
+                                        <li class="divider"></li>
+
+                                    </ul>
+                                </li>*@
+
+                            @*<li><a asp-area="" asp-controller="Specialities" asp-action="Index">@Localizer["Specialities"]</a></li>*@
+
+                            @*<li>
+                                    <a asp-area="" asp-controller="ApplicationUsers" asp-action="Search"><span class="glyphicon glyphicon-search"></span> @Localizer["Search"]</a>
+                                </li>*@
+                            <li class="col-lg-5">
+                                <form style="margin-top:13px;" asp-controller="ApplicationUsers" asp-action="ResearchersSearch">
+                                    <div class="input-group">
+                                        <input name="ss" type="text" class="form-control input-sm" placeholder="أدخل إسم أو تخصص الباحث">
+                                        <div class="input-group-btn">
+
+                                            <button class="btn btn-info active input-sm" type="submit">
+                                                <small><i class="glyphicon glyphicon-search center-block"></i></small>
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </li>
+                            <li>
+                                <a title="الرصيد" class="nav-link text-dark" asp-area="" asp-controller="Manage" asp-action="Filspay"><small>$@currentUser.Balance</small></a>
+                            </li>
+                            @*<li class="dPopdown">
+                                    <a class=""><span class="glyphicon glyphicon-envelope"></span></a>
+                                    <a title="الرسائل" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-envelope"></span>
+                                        <span class="caPet"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        @{
+                                            Html.RenderAction("GetCategories", "Home")
+                                        }
+                                        <li><a asp-area="" asp-controller="Blogs" asp-action="Index"><span class="glyphicon glyphicon-th"></span> نشر تدوينة</a></li>
+                                    </ul>
+
+                                </li>*@
+
+                            <li class="dropdown">
+                                <a title="الرسائل" href="#" name="@currenUser.Id" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <small> <span class="glyphicon glyphicon-envelope"></span></small><span class="caPet"></span>
+                                </a>
+                                <ul role="menu" class="dropdown-menu s pre-scrollable" id="messages">
+                                    <li><h5 class="text-center">لا توجد رسائل</h5></li>
+                                    <li class="divider"></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a title="الإشعارات" href="#" name="@currenUser.Id" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <small><span class="glyphicon glyphicon-bell"></span></small><span class="caPet"></span>
+                                </a>
+                                <ul role="menu" class="dropdown-menu s pre-scrollable" id="notifications">
+                                    <li><h5 class="text-center">لا توجد إشعارات</h5></li>
+                                    <li class="divider"></li>
+                                </ul>
+                            </li>
+                            <li class="text-center">
+                                @*<a asp-area="" asp-controller="Home" asp-action="About">@Localizer["About"]</a>*@
+                                <select style="margin-top:13px" id="cultureselect" name="culture" class="form-control input-sm btn-info navbar-collapse"
+                                        asp-for="@requestCulture.RequestCulture.UICulture.Name"
+                                        asp-items="@cultureItems"></select>
+                            </li>
+
+                            @*<li>
+                                    <a class=""><small><span class="glyphicon glyphicon-bell"></span></small></a>
+                                </li>*@
+                            @*<li class="dPopdown">
+                                    <a id="messagebtn" name="@currenUser.Id" title="الرسائل" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        <small><span class="glyphicon glyphicon-envelope"></span></small>
+                                        <span class="caPet"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" id="messages">
+                                        <li class="list-group-item list-group-item-info"><a title="دعوة باحث" class="nav-link text-dark" asp-area="" asp-controller="ApplicationUsers" asp-action="InviteFriend"><small><span class="glyphicon glyphicon-send"></span></small> دعوة باحث </a></li>
+                                    </ul>
+                                </li>*@
+                        }
+                    </ul>
+
+
+                    @await Html.PartialAsync("_LoginPartial")
+
+
+                </div>
+            </div>
+        </nav>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <input type="hidden" id="cuid" value="@currentUser.Id" />}
+        <div style="min-height:800px;padding-top:50px;background-color:white" class="container body-content">
+            @*<center>*@
+            @*  <a asp-action="Details" asp-controller="RegistrationForms" asp-route-Id="5af50c26-fb43-40d9-ab36-5f7ed6cdbb68"> <img class="img-responsive" src="~/images/ads.jpg" alt="ملتقى الجامعة العراقية" /></a>*@
+            @*<h3><a asp-action="Details" asp-controller="RegistrationForms" asp-route-Id="60a46e03-9e28-4200-8da5-e099cb0fa976"> الملتقى الثقافي لاعضاء منصة اريد في الجزائر</a></h3>*@
+            @*</center>*@
+            <center>
+                <a target="_blank" href="https://almahfal.org"> <img class="img-responsive" src="https://etangsto.sirv.com/Images/970_250.gif" alt="المحفل العلمي الدولي" /></a>
+
+            </center>
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>@Localizer["Copyright"]</p>
+                <p>
+                    @Localizer["Footer"]
+                </p>
+                <a align="center" href="../Home/PrivacyPolicy">Privacy Policy | سياسة الخصوصية</a> | <a asp-controller="Countries" asp-action="Statistics">احصائيات منصة اريد</a>
+            </footer>
+        </div>
+        <environment names="Development">
+            @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+            @*<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                        asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                        asp-fallback-test="window.jQuery"
+                        crossorigin="anonymous"
+                        integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+                </script>*@
+            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+            <script src="~/lib/bootbox.js/bootbox.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+            <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+            <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+            <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
+            @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+            @* Place Kendo UI scripts after jQuery *@
+            @*<script src="~/lib/kendo-ui/js/kendo.all.min.js"></script>
+                <script src="~/lib/kendo-ui/js/kendo.aspnetmvc.min.js"></script>*@
+            @*<script src="https://kendo.cdn.telerik.com/2019.1.115/js/kendo.all.min.js"
+                        asp-fallback-src="~/lib/kendo-ui/js/kendo.all.min.js"
+                        asp-fallback-test="window.kendo">
+                </script>
+                <script src="https://kendo.cdn.telerik.com/2019.1.115/js/kendo.aspnetmvc.min.js"
+                        asp-fallback-src="~/lib/kendo-ui/js/kendo.aspnetmvc.min.js"
+                        asp-fallback-test="kendo.data.transports['aspnetmvc-ajax']">
+                </script>*@
+        </environment>
+        <environment names="Staging,Production">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+            <script src="~/lib/bootbox.js/bootbox.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+            @*<link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />*@
+            @*<link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+                <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+                <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>*@
+            @*<script src="//cdn.ckeditor.com/4.11.2/basic/ckeditor.js"></script>*@
+            @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+        </environment>
+        <script>
+   $(document).ready(function () {
+                $("#cultureselect").change(function () {  // This will fire when the dropdown value will get change
+                    var url = location.protocol + "//" + location.hostname + ":" +
+                    location.port + "/" + $(this).val() + "@urlsuffix";
+                    window.location.replace(url);
+                });
+            });
+        </script>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <script>
+                        $(document).ready(function () {
+                                    {
+                                           var _url = '@Url.Action("GetMessages", "Home")';
+
+                                           $.ajax({
+                                                type: "GET",
+                                               url: _url,
+                                               data: { id: $('#cuid').val() },
+                                                contentType: "application/json; charset=utf-8",
+
+                                        //HERE
+                                                dataType: 'json',
+                                               success: function (result) {
+
+                                                   var ActionU = '@(Url.Action("Details", "Messages"))';
+                                                   var c = 0;
+                                                   if (result.list.length > 0) {
+                                                       $("#messages").empty();
+
+                                                       var ActionArchive = '@(Url.Action("Index", "Messages"))';
+                                                       $("#messages").append('<li><a href="' + ActionArchive + '?id=' + $('#cuid').val() + '" class="h5 text-center">جميع الرسائل</a></li><li class="divider"></li>')
+
+                                                   }
+
+                                                   for (var i = 0; i < result.list.length; i++)
+                                                   {
+                                                       var dateFormatted = new Date(result.list[i].lastActivitydate).toDateString();
+                                                       if (result.list[i].isRead == false && result.list[i].toApplicationUserId == $('#cuid').val()) {
+                                                           $("#messages").append('<li><a class="h6" href="' + ActionU + '?id=' + result.list[i].id + '"><img onerror="this.onerror=null;this.src="https://portal.arid.my/profileimages/default_small.png";" src="/ProfileImages/' + result.list[i].fromApplicationUser.profileImage + '" height="30" width="30" class="img-circle"/>&nbsp;<span class="text-danger"><strong>' + result.list[i].subject + '</strong></span></a></li><li class="divider"></li>')
+                                                           c += 1;
+                                                       }
+                                                       else if (result.list[i].content == "s") {
+                                                           $("#messages").append('<li><a class="h6" href="' + ActionU + '?id=' + result.list[i].id + '"><img onerror="this.onerror=null;this.src="https://portal.arid.my/profileimages/default_small.png";" src="/ProfileImages/' + result.list[i].fromApplicationUser.profileImage + '" height="30" width="30" class="img-circle"/>&nbsp;<span class="text-danger"><strong>' + result.list[i].subject + '</strong></span></a><br></li><li class="divider"></li>')
+                                                           c += 1;
+                                                       }
+                                                       else
+                                                       {
+                                                           $("#messages").append('<li><a class="h6" href="' + ActionU + '?id=' + result.list[i].id + '"><img onerror="this.onerror=null;this.src="https://portal.arid.my/profileimages/default_small.png";" src="/ProfileImages/' + result.list[i].fromApplicationUser.profileImage + '" height="30" width="30" class="img-circle"/>&nbsp;' + result.list[i].subject + '</a></li><li class="divider"></li>')
+
+                                                       }
+                                                   }
+                                                   if (c > 0)
+                                                   {
+                                                       $(".glyphicon-envelope").append('<small class="h6"><span class="label label-danger">'+c+'</span></small>')
+                                                   }
+
+                                                },
+                                                error: function (xhr, status, err) {
+                                                       alert(err.toString(), 'Error - LoadListItemsHelper');
+                                               },
+                                               complete: function (jqXHR, status) {
+                                               }
+
+                                            });
+                                    }
+                        });
+            </script>
+            @*<script>
+                            $(document).ready(function () {
+                                        {
+                                               var _url = '@Url.Action("GetNotifications", "Home")';
+
+                                               $.ajax({
+                                                    type: "GET",
+                                                   url: _url,
+                                                   data: { id: $('#cuid').val() },
+                                                    contentType: "application/json; charset=utf-8",
+
+                                            //HERE
+                                                    dataType: 'json',
+                                                   success: function (result) {
+                                                       var c = 0;
+                                                       if (result.list.length > 0) {
+                                                           $("#notifications").empty();
+
+                                                           var ActionArchive = '@(Url.Action("Index", "Notifications"))';
+                                                           $("#notifications").append('<li><a href="' + ActionArchive + '?id=' + $('#cuid').val() + '" class="h5 text-center">جميع الإشعارات</a></li><li class="divider"></li>')
+
+                                                       }
+
+                                                       for (var i = 0; i < result.list.length; i++)
+                                                       {
+                                                           var dateFormatted = new Date(result.list[i].lastActivitydate).toDateString();
+                                                           if (result.list[i].isRead == false && result.list[i].applicationUserId == $('#cuid').val()) {
+                                                               $("#notifications").append('<li><a class="h6" href="' + result.list[i].url + '"><img onerror="this.onerror=null;this.src="https://portal.arid.my/profileimages/default_small.png";" src="/ProfileImages/' + result.list[i].sender.profileImage + '" height="30" width="30" class="img-circle"/>&nbsp;<span class="text-danger"><strong>' + result.list[i].content + '</strong></span></a></li><li class="divider"></li>')
+                                                               c += 1;
+                                                           }
+                                                           else
+                                                           {
+                                                               $("#notifications").append('<li><a class="h6" href="' + result.list[i].url + '"><img onerror="this.onerror=null;this.src="https://portal.arid.my/profileimages/default_small.png";" src="/ProfileImages/' + result.list[i].sender.profileImage + '" height="30" width="30" class="img-circle"/>&nbsp;' + result.list[i].content + '</a></li><li class="divider"></li>')
+
+                                                           }
+                                                       }
+                                                       if (c > 0)
+                                                       {
+                                                           $(".glyphicon-bell").append('<small class="h6"><span class="label label-danger">'+c+'</span></small>')
+                                                       }
+
+                                                    },
+                                                    error: function (xhr, status, err) {
+                                                           alert(err.toString(), 'Error - LoadListItemsHelper');
+                                                   },
+                                                   complete: function (jqXHR, status) {
+                                                   }
+
+                                                });
+                                        }
+                            });
+                </script>*@
+        }
+        <!--Start of Tawk.to Script-->
+        @*<script type="text/javascript">
+                var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+                (function () {
+                    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+                    s1.async = true;
+                    s1.src = 'https://embed.tawk.to/5b52ce8fdf040c3e9e0bd1ac/default';
+                    s1.charset = 'UTF-8';
+                    s1.setAttribute('crossorigin', '*');
+                    s0.parentNode.insertBefore(s1, s0);
+                })();
+            </script>*@
+        <!--End of Tawk.to Script-->
+        @RenderSection("Scripts", required: false)
+    </div>
+</body>
+</html>
+<style type="text/css">
+    a:hover {
+        cursor: pointer;
+    }
+
+    .dropdown-menu > li > a {
+    }
+
+    .dropdown ul.dropdown-menu.s {
+        border-radius: 0px;
+        box-shadow: 5px 10px 18px;
+        width: 300px;
+    }
+
+    .dropdown ul.dropdown-menu:before {
+        content: "";
+        border-bottom: 10px solid #fff;
+        border-right: 10px solid transparent;
+        border-left: 10px solid transparent;
+        position: absolute;
+        top: -10px;
+        right: 16px;
+        z-index: 10;
+    }
+
+    .dropdown ul.dropdown-menu:after {
+        content: "";
+        border-bottom: 12px solid #ccc;
+        border-right: 12px solid transparent;
+        border-left: 12px solid transparent;
+        position: absolute;
+        top: -12px;
+        right: 14px;
+        z-index: 9;
+    }
+
+    .dropdown:hover .dropdown-menu,
+    .btn-group:hover {
+        display: block;
+    }
+
+    .dropdown-menu.s {
+        margin-right: -254px;
+    }
+
+    .sub {
+        margin-right: 100px;
+    }
+
+    .dropdown-toggle {
+        margin: auto;
+    }
+
+    .navbar .dropdown-toggle,
+    .nav-tabs .dropdown-toggle {
+        margin: auto;
+    }
+</style>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".dropdown, .btn-group").hover(function () {
+                var dropdownMenu =
+                    $(this).children(".dropdown-menu");
+                if (dropdownMenu.is(":visible")) {
+                    dropdownMenu.parent().toggleClass("open");
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">adroll_adv_id = "DYLKLC4MRJGQ5MJFXDZSA4"; adroll_pix_id = "GTLB4YDRA5FPVB77BNM552"; (function () { var _onload = function () { if (document.readyState && !/loaded|complete/.test(document.readyState)) { setTimeout(_onload, 10); return } if (!window.__adroll_loaded) { __adroll_loaded = true; setTimeout(_onload, 50); return } var scr = document.createElement("script"); var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com"); scr.setAttribute('async', 'true'); scr.type = "text/javascript"; scr.src = host + "/j/roundtrip.js"; ((document.getElementsByTagName('head') || [null])[0] || document.getElementsByTagName('script')[0].parentNode).appendChild(scr); }; if (window.addEventListener) { window.addEventListener('load', _onload, false); } else { window.attachEvent('onload', _onload) } }());</script>
+}

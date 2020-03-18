@@ -1,0 +1,72 @@
+﻿@model ARID.Models.TeachingExperience
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Edit"]</h2>
+
+<h4>@Localizer["Index"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ApplicationUserId" />
+            <div class="form-group">
+                <label asp-for="Indx" class="control-label"></label>
+                <input asp-for="Indx" class="form-control" />
+                <span asp-validation-for="Indx" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArTitle" class="control-label"></label>
+                <input asp-for="ArTitle" class="form-control" />
+                <span asp-validation-for="ArTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnTitle" class="control-label"></label>
+                <input asp-for="EnTitle" class="form-control" />
+                <span asp-validation-for="EnTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArDescription" class="control-label"></label>
+                <input asp-for="ArDescription" class="form-control" />
+                <span asp-validation-for="ArDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnDescription" class="control-label"></label>
+                <input asp-for="EnDescription" class="form-control" />
+                <span asp-validation-for="EnDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsCurrent" /> @Html.DisplayNameFor(model => model.IsCurrent)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="FromYear" class="control-label"></label>
+                <input asp-for="FromYear" class="form-control" />
+                <span asp-validation-for="FromYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ToYear" class="control-label"></label>
+                <input asp-for="ToYear" class="form-control" />
+                <span asp-validation-for="ToYear" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["BackToList"]</a>
+</div>
+

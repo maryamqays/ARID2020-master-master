@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+    ViewData.AddActivePage(ManageNavPages.TwoFactorAuthentication);
+}
+
+<h4>@ViewData["Title"]</h4>
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>@Localizer["Header"]</strong>
+    </p>
+    <p>
+        @Localizer["Message"]
+    </p>
+</div>
+<div>
+    <form asp-action="ResetAuthenticator" method="post" class="form-group">
+        <button class="btn btn-danger" type="submit">@Localizer["Reset"]</button>
+    </form>
+</div>

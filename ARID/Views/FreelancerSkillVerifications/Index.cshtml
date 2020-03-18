@@ -1,0 +1,89 @@
+﻿@model IEnumerable<ARID.Models.FreelancerSkillVerification>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Details)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsVerified)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsArabic)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsEnglish)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SinceDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Certificates)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ExternalLink)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Skill)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VerifiedByUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Details)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsVerified)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsArabic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsEnglish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SinceDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Certificates)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExternalLink)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Skill.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VerifiedByUser.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

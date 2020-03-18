@@ -1,0 +1,43 @@
+﻿@model ARID.Models.CourseInstructor
+
+@{
+    ViewData["Title"] = @Html.DisplayFor(model => model.ApplicationUser.ArName)
+;
+}
+
+<h2>
+    @Html.DisplayFor(model => model.ApplicationUser.ArName)
+</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Indx)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Indx)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.Raw( Model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.ArName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Course.ArName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-primary">العودة الى القائمة</a>
+</div>

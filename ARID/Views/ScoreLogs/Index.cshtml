@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ARID.Models.ScoreLog>
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+
+@{
+    ViewData["Title"] = "نقاط التفاعل";
+}
+<h2>كشف نقاط التفاعل الخاص بكم في المجتمعات العلمية</h2>
+<h3> نقاط التفاعل مع المجتمعات العلمية الخاص بكم : @ViewData["CommunityScore"] </h3>
+
+<p>تم اسناد قيمة لكل فعل يتم داخل المجتمعات العلمية ويتم تقييد جميع هذه التفاعلات للحصول على معيار خاص بمنصة اريد يسمى نقاط التفاعل والذي سيتم اعتماده في احتساب تأثير الباحث</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.ApplicationUser)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Post)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScoreValue)
+            </th>
+            <th>الفعل</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+                    </td>*@
+                <td>
+                    <a asp-controller="Posts" asp-action="Details" asp-route-Id="@item.PostId">  @Html.DisplayFor(modelItem => item.Post.Title)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ScoreValue.Value)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ScoreValue.Name)
+                </td>
+                <td>
+                    @if (User.IsInRole("Admins"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

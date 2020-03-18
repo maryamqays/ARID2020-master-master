@@ -1,0 +1,242 @@
+﻿@model ARID.Models.JournalViewModel
+@{
+    ViewData["Title"] = @Html.DisplayNameFor(model => model.Journal.ArName);
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+<h2>
+    لوحة تحكم الباحث -   @Html.DisplayFor(model => model.Journal.ArName)     <a style="float:left; margin-left:90px;" asp-action="Create" asp-controller="Manuscripts" asp-route-jid="@ViewData["journalid"]" class="btn btn-success col-lg-2 bold"><span class="glyphicon glyphicon-plus"></span> إضافة بحث</a>
+</h2>
+<hr />
+<div class="col-lg-12">
+    <div class="col-lg-7">
+        <dl class="dl-horizontal">
+            @if (Model.Journal.Logo != null)
+            {
+                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + Model.Journal.Logo)" width="280" height="200" />
+            }
+            <br />
+            <br />
+            <br />
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.ArName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Journal.ArName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.EnName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Journal.EnName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.ArDescription)
+            </dt>
+            <dd>
+                @Html.Raw(Model.Journal.ArDescription)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.EnDescription)
+            </dt>
+            <dd>
+                @Html.Raw(Model.Journal.EnDescription)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.ShortName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Journal.ShortName)
+            </dd>
+            <dt>صفحة المجلة</dt>
+            <dd><a target="_blank" href="https://arid.my/j/@Model.Journal.ShortName">https://arid.my/j/@Model.Journal.ShortName</a></dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.PISSN)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Journal.PISSN)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.EISSN)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Journal.EISSN)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Journal.Email)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.ActivationDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Journal.ActivationDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.JournalStatus)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Journal.JournalStatus)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.Visitors)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Journal.Visitors)
+            </dd>
+
+            @*<dt>
+                    @Html.DisplayNameFor(model => model.Journal.ApplicantUserId)
+                </dt>
+                <dd>
+                    <a target="_blank" asp-action="Details" asp-route-id="@Model.Journal.EditorinChief.Id" asp-controller="ApplicationUsers">  @Html.DisplayFor(model => model.Journal.ApplicantUser.ArName)</a>
+                </dd>*@
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.EiC)
+            </dt>
+            <dd>
+                <a target="_blank" asp-action="Details" asp-route-id="@Model.Journal.EiC.Id" asp-controller="ApplicationUsers">  @Html.DisplayFor(model => model.Journal.EiC.ArName)</a>
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Journal.PublisherId)
+            </dt>
+            <dd>
+                <a target="_blank" asp-action="Details" asp-route-id="@Model.Journal.Publisher.Id" asp-controller="Publishers">  @Html.DisplayFor(model => model.Journal.Publisher.ArName)</a>
+            </dd>
+        </dl>
+        <hr />
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-4">
+        <fieldset style="background-color:aliceblue;padding-left: 15px">
+            <legend><span class="glyphicon glyphicon-file"></span> المقالات الجديدة</legend>
+            <a class="bold" id="InComplete" name="@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.InComplete).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="InComplete">(@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.InComplete).Count())البحوث التي لم تكتمل</a>
+            <br />
+            <a class="bold" id="Submitted" name="@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Submitted).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Submitted">(@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Submitted).Count())البحوث المرسلة</a>
+            <br />
+            <a class="bold" id="UnderReview" name="@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.UnderReview).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="UnderReview">(@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.UnderReview).Count())بحوث قيد المراجعة من قبل الادارة</a>
+            <br />
+            <a class="bold" id="SubmissionSentBackToAuthor" name="@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="SubmissionSentBackToAuthor">(@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor).Count())البحوث التي تم إعادتها للمؤلف</a>
+            <br /> <br />
+            <a class="bold" id="CoAuthor" name="@Model.CoAuthorManuscripts.Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="CoAuthor">(@Model.CoAuthorManuscripts.Count())بحوث التي ساهمت فيها كباحث مشارك</a>
+
+        </fieldset>
+        <br />
+        <fieldset style="background-color:aliceblue;padding-left: 15px">
+            <legend><span class="glyphicon glyphicon-refresh"></span> بحاجة إلى مراجعة</legend>
+            <a class="bold" id="SubmissionsNeedingRevision" title="اتخاذ قرار من المؤلف  بالموافقة او سحب البحث" name="@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsNeedingRevision).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="SubmissionsNeedingRevision">(@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsNeedingRevision).Count())البحوث التي تحتاج لمراجعة</a>
+            <br />
+            <a class="bold" id="SubmissionsBeingProcessed" name="@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsBeingProcessed).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="SubmissionsBeingProcessed">(@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsBeingProcessed).Count())بحوث قيد المراجعة</a>
+            <br />
+            <a class="bold" id="AuthorRejectedEditings" name="@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.AuthorRejectedEditings).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="AuthorRejectedEditings">(@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.AuthorRejectedEditings).Count())مراجعات مرفوضة</a>
+            @*<a class="bold" id="RevisionsBeingProcessed" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.RevisionsBeingProcessed).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="RevisionsBeingProcessed">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.RevisionsBeingProcessed).Count())بحوث تحت المراجعة</a>*@
+
+            @*<a class="bold" id="ManuscriptSenttoAuthorforPayment" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ManuscriptSenttoAuthorforPayment).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="ManuscriptSenttoAuthorforPayment">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ManuscriptSenttoAuthorforPayment).Count())بحوث تم ارسالها للدفع</a>*@
+        </fieldset>
+        <br />
+        <fieldset style="background-color:aliceblue;padding-left: 15px">
+            <legend><span class="glyphicon glyphicon-scale"></span> قرارات</legend>
+            <a class="bold" id="GalleyProof" name="@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.GalleyProof).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="GalleyProof">(@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.GalleyProof).Count())بحوث في مرحلة ما قبل الطباعة</a>
+            <br />
+            <a class="bold" id="Published" name="@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Published).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Published">(@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Published).Count())بحوث اتخذ القرار بنشرها</a>
+            <br />
+            <a class="bold" id="Declined" name="@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Declined).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Declined">(@Model.Manuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Declined).Count())بحوث تم رفضها</a>
+
+            @*<a class="bold" id="ReviewCompleted" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ReviewCompleted).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="ReviewCompleted">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ReviewCompleted).Count())بحوث تمت مراجعتها</a>*@
+        </fieldset>
+    </div>
+</div>
+
+
+
+<style>
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+        color: ActiveCaption;
+    }
+
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+
+@section scripts{
+    <script>
+        $("a").each(function () {
+            if ($(this).attr('name') == "0") {
+                $(this).addClass("disabled");
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            $("#form").hide();
+            $("#span").css('cursor', 'pointer');
+            $("#spanx").css('cursor', 'pointer');
+            $("#span").click(function () {
+                $("#form").slideToggle("slow");
+
+                //$("#span").toggleClass(".glyphicon glyphicon-remove");
+
+            });
+            $("#spanx").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+            $("#all").click(function () {
+                $("#in").attr('value', '')
+                $('#search').trigger('click');
+            });
+            $("#revsubmitted").click(function () {
+                $("#in").attr('value', 'Revsubmitted')
+                $('#search').trigger('click');
+            });
+        });
+    </script>
+    <script>
+        $("#InComplete").click(function () {
+            $(".InComplete").toggle()
+        });
+        $("#Submitted").click(function () {
+            $(".Submitted").toggle()
+        });
+        $("#UnderReview").click(function () {
+            $(".UnderReview").toggle()
+        });
+        $("#SubmissionSentBackToAuthor").click(function () {
+            $(".SubmissionSentBackToAuthor").toggle()
+        });
+        $("#SubmissionsNeedingRevision").click(function () {
+            $(".SubmissionsNeedingRevision").toggle()
+        });
+        $("#SubmissionsBeingProcessed").click(function () {
+            $(".SubmissionsBeingProcessed").toggle()
+        });
+        $("#RevisionsBeingProcessed").click(function () {
+            $(".RevisionsBeingProcessed").toggle()
+        });
+        $("#ManuscriptSenttoAuthorforPayment").click(function () {
+            $(".ManuscriptSenttoAuthorforPayment").toggle()
+        });
+        $("#GalleyProof").click(function () {
+            $(".GalleyProof").toggle()
+        });
+        $("#Published").click(function () {
+            $(".Published").toggle()
+        });
+        $("#Declined").click(function () {
+            $(".Declined").toggle()
+        });
+
+    </script>
+}

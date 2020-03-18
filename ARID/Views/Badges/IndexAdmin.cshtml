@@ -1,0 +1,69 @@
+@model IEnumerable<ARID.Models.Badge>
+
+@{
+    ViewData["Title"] = "Badges";
+}
+
+@*<h3 style="font-family:tahoma">«·«Ê”„…</h3>*@
+<br/>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<h3>Badges</h3>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ArBadgeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnBadgeName)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.ArBadgeDesc)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnBadgeDesc)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.BadgeLogo)
+                </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.EmailContentId)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    @Html.DisplayFor(modelItem => item.ArBadgeName)
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnBadgeName)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.ArBadgeDesc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnBadgeDesc)
+            </td>*@
+            <td>
+                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.BadgeLogoFolder + "/" + item.BadgeLogo)" width="50" height="50" />
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.EmailContent.ArSubject)
+            </td>*@
+            <td>
+                <a style="font-family:Arial" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="UserBadges" asp-action="UsersByBadge" asp-route-id="@item.Id">Users</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

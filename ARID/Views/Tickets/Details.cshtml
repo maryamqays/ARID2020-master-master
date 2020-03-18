@@ -1,0 +1,100 @@
+﻿@model ARID.Models.TicketViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>&nbsp;</h2>
+
+<div class="col-12">
+    <hr />
+
+    @if (Model.Ticket.Status == false)
+    {
+
+        @Html.Raw(Model.Ticket.TicketOpenDate) <span class="glyphicon glyphicon-ban-circle"></span>
+
+    }
+    @if (Model.Ticket.Status == true)
+    {
+
+        @Html.Raw(Model.Ticket.TicketOpenDate) <span class="glyphicon glyphicon-unchecked"></span>
+
+    }
+
+
+    <img width="50" height="50" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + Model.Ticket.ApplicationUser.ProfileImage)">
+
+    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.Ticket.ApplicationUserId"> <h5>@Model.Ticket.ApplicationUser.ArName</h5></a>
+
+
+
+
+    <br />
+
+
+    <h2 style="color:red">@Html.DisplayFor(model => model.Ticket.Subject)</h2>
+    <br />
+    @Html.Raw(Model.Ticket.Body)
+
+
+</div>
+<h2>الردود</h2><hr />
+<div class="col-12">
+    <ul class="list-unstyled">
+        @foreach (var item in Model.TicketReplys)
+        {
+        <li class="media">
+            <img class="mr-3" width="75" height="75" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + item.SupportUser.ProfileImage)" alt="Generic placeholder image">
+            <div>
+
+                <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.SupportUserId"> <h5 class="mt-0 mb-1">@item.SupportUser.ArName</h5></a>
+                @Html.Raw(item.Body)
+
+            </div>
+            @{
+                ApplicationUser currentUser = null;
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    currentUser = await UserManager.GetUserAsync(User);
+                }
+            }
+            @if (await UserManager.IsInRoleAsync(currentUser, RoleName.Admins))
+            {
+                <div>
+                    <a asp-controller="TicketReplies" asp-action="Delete" asp-route-id="@item.Id">  <span class="glyphicon glyphicon-trash"></span></a>
+                </div>
+            }
+        </li>
+
+        }
+    </ul>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" asp-controller="TicketReplies">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group" hidden>
+                <label asp-for="TicketReply.TicketId" class="control-label"></label>
+                <input asp-for="TicketReply.TicketId" class="form-control" value="@Model.Ticket.Id" />
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">أضف رد</label>
+                <textarea required asp-for="TicketReply.Body" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="TicketReply.Body" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="ارسال الرد" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

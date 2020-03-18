@@ -1,0 +1,80 @@
+﻿@model ARID.Models.Project
+@{
+    ViewData["Title"] = Html.DisplayFor(model => model.ArProjectName);
+}
+<br /><br />
+<h2>@Html.DisplayFor(model => model.ArProjectName)  @Html.DisplayFor(model => model.EnProjectName)</h2>
+<div>
+    <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@Model.ApplicationUserId">
+
+        <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + Model.ApplicationUser.ProfileImage)" width="36" height="36" />
+        @Model.ApplicationUser.ArName |   @Model.ApplicationUser.EnName  | <span class="glyphicon glyphicon-eye-open"></span>  @Model.ApplicationUser.Visitors
+
+
+    </a>
+
+    <hr />
+   
+    <dl class="dl-horizontal">
+       
+     
+        <dt>
+            @Html.DisplayNameFor(model => model.ArDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArDetails)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArDetails)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnDetails)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnDetails)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FromYear)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FromYear)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ToYear)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ToYear)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectState)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectState)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country.ArCountryName)
+        </dd>
+    </dl>
+</div>
+<div>
+
+    <a asp-controller="Home" asp-action="Index">Back</a>
+</div>

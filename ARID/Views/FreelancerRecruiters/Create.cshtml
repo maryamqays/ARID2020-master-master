@@ -1,0 +1,130 @@
+﻿@model ARID.Models.FreelancerRecruiterViewModel
+@{
+    ViewData["Title"] = "إضافة مكلف";
+}
+<h2>إضافة مكلف</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-8">
+            <form asp-action="Create" method="get">
+                <div class="form-group col-lg-12">
+                    <label class="control-label col-lg-12">البحث عن المكلف في منصة اريد</label>
+                    <input id="srch" minlength="4" placeholder="ادخل اسم المؤلف او ابريده الالكتروني او معرف اريد الخاص به ثم اضغط زر بحث --ادخل اربع حروف على الاقل--" class="form-control col-lg-10" name="SearchString" />
+                    <input type="hidden" name="pid" value="@ViewData["pid"]" />
+                    <h4><input class="col-lg-2 btn btn-info" type="submit" value="بحث" id="search" /></h4>
+                </div>
+
+                @if (Model.ApplicationUsers.Count() > 0)
+                {
+                    <table id="users" class="table-hover table table-striped table-bordered dt-responsive">
+                        <caption>اختر أحد المستخدمين ثم اضغط على زر إضافة</caption>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ApplicationUser.ArName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ApplicationUser.EnName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ApplicationUser.UserName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ApplicationUser.Email)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ApplicationUser.Id)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ApplicationUsers)
+                            {
+                            <tr>
+                                @if (Model.FreelancerRecruiters.Where(f => f.ApplicationUserId == item.Id).Count() == 0)
+                                {
+                                    <td>
+                                        <input type="checkbox" name="IdsToAdd" value="@item.Id">
+                                        <input hidden name="itmname" value="@item.ArName" />
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="col-lg-2">
+                                        <h5 class="text-center img-rounded" style="display:inline;background-color:ButtonHighlight;border-color:black">تمت الإضافة</h5>
+                                    </td>
+
+                                }
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ArName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EnName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+
+            </form>
+        </div>
+        <div class="col-lg-4"></div>
+
+    </div>
+
+    <div class="col-md-8">
+        <hr />
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="FreelancerRecruiter.ApplicationUserId" class="control-label"></label>
+                <input readonly required id="appuser" asp-for="FreelancerRecruiter.ApplicationUserId" class="form-control" />
+                <span asp-validation-for="FreelancerRecruiter.ApplicationUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">المكلف</label>
+                <input readonly required id="appusername" class="form-control" />
+            </div>
+            <div class="form-group req">
+                <label asp-for="FreelancerRecruiter.FreelancerProjectId" class="control-label"></label>
+                <select asp-for="FreelancerRecruiter.FreelancerProjectId" asp-items="ViewBag.FreelancerProjectId" class="form-control"></select>
+                <span asp-validation-for="FreelancerRecruiter.FreelancerProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h4 style="display:inline">
+                    <input type="submit" value="إضافة" class="btn btn-success" />
+                </h4>
+                <h4 style="display:inline"><a asp-action="Details" asp-controller="FreelancerProjects" asp-route-id="@ViewData["pid"]" class="btn btn-primary pull-left">العودة الى المشروع</a></h4>
+            </div>
+        </form>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $('.req').hide();
+
+        $("input[name=IdsToAdd]").change(function () {
+            $('#appusername').val($(this).siblings("input[name=itmname]").val());
+            $('#appuser').val($(this).val());
+            $("input[name=IdsToAdd]").not(this).attr('checked', false);
+            $('#srch').val($("input[name=IdsToAdd]").prop('checked', true).siblings('input[name=itmname]').val());
+            $('#users').hide();
+            $('.req').slideDown();
+
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

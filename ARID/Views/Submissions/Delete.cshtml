@@ -1,0 +1,111 @@
+﻿@model ARID.Models.Submission
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Submission</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfSubmission)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateOfSubmission)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResponsetoDecision)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResponsetoDecision)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EICDecision)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EICDecision)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SubmissionStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SubmissionStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DecisionDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DecisionDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EicDecisionText)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EicDecisionText)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DecisionLetter)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DecisionLetter)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PlagiarismConfirmation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PlagiarismConfirmation)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DuplicateSubmissionConfirmation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DuplicateSubmissionConfirmation)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CoverLetter)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoverLetter)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AEDecision)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AEDecision)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AEDecisionDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AEDecisionDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AEDecisionText)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AEDecisionText)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AE)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AE.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Manuscript)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Manuscript.ArAbstract)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

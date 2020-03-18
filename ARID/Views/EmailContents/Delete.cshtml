@@ -1,0 +1,53 @@
+@model ARID.Models.EmailContent
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>EmailContent</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="Id" />
+        <dt>
+            @Html.DisplayNameFor(model => model.ArContent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArContent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnContent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnContent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ArSubject)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ArSubject)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EnSubject)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EnSubject)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Sender)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Sender.Id)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,62 @@
+﻿@model List<ARID.Models.ApplicationUser>
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = @Localizer["Contact"];
+}
+<h2>@ViewData["Title"]</h2>
+@*<h3>@Localizer["Admins"]</h3>
+
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].ProfileImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].ARID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].ArName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].ContactMeDetail)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + item.ProfileImage)" width="100" height="100" />
+            </td>
+            <td>
+                @Common.ARIDFormat(item.ARID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactMeDetail)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>*@
+
+@*<address>
+    One Microsoft Way<br />
+    Redmond, WA 98052-6399<br />
+    <abbr title="Phone">P:</abbr>
+    425.555.0100
+</address>*@
+
+<address>
+    <strong>@Localizer["Support"]:</strong> <a href="mailto:support@arid.my">@Localizer["SupportEmail"]</a>
+    @*<br />
+    <strong>@Localizer["Marketing"]:</strong> <a href="mailto:marketing@arid.my">@Localizer["MarketingEmail"]</a>*@    
+</address>

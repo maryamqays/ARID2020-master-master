@@ -1,0 +1,153 @@
+﻿@model ARID.Models.RegistrationForm
+@{
+    ViewData["Title"] = "Edit";
+}
+<h2>Edit</h2>
+<h4>RegistrationForm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                @Html.TextAreaFor(model => model.Description, new { rows = 10, cols = 50 })
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id="chkStatus" asp-for="IsPdfInvitation" /> @Html.DisplayNameFor(model => model.IsPdfInvitation)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" id="testdiv">
+                <div class="form-group">
+                    <label asp-for="InvitationContext" class="control-label"></label>
+                    @Html.TextAreaFor(model => model.InvitationContext, new { rows = 10, cols = 50, @class = "form-control", @maxlength = "5000" })
+                    <span asp-validation-for="InvitationContext" class="text-danger"></span>
+                </div>
+
+                <div id="imagediv" class="form-group">
+                    <label asp-for="InvitationHeader" class="control-label"></label>
+                    <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="form-control-file" />
+                    <span asp-validation-for="InvitationHeader" class="text-danger"></span>
+                    <input asp-for="InvitationHeader" id="fileinput" class="form-control" />
+                </div>
+                <div id="filediv" class="form-group">
+                    <label asp-for="InvitationFooter" class="control-label"></label>
+                    <input type="file" name="myfile1" id="file1" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-default" />
+                    <span asp-validation-for="InvitationFooter" class="text-danger"></span>
+                    <input asp-for="InvitationFooter" id="fileinput1" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsEntBadgeRequired" /> @Html.DisplayNameFor(model => model.IsEntBadgeRequired)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailContentId" class="control-label"></label>
+                <select asp-for="EmailContentId" class="form-control" asp-items="ViewBag.EmailContentId"></select>
+                <span asp-validation-for="EmailContentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExpiryDate" class="control-label"></label>
+                <input asp-for="ExpiryDate" class="form-control" />
+                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventDate" class="control-label"></label>
+                <input asp-for="EventDate" class="form-control" />
+                <span asp-validation-for="EventDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReminderDays" class="control-label"></label>
+                <input value="1" asp-for="ReminderDays" class="form-control" />
+                <span asp-validation-for="ReminderDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailContentReminderId" class="control-label"></label>
+                <select asp-for="EmailContentReminderId" class="form-control" asp-items="ViewBag.EmailContentReminderId"></select>
+                <span asp-validation-for="EmailContentReminderId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts {
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link,image,media,table,textcolor colorpicker",
+            //menubar: "insert",
+            toolbar: "link,image,media,table,forecolor backcolor",
+            color_picker_callback: function (callback, value) {
+                callback('#FF00FF');
+            },
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+            mode: "textareas",
+            //plugins: "table,contextmenu,paste,-externalplugin"
+        });</script>
+
+    <script type="text/javascript">
+        $(function () {
+
+            $('#chkStatus').change(function () {
+                if ($('#chkStatus').is(':checked'))
+                    $("#testdiv").fadeIn();
+                else
+                    $('#testdiv').fadeOut();
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $("#file1").change(function () {
+                if ($("#file1").val() != "") {
+                    $("#fileinput1").prop("value", $("#file1").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

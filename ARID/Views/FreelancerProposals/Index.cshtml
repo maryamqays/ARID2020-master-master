@@ -1,0 +1,119 @@
+﻿@model IEnumerable<ARID.Models.FreelancerProposal>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsNameVisible)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsPrivate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsAssigned)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsReported)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Isvisible)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DaysRequired)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FreelancerProjectId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateofRecord)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfAssignment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeliveredDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BidAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProposalStatus)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReportedByUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsNameVisible)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPrivate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAssigned)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsReported)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isvisible)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DaysRequired)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FreelancerProjectId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateofRecord)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfAssignment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveredDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BidAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProposalStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReportedByUser.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,92 @@
+@model ARID.Models.Badge
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form method="post" asp-action="Create" enctype="multipart/form-data">
+    <div class="form-horizontal">
+        <h4>Badge</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ArBadgeName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArBadgeName" class="form-control" />
+                <span asp-validation-for="ArBadgeName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EnBadgeName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EnBadgeName" class="form-control" />
+                <span asp-validation-for="EnBadgeName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArBadgeDesc" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="ArBadgeDesc" class="control-label"></textarea>
+                <span asp-validation-for="ArBadgeDesc" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EnBadgeDesc" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EnBadgeDesc" class="form-control" />
+                <span asp-validation-for="EnBadgeDesc" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="BadgeLogo" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-default" />
+                <span asp-validation-for="BadgeLogo" class="text-danger"></span>
+                <input asp-for="BadgeLogo" id="fileinput" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EmailContentId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="EmailContentId" class="form-control" asp-items="ViewBag.EmailContentId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+
+   
+        <script>
+            tinymce.init({
+                selector: 'textarea',
+                directionality: 'rtl',
+                //language: 'ar_SA',
+                plugins: "link",
+                mode: "textareas",
+
+                //plugins: "table,contextmenu,paste,-externalplugin"
+
+            });</script>}
+
+

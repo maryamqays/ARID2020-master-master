@@ -1,0 +1,215 @@
+﻿@model ARID.Models.PublicationTitle
+@{
+    ViewData["Title"] = "Edit";
+}
+<h3>تعديل على المجلة</h3>
+<hr />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-8">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group row">
+                    <label asp-for="ArName" class="control-label"></label>
+                    <input asp-for="ArName" class="form-control" />
+                    <span asp-validation-for="ArName" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="EnName" class="control-label"></label>
+                    <input asp-for="EnName" class="form-control" />
+                    <span asp-validation-for="EnName" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="ArDescription" class="control-label"></label>
+                    @Html.TextAreaFor(model => model.ArDescription, new { rows = 10, cols = 140 })
+                    <span asp-validation-for="ArDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group ">
+                    <label class="control-label">صورة الغلاف الحالية</label>
+                    <br />
+                    <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Logo)" width="280" height="200" />
+                </div>
+                <div class="form-group row" id="img">
+                    <label asp-for="Logo" class="control-label"></label>
+                    <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-info col-lg-12" />
+                    <input asp-for="Logo" id="fileinput" class="form-control" />
+                    <span asp-validation-for="Logo" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="PISSN" class="control-label"></label>
+                    <input asp-for="PISSN" class="form-control" />
+                    <span asp-validation-for="PISSN" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="EISSN" class="control-label"></label>
+                    <input asp-for="EISSN" class="form-control" />
+                    <span asp-validation-for="EISSN" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="EstablishmentDate" class="control-label"></label>
+                    <input asp-for="EstablishmentDate" class="form-control" />
+                    <span asp-validation-for="EstablishmentDate" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="SpecialityId" class="control-label"></label>
+                    <select asp-for="SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId"></select>
+                    <span asp-validation-for="SpecialityId" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="CountryId" class="control-label"></label>
+                    <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
+                    <span asp-validation-for="CountryId" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="EditorinChief" class="control-label"></label>
+                    <input asp-for="EditorinChief" class="form-control" />
+                    <span asp-validation-for="EditorinChief" class="text-danger"></span>
+                </div>
+                <div class="form-group row" hidden>
+                    <label asp-for="ApplicationUserId" class="control-label"></label>
+                    <input asp-for="ApplicationUserId" asp-items="ViewBag.ApplicationUserId" class="form-control" />
+                    <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="PublisherId" class="control-label"></label>
+                    <select asp-for="PublisherId" class="form-control" asp-items="ViewBag.PublisherId"></select>
+                    <span asp-validation-for="PublisherId" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Website" class="control-label"></label>
+                    <input asp-for="Website" class="form-control" />
+                    <span asp-validation-for="Website" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Fb" class="control-label"></label>
+                    <input asp-for="Fb" class="form-control" />
+                    <span asp-validation-for="Fb" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Twitter" class="control-label"></label>
+                    <input asp-for="Twitter" class="form-control" />
+                    <span asp-validation-for="Twitter" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="ContactUs" class="control-label"></label>
+                    <input asp-for="ContactUs" class="form-control" />
+                    <span asp-validation-for="ContactUs" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Languages" class="control-label"></label>
+                    <input asp-for="Languages" class="form-control" />
+                    <span asp-validation-for="Languages" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="Tags" class="control-label"></label>
+                    <input asp-for="Tags" class="form-control" />
+                    <span asp-validation-for="Tags" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="PublicationTypes" class="control-label"></label>
+                    <select asp-for="PublicationTypes" asp-items="Html.GetEnumSelectList<PublicationTypes>()" class="form-control"></select>
+                    <span asp-validation-for="PublicationTypes" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsIIndexed" /> @Html.DisplayNameFor(model => model.IsIIndexed)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsScopusIndexed" /> @Html.DisplayNameFor(model => model.IsScopusIndexed)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsImpactFactor" /> @Html.DisplayNameFor(model => model.IsImpactFactor)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
+                        </label>
+                    </div>
+                </div>
+                @if (User.IsInRole("Admins"))
+                {
+                    <h5 class="text-danger">خاص بالادمن</h5>
+                    <div class="form-group row">
+                        <label asp-for="ReportType" class="control-label"></label>
+                        <select asp-for="ReportType" asp-items="Html.GetEnumSelectList<ReportType>()" class="form-control"></select>
+                        <span asp-validation-for="ReportType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsAdminAccepted" /> @Html.DisplayNameFor(model => model.IsAdminAccepted)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsVisible" /> @Html.DisplayNameFor(model => model.IsVisible)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsFeatured" /> @Html.DisplayNameFor(model => model.IsFeatured)
+                            </label>
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <input type="submit" value="إضاقة" class="btn btn-success h5" />
+                    <a asp-action="Index" class="btn btn-primary h5 pull-left">رجوع</a>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link",
+            mode: "textareas",
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+            toolbar: false,
+            menubar: false
+            //plugins: "table,contextmenu,paste,-externalplugin"
+        });
+    </script>
+}
+

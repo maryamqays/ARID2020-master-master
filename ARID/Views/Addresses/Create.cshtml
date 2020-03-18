@@ -1,0 +1,159 @@
+﻿@model ARID.Models.Address
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-center">إضافة عنوان</h3>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AddressSaveName" class="control-label"></label>
+                <input asp-for="AddressSaveName" class="form-control" />
+                <span asp-validation-for="AddressSaveName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input value="@ViewData["tel"]" type="tel" asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArName" class="control-label"></label>
+                <input value="@ViewData["arname"]" asp-for="ArName" class="form-control" />
+                <span asp-validation-for="ArName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnName" class="control-label"></label>
+                <input value="@ViewData["enname"]" asp-for="EnName" class="form-control" />
+                <span asp-validation-for="EnName" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="ApplicationUserId" class="control-label"></label>
+            <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    <input asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                </label>
+            </div>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select id="cntid" asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CityId" class="control-label"></label>
+                <select id="ctyid" asp-for="CityId" class="form-control" asp-items="ViewBag.CityId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="UniversityId" class="control-label"></label>
+                <select id="uniid" asp-for="UniversityId" class="form-control" asp-items="ViewBag.UniversityId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FacultyId" class="control-label"></label>
+                <select id="facid" asp-for="FacultyId" class="form-control" asp-items="ViewBag.FacultyId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullAddress" class="control-label"></label>
+                <textarea asp-for="FullAddress" class="form-control" rows="5" ></textarea>
+                <span asp-validation-for="FullAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h4 style="display:inline"><input type="submit" value="إضافة" class="btn btn-success" /></h4>
+                <h4 style="display:inline;float:left"><a asp-action="Index" class="btn btn-info">رجوع</a></h4>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            // $("#ctyid").prop("disabled", true);
+            $("#cntid").change(function () {
+                //  $("#ctyid").prop("disabled", true);
+                $("#ctyid").empty();
+                $("#ctyid").append($('<option>', { text: "@Localizer["SelectCity"]" }));
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetCitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#ctyid").append($('<option>', { value: row.value, text: row.text }))
+                        });
+                        //  $("#ctyid").prop("disabled", false);
+                    };
+                    CountryOptions.error = function () { alert("@Localizer["CityError"]"); };
+                    $.ajax(CountryOptions);
+                    }
+                });
+            });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#cntid").change(function () {
+                $("#uniid").empty();
+                $("#uniid").append($('<option>', { text: "@Localizer["SelectUniversity"]" }));
+                $("#facid").empty();
+                $("#facid").append($('<option>', { text: "@Localizer["SelectFaculty"]" }));
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetUniversitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#uniid").append($('<option>', {value: row.value, text: row.text}))
+                        });
+                    };
+                    CountryOptions.error = function () { alert("@Localizer["UniError"]"); };
+                    $.ajax(CountryOptions);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#uniid").change(function () {
+                $("#facid").empty();
+
+                $("#facid").append($('<option>', { text: "@Localizer["SelectFaculty"]" }));
+                $("#facid").append($('<option>', { value: 1, text: "Others | أخرى" }))
+                if ($("#uniid").val() > 0) {
+                    var UniversityOptions = {};
+                    UniversityOptions.url = "/ar-LY/Account/GetFacultiesList/";
+                    UniversityOptions.data = { universityid: $("#uniid").val() };
+                    UniversityOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#facid").append($('<option>', { value: row.value, text: row.text }));
+
+                        });
+                    };
+                    UniversityOptions.error = function () { alert("@Localizer["FacError"]"); };
+                    $.ajax(UniversityOptions);
+                }
+            });
+        });
+
+    </script>
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

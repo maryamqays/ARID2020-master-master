@@ -1,0 +1,376 @@
+﻿@model ARID.Models.FreelancerReadyServiceViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+
+@{
+    ViewData["Title"] = "معلومات الخدمة";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>&nbsp;</h2>
+<div class="col-lg-12">
+    <div class="col-lg-12">
+        <div class="dropdown" style="float:left">
+            <h4><a class="label label-danger" href="#" data-toggle="modal" data-target="#myModal">إبلاغ عن مشكلة</a></h4>
+
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">سبب الإبلاغ</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form asp-action="CreateTicket" asp-route-SId="@Model.FreelancerReadyService.Id">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group" hidden>
+                                    <label asp-for="Ticket.TicketCategoryId" class="control-label"></label>
+                                    <select name="TicketCategoryId" class="form-control" asp-items="ViewBag.TicketCategoryId"><option>4</option></select>
+                                </div>
+                                <div class="form-group">
+                                    <input readonly value="خدمات جاهزة / إبلاغ عن مشكلة في المشروع رقم @Model.FreelancerReadyService.Id" name="Subject" class="form-control" />
+                                    <span asp-validation-for="Ticket.Subject" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <textarea required name="Body" class="form-control" rows="6"></textarea>
+                                    <span asp-validation-for="Ticket.Body" class="text-danger"></span>
+                                </div>
+                                <h4 class="text-center"><input type="submit" value="إرسال" class="btn btn-success" /></h4>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <h4 style="display:inline"><button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button></h4>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 table-bordered" style="background-color:whitesmoke;padding:5px;margin-bottom:20px">
+            <div class="col-lg-1">
+                <a target="_blank" asp-action="FreelancerDetails" asp-controller="ApplicationUsers" asp-route-id="@Model.FreelancerReadyService.ApplicationUser.Id">
+                    <img src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + Model.FreelancerReadyService.ApplicationUser.ProfileImage)"
+                         height="80" width="80" class="img-circle table-bordered" style="border:2px solid ActiveCaption" />
+                </a>
+            </div>
+            <div class="col-lg-10">
+                <h3 style="display:inline" class="text-center">@Model.FreelancerReadyService.Title</h3><br />
+                <h4 class="">
+                    @if (Model.FreelancerReadyService.ApplicationUser.ArName.Length > 11)
+                    {
+                        <a target="_blank" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" asp-action="FreelancerDetails" asp-controller="ApplicationUsers" asp-route-id="@Model.FreelancerReadyService.ApplicationUserId" title="صاحب المشروع"><small> <span class="glyphicon glyphicon-user"></span>@Model.FreelancerReadyService.ApplicationUser.ArName.Substring(0, 9)..</small></a>
+                    }
+                    else
+                    {
+                        <a target="_blank" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" asp-action="FreelancerDetails" asp-controller="ApplicationUsers" asp-route-id="@Model.FreelancerReadyService.ApplicationUserId" title="صاحب المشروع"><small> <span class="glyphicon glyphicon-user"></span>@Model.FreelancerReadyService.ApplicationUser.ArName </small></a>
+                    }
+                    @if (Model.FreelancerReadyService.Skills.Length > 16)
+                    {
+                        <a title="المهارات" class="col-lg-2"><small> <span class="glyphicon glyphicon-tag"></span>&nbsp;@Model.FreelancerReadyService.Skills.Substring(0, 16) ...</small></a>
+                    }
+                    else
+                    {
+                        <a title="المهارات" class="col-lg-2"><small> <span class="glyphicon glyphicon-tag"></span>&nbsp;@Model.FreelancerReadyService.Skills</small></a>
+                    }
+                    <a title="مدة التسليم" class="col-lg-2"><small>&nbsp; مدة التسليم: @Model.FreelancerReadyService.RequiredDays يوم</small></a>
+
+                </h4>
+            </div>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                @if (currentUser.Id == Model.FreelancerReadyService.ApplicationUserId || User.IsInRole("Admins"))
+                {
+                    <div class="dropdown col-lg-1">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-cog"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="text-center"><a asp-action="Create" asp-controller="FreelancerReadyServiceExtensions" asp-route-id="@Model.FreelancerReadyService.Id">تطوير الخدمة</a></li>
+                            <li class="text-center"><a asp-action="Edit" asp-route-id="@Model.FreelancerReadyService.Id">تعديل</a></li>
+                            <li class="text-center"><form onSubmit="return confirm('هل بالفعل تريد حذف الخدمة؟')" asp-action="Delete" method="post" asp-route-id="@Model.FreelancerReadyService.Id"><button style="border:none;background:none;padding:0" type="submit">حذف</button></form></li>
+                        </ul>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-8">
+            <div class="table-bordered" style="background-color:whitesmoke;padding:20px">
+                @if (Model.FreelancerReadyService.Image != null && Model.FreelancerReadyService.Youtube != null)
+                {
+                    <div style="height:400px" id="myCarousel" class="carousel slide" data-ride="carousel">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img style="width:100%;max-height:400px;height:400px" class="img-responsive" src="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + Model.FreelancerReadyService.Image)" />
+                            </div>
+                            <div class="item" style="">
+                                <iframe style="width:100%;max-height:400px;height:400px" src="https://www.youtube.com/embed/@Model.FreelancerReadyService.Youtube" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <img class="img-rounded center-block col-lg-12" style="border-color:ActiveCaption;margin-bottom:10px" src="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + Model.FreelancerReadyService.Image)" />
+                }
+                <br />
+                <h5>@Model.FreelancerReadyService.Description</h5>
+            </div>
+            <div class="col-lg-12">&nbsp;</div>
+            <div class="table-bordered col-lg-12" style="background-color:whitesmoke;padding:20px">
+                <h4 class="text-center">الإضافات المتاحة لهذه الخدمة</h4><hr style="border:2px solid black" />
+                @if (SignInManager.IsSignedIn(User))
+                {
+
+                    @if (Model.FreelancerReadyServiceExtensions.Count() > 0)
+                    {
+                        @foreach (var item in Model.FreelancerReadyServiceExtensions)
+                        {
+                            <div class="col-lg-12 add">
+                                @if (currentUser.Id == Model.FreelancerReadyService.ApplicationUserId)
+                                {<div class="col-lg-1"><form id="deleteform" onsubmit="return confirm('هل بالفعل تريد حذف الإضافة؟')" asp-controller="FreelancerReadyServiceExtensions" asp-action="Delete" method="post" asp-route-id="@item.Id"><input title="حذف" type="submit" value="X" /></form></div>}
+                                <div class="col-lg-4"><input class="check btn-success" name="@item.PricingType" type="checkbox" /><input hidden name="@item.RequiredDays" class="sib" /> <h4 style="display:inline">@item.Title</h4></div>
+                                <div class="col-lg-7">
+                                    @if (item.PricingType == PricingType.Fiver)
+                                    {<h5 style="display:inline;float:left">+ $5</h5>}
+                                    @if (item.PricingType == PricingType.Tenth)
+                                    {<h5 style="display:inline;float:left">+ $10</h5>}
+                                    @if (item.PricingType == PricingType.Fifteenth)
+                                    {<h5 style="display:inline;float:left">+ $15</h5>}
+                                    @if (item.PricingType == PricingType.Twenty)
+                                    {<h5 style="display:inline;float:left">+ $20</h5>}
+                                    @if (item.PricingType == PricingType.TwenyFive)
+                                    {<h5 style="display:inline;float:left">+ $25</h5>}
+                                    @if (item.RequiredDays != RequiredDays.NotNeed)
+                                    {<h5 style="display:inline;float:left;margin-left:60px">+  @Html.DisplayFor(modelitem => @item.RequiredDays)</h5>}
+                                </div>
+                            </div>
+                            <hr style="border:1px solid ActiveCaption" />
+                        }
+                        if (currentUser.Id == Model.FreelancerReadyService.ApplicationUserId)
+                        {
+                            <h4 class="text-center text-info"><a asp-action="Create" asp-controller="FreelancerReadyServiceExtensions" asp-route-id="@Model.FreelancerReadyService.Id" class="text-info">أضف تطوير جديد لخدمتك</a></h4>
+                        }
+
+                    }
+                    else if (currentUser.Id != Model.FreelancerReadyService.ApplicationUserId)
+                    {
+                        <h4 class="text-center text-info">لا توجد إضافات</h4>
+                        <hr style="border:1px solid ActiveCaption" />
+                    }
+                    else
+                    {
+                        <h4 class="text-center text-info"><a asp-action="Create" asp-route-id="@Model.FreelancerReadyService.Id" asp-controller="FreelancerReadyServiceExtensions" class="text-info">أضف تطوير جديدة لخدمتك</a></h4>
+                    }
+                }
+                <h4 style="background-color:white;display:inline;padding:5px" class="text-center img-rounded table-bordered"> المبلغ الحالي : <span class="price">@ViewData["price"]</span> $ </h4>
+                <h4 style="background-color:white;display:inline;padding:5px;margin-right:350px" class="text-center img-rounded table-bordered"> عدد الأيام : <span id="days">@Model.FreelancerReadyService.RequiredDays</span> يوم </h4>
+                <h5 class="text-center"></h5>
+                <div id="have">
+                    <form onSubmit="return confirm('هل بالفعل تريد شراء الخدمة؟')" id="my_form" asp-controller="FreelancerProjects" asp-action="CreateProjectAndProposal">
+                        <input type="hidden" name="id" value="@Model.FreelancerReadyService.Id" id="id" />
+                        <input type="hidden" name="p" id="pricesubmit" />
+                        <input type="hidden" name="d" value="@Model.FreelancerReadyService.RequiredDays" id="dayssubmit" />
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+
+                            @if (currentUser.Id == Model.FreelancerReadyService.ApplicationUserId)
+                            {
+                                <h4 class="text-center"><input disabled type="submit" value="إشتري الخدمة" class="btn btn-info" /></h4>}
+                            else
+                            {
+                                <h4 class="text-center"><input type="submit" value="إشتري الخدمة" class="btn btn-info" /></h4>}
+                        }
+                    </form>
+                </div>
+                <div id="havenot">
+                    <h4 class="text-center text-danger">لا تملك الرصيد الكافي لشراء هذه الخدمة</h4>
+                    <h4 class="text-center"><a class="btn btn-success" asp-controller="Manage" asp-action="Filspay">اضف رصيد في أريد</a></h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3" style="background-color:whitesmoke">
+            <h4>عدد المشاهدات:@Model.FreelancerReadyService.Views</h4>
+            @if (ViewData["rating"] != null)
+            {
+                <h4 style="display:inline;margin-left:50px">
+                    التقييم:
+                    @for (var j = 1; j <= (int)ViewData["rating"]; j++)
+                    {<label style="font-size:30px;" class="glyphicon glyphicon-star-empty text-warning"> </label>}@ViewData["rating"]/5
+                </h4>}
+
+        </div>
+
+    </div>
+    <div>
+        <h4 style="float:left;display:inline"><a asp-action="Index" class="btn btn-info">رجوع</a></h4>
+    </div>
+</div>
+
+
+@section Scripts{
+    @if (SignInManager.IsSignedIn(User))
+    {
+
+        <script>
+        $(document).ready(function () {
+            $("#pricesubmit").val($(".price").text());
+            var p = parseInt($(".price").text());
+            if (@currentUser.Balance>= p) {
+                $("#have").show()
+                $("#havenot").hide()
+            }
+            else {
+                $("#have").hide()
+                $("#havenot").show()
+            }
+        });
+        $(".check").change(function () {
+
+            var p = 0;
+            var d = 0;
+            //alert(p);
+            //-------------check price-------------
+            if ($(this).attr("name") == "Fiver") {
+                p = 5;
+            }
+            else if ($(this).attr("name") == "Tenth") {
+                p = 10;
+            }
+            else if ($(this).attr("name") == "Fifteenth") {
+                p = 15;
+            }
+            else if ($(this).attr("name") == "Twenty") {
+                p = 20;
+            }
+            else if ($(this).attr("name") == "TwenyFive") {
+                p = 25;
+            }
+            //----------------------------------------
+            //------------check days--------------
+            if ($(this).nextAll(".sib").first().attr("name") == "NotNeed") {
+                d = d + 0;
+            }
+            else if ($(this).nextAll(".sib").first().attr("name") == "Oneday") {
+                d = d + 1;
+            }
+            else if ($(this).nextAll(".sib").first().attr("name") == "TwoDays") {
+                d = d + 2;
+            }
+            else if ($(this).nextAll(".sib").first().attr("name") == "ThreeDays") {
+                d = d + 3;
+            }
+            else if ($(this).nextAll(".sib").first().attr("name") == "FourDays") {
+                d = d + 4;
+            }
+            else if ($(this).nextAll(".sib").first().attr("name") == "FiveDays") {
+                d = d + 5;
+            }
+            else if ($(this).nextAll(".sib").first().attr("name") == "SixDays") {
+                d = d + 6;
+            }
+            else if ($(this).nextAll(".sib").first().attr("name") == "OneWeek") {
+                d = d + 7;
+            }
+            else if ($(this).nextAll(".sib").first().attr("name") == "TwoWeeks") {
+                d = d + 14;
+            }
+            else if ($(this).nextAll(".sib").first().attr("name") == "ThreeWeeks") {
+                d = d + 21;
+            }
+            else if ($(this).nextAll(".sib").first().attr("name") == "OneMonth") {
+                d = d + 30;
+            }
+            //----------------------------------------
+            var x = parseInt($(".price").text());
+            if (this.checked == true) {
+                var res = x + p;
+                $(".price").text(res);
+                $("#pricesubmit").val(res);
+                if (@currentUser.Balance>= res)
+                {
+                    $("#have").show()
+                    $("#havenot").hide()
+                }
+                else
+                {
+                    $("#have").hide()
+                    $("#havenot").show()
+                }
+
+            }
+            else {
+                var res = x - p;
+                $(".price").text(res);
+                $("#pricesubmit").val(res);
+
+                if (@currentUser.Balance>= res)
+                {
+                    $("#have").show()
+                    $("#havenot").hide()
+                }
+                else
+                {
+                    $("#have").hide()
+                    $("#havenot").show()
+                }
+
+
+            }
+            var y = parseInt($("#days").text());
+            if (this.checked == true) {
+                var alldays = y + d;
+                $("#days").text(alldays);
+                $("#dayssubmit").val(alldays);
+            }
+            else {
+                var alldays = y - d;
+                $("#days").text(alldays);
+                $("#dayssubmit").val(alldays);
+
+            }
+
+
+
+        });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $("#deleteform").hide();
+                $(".add").hover(
+                    function () {
+                        $(this).find("div").children("form").show();
+                    }, function () {
+                        $(this).find("div").children("form").hide();
+
+                    });
+            });
+
+        </script>
+    }
+}

@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Book" xml:space="preserve">
+    <value>Book</value>
+  </data>
+  <data name="BookChapter" xml:space="preserve">
+    <value>Book Chapter</value>
+  </data>
+  <data name="BookTranslation" xml:space="preserve">
+    <value>Book Translation</value>
+  </data>
+  <data name="CEO" xml:space="preserve">
+    <value>CEO</value>
+  </data>
+  <data name="CompititionParticipation" xml:space="preserve">
+    <value>Compitition Participation</value>
+  </data>
+  <data name="ConferenceOrganizer" xml:space="preserve">
+    <value>Conference Organizer</value>
+  </data>
+  <data name="ConferencePaper" xml:space="preserve">
+    <value>Conference Paper</value>
+  </data>
+  <data name="ConferenceParticipation" xml:space="preserve">
+    <value>Conference Participation</value>
+  </data>
+  <data name="ConferencePresident" xml:space="preserve">
+    <value>Conference President</value>
+  </data>
+  <data name="ConferenceReviewer" xml:space="preserve">
+    <value>Conference Reviewer</value>
+  </data>
+  <data name="Consultant" xml:space="preserve">
+    <value>Consultant</value>
+  </data>
+  <data name="CopyRight" xml:space="preserve">
+    <value>Copy Right</value>
+  </data>
+  <data name="CourseParticipation" xml:space="preserve">
+    <value>Course Participation</value>
+  </data>
+  <data name="DataCollection" xml:space="preserve">
+    <value>Data Collection</value>
+  </data>
+  <data name="Editor" xml:space="preserve">
+    <value>Editor</value>
+  </data>
+  <data name="EditorinChief" xml:space="preserve">
+    <value>Editor in Chief</value>
+  </data>
+  <data name="GivingaCourse" xml:space="preserve">
+    <value>Giving a Course</value>
+  </data>
+  <data name="GivingaWorkshop" xml:space="preserve">
+    <value>Giving a Workshop</value>
+  </data>
+  <data name="InternationalArbitrator" xml:space="preserve">
+    <value>International Arbitrator</value>
+  </data>
+  <data name="JournalPaper" xml:space="preserve">
+    <value>Journal Paper</value>
+  </data>
+  <data name="JournalReviewer" xml:space="preserve">
+    <value>Journal Reviewer</value>
+  </data>
+  <data name="KeynoteSpeech" xml:space="preserve">
+    <value>Keynote Speech</value>
+  </data>
+  <data name="MediaActivity" xml:space="preserve">
+    <value>Media Activity</value>
+  </data>
+  <data name="Others" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="Patent" xml:space="preserve">
+    <value>Patent</value>
+  </data>
+  <data name="PostersExhibition" xml:space="preserve">
+    <value>Posters Exhibition</value>
+  </data>
+  <data name="Presentation" xml:space="preserve">
+    <value>Presentation</value>
+  </data>
+  <data name="ProjectManager" xml:space="preserve">
+    <value>Project Manager</value>
+  </data>
+  <data name="ScientificCommitteeChairman" xml:space="preserve">
+    <value>Scientific Committee Chairman</value>
+  </data>
+  <data name="ScientificCommitteeMember" xml:space="preserve">
+    <value>Scientific Committee Member</value>
+  </data>
+  <data name="SupervisingBachelorStudents" xml:space="preserve">
+    <value>Supervising Bachelor Students</value>
+  </data>
+  <data name="SupervisingMasterStudents" xml:space="preserve">
+    <value>Supervising Master Students</value>
+  </data>
+  <data name="SupervisingPhDStudents" xml:space="preserve">
+    <value>Supervising PhD Students</value>
+  </data>
+  <data name="SymposiumParticipation" xml:space="preserve">
+    <value>Symposium Participation</value>
+  </data>
+  <data name="TeamLeader" xml:space="preserve">
+    <value>Team Leader</value>
+  </data>
+  <data name="Trademark" xml:space="preserve">
+    <value>Trademark</value>
+  </data>
+  <data name="TrainingDirector" xml:space="preserve">
+    <value>Training Director</value>
+  </data>
+  <data name="VoluntaryWork" xml:space="preserve">
+    <value>Voluntary Work</value>
+  </data>
+</root>

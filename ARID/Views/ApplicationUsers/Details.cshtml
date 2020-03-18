@@ -1,0 +1,1287 @@
+﻿@model ARID.Models.ProfileViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+
+@{
+    //ViewData["Title"] = @Localizer["Title"];
+    ViewData["Title"] = "الصفحة الشخصية";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="container bootstrap snippet">
+            <div class="row col-lg-12">
+                <h2>&nbsp;</h2>
+                <button id="succesmessagebtn" hidden title="الرسائل" data-toggle="modal" data-target="#succesmessage" class="btn-sm btn-default disabled h3">رسالة</button>
+                <!-- Modal -->
+                <div id="succesmessage" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="modal" aria-label="close">&times;</a>
+                            <h4><strong>تم!</strong> تم إرسال الرسالة بنجاح.</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8 thumbnail">
+                    <img src="~/images/bg.jpg" class="img-rounded img-responsive center-block" />
+                    <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">
+                        <div class="caption pull-right">
+                            <img style="margin-top:-130px;position:relative" onerror="this.onerror=null;this.src='https://portal.arid.my/profileimages/default_small.png';" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + Model.ApplicationUser.ProfileImage)"
+                                 height="160" width="160" class="img-circle" />
+                            <h4><strong>@Html.DisplayFor(model => model.ApplicationUser.ArName)</strong></h4>
+                        </div>
+                        @*@if (SignInManager.IsSignedIn(User))
+                        {
+                            if (await UserManager.IsInRoleAsync(currentUser, RoleName.Admins))
+                            {
+
+                                <a href="https://portal.arid.my/ar-LY/Account/DAL/@Model.ApplicationUser.DAL"><span class="glyphicon glyphicon-log-in"></span></a>
+                            }
+                        }*@
+                    </a>
+                    <br />
+                    <div class="pull-left" style="margin-right:5px">
+                        @{
+                            ApplicationUser currentuser = null;
+                            if (SignInManager.IsSignedIn(User))
+                            {
+                                currentuser = await UserManager.GetUserAsync(User);
+                                if (Model.ApplicationUser.Id != currentuser.Id)
+                                {
+                                    if (Model.UserFollowers.Where(f => f.FollowedUserId == Model.ApplicationUser.Id && f.UserId == currentuser.Id).Count() > 0)
+                                    {
+                                        <button id="followbtn" class="btn-sm btn-default h3">@Localizer["Unfollow"]</button>
+                                    }
+                                    else
+                                    {
+                                        <button id="followbtn" class="btn-sm btn-success active h3">@Localizer["Follow"]</button>
+                                    }
+                                }
+                            }
+                        }
+                       
+                        @*@if (currentuser.Id != Model.ApplicationUser.Id)
+                        {*@
+                            <button title="الرسائل" data-toggle="modal" data-target="#messagemodel" class="btn-sm btn-default h3">رسالة</button>
+                        @*}*@
+                        <!-- Modal -->
+                        <div id="messagemodel" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">إرسال رسالة</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group" id="app" hidden>
+                                            <label class="control-label h4">المستخدم</label>
+                                            <input readonly value="@Model.ApplicationUser.ArName" class="form-control" />
+                                            <input readonly value="@Model.ApplicationUser.Id" name="appuser" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input placeholder="العنوان - هذا الحقل ضروري" name="title" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea placeholder="الرسالة - هذا الحقل ضروري" rows="5" name="message" class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label h4">ملف</label>
+                                            <input name="file" type="file" id="file" accept=".docx,.pdf" class="btn btn-info col-lg-12" />
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button data-dismiss="modal" id="addmessage" type="submit" class="btn btn-default h5 pull-right">إرسال</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown" style="display:inline">
+                            <a class="btn-sm btn-warning h3 dropdown-toggle" data-toggle="dropdown">
+                                مزيد ...
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" style="margin-top:9px">
+                                <li>
+                                    @if (!string.IsNullOrEmpty(Model.ApplicationUser.CVURL)
+&& !string.IsNullOrWhiteSpace(Model.ApplicationUser.CVURL))
+                                    {
+                                        <a class="h6" href="@Url.Content("~/" + @ARID.Properties.Resources.CVFileFolder + "/" + @Model.ApplicationUser.CVURL)" target="_blank">تحميل السيرة الذاتية</a>
+                                    }
+                                </li>
+                            </ul>
+                        </div><span>&nbsp;</span>
+                        <a class="btn-sm btn-info h3" target="_blank" href="@Url.Action("Register", "Account", new { id=Model.ApplicationUser.Id },this.Context.Request.Scheme)">سجل في أريد</a>
+                    </div>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+        </div>
+        <br />
+        <div class="col-lg-12 text-center" style="margin-top:5px">
+            @foreach (var item in Model.UserBadges.Where(u => u.IsGranted == true))
+            {
+                <img class="img-rounded" title="@item.DateofGrant"
+                     src="@Url.Content("~/" + ARID.Properties.Resources.BadgeLogoFolder +
+                                                                "/" + item.Badge.BadgeLogo)" width="50" height="50" />
+            }
+        </div>
+        <h2>&nbsp;</h2>
+        <button id="detailsbutton" class="btn btn-info btn-lg hidden" data-toggle="modal" data-target="#detailsmodal">Open Modal</button>
+        <!-- Modal -->
+        <div id="detailsmodal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <!--left col-->
+
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-info text-muted">تفاصيل التسجيل</li>
+                    <li class="list-group-item text-left"><span class="pull-right"><strong>تاريخ التسجيل</strong></span>@FreelancerProject.GetDate(Model.ApplicationUser.RegDate)</li>
+                    @*<li class="list-group-item text-left"><span class="pull-right"><strong>آخر دخول</strong></span>@FreelancerProject.GetDate(Model.ApplicationUser.LastLogin.Value)</li>*@
+                    @if (Model.ApplicationUser.OtherNames != null)
+                    {
+                        <li class="list-group-item text-left"><span class="pull-right"><strong>الأسماء</strong></span>@Model.ApplicationUser.OtherNames</li>
+                    }
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-info text-muted">الجامعة / المؤسسة</li>
+                    @if (Model.ApplicationUser.IsNotUniversity)
+                    {
+                        <li class="list-group-item text-left"><span class="pull-right"><strong>@Model.ApplicationUser.FirmName</strong></span></li>}
+                    else
+                    {
+                        <li class="list-group-item text-left">
+                            <span class="pull-right"><strong>@Model.ApplicationUser.University.ArUniversityName</strong></span><img src="@Url.Content("~/" + ARID.Properties.Resources.UniversityLogoFolder + "/" + Model.ApplicationUser.University.LogoHD)" height="40" width="40" class="img-circle table-bordered" style="border:2px solid ActiveCaption" />
+                        </li>}
+                </ul>
+                @if (!Model.ApplicationUser.IsNotUniversity)
+                {
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            من نفس الجامعة : @Model.SameUniversityCount
+                            @if (Model.SameUniversityCount > 3)
+                            {<a style="float:left" href="#" data-toggle="modal" class="btn-sm btn-primary" data-target="#myModal" name="@Model.ApplicationUser.Id" id="viewallsu"><h5 style="display:inline">عرض الجميع</h5></a>}
+                        </div>
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">باحثون من نفس الجامعة</h4><div style="float:left;margin-top:20px" class="loader"></div>
+                                    </div>
+                                    <div id="refresh" class="modal-body">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h4 style="display:inline"><button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @foreach (var item in Model.ApplicationUsers)
+                        {
+                            <div class="panel-body table-bordered" style="border:1px solid ActiveCaption">
+                                <div class="col-lg-4">
+                                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
+                                        <img src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + item.ProfileImage)"
+                                             height="60" width="60" class="img-circle table-bordered" style="border:2px solid ActiveCaption" />
+                                    </a>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
+
+                                        @if (item.ArName.Length < 15)
+                                        {<h5 style="display:inline" class="text-center"><strong>@item.ArName</strong></h5><br />}
+                                    else
+                                    {<h5 style="display:inline" class="text-center"><strong>@item.ArName.Substring(0, 12)..</strong></h5><br />}
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                        @if (Model.ApplicationUsers.Count() == 0)
+                        {<h4 class="text-center">لا يوجد</h4>}
+                    </div>
+                }
+                <div class="panel panel-info">
+                    <div class="panel-heading">الموقع الشخصي <i class="fa fa-link fa-1x"></i></div>
+                    <div class="panel-body"><a href="https://arid.my/@Model.ApplicationUser.Id">arid.my/@Common.ARIDFormat(Model.ApplicationUser.ARID)</a></div>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-info text-muted">احصائيات الانشطة <i class="fa fa-dashboard fa-1x"></i></li>
+                    <li class="list-group-item text-left"><span class="pull-right"><strong>عدد الزيارات</strong></span>@Model.ApplicationUser.Visitors</li>
+                    <li class="list-group-item text-left"><span class="pull-right"><strong>عدد الاعجابات</strong></span> @Model.Likes</li>
+                    <li class="list-group-item text-left"><span class="pull-right"><strong>المواضيع</strong></span>@Model.postsCount</li>
+                    <li class="list-group-item text-left"><span class="pull-right"><strong>المتابعون</strong></span>@Model.Followers.Count()</li>
+                    <li class="list-group-item text-left"><span class="pull-right"><strong>المسجلون عبر هذا الحساب</strong></span> @Model.RegisteredByYou</li>
+                </ul>
+                @if (Model.Followers.Any())
+                {
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            المُتابعون:@Model.FollowersCount
+                            @if (Model.FollowersCount > 3)
+                            {
+                                <a href="#" class="btn-sm btn-primary" style="float:left" data-toggle="modal" name="@Model.ApplicationUser.Id" data-target="#followers" id="viewallfollowers"><h5 style="display:inline">عرض الجميع</h5></a>}
+                        </div>
+                        <!-- Modal -->
+                        <div id="followers" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">المُتابعون</h4><div style="float:left;margin-top:20px" class="loader"></div>
+                                    </div>
+                                    <div id="followersrefresh" class="modal-body">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h4 style="display:inline"><button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @foreach (var item in Model.Followers.Take(3))
+                        {
+                            <div class="panel-body table-bordered" style="border:1px solid ActiveCaption">
+                                <div class="col-lg-4">
+                                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.UserId">
+                                        <img src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + item.User.ProfileImage)"
+                                             height="60" width="60" class="img-circle table-bordered" style="border:2px solid ActiveCaption" />
+                                    </a>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.UserId">
+
+                                        @if (item.User.ArName.Length < 15)
+                                        {<h5 style="display:inline" class="text-center"><strong>@item.User.ArName</strong></h5><br />}
+                                    else
+                                    {<h5 style="display:inline" class="text-center"><strong>@item.User.ArName.Substring(0, 12)..</strong></h5><br />}
+                                    </a>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                }
+                @if (Model.Followings.Any())
+                {
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            الذين تتابعهم:@Model.FollowingsCount
+                            @if (Model.FollowingsCount > 3)
+                            {<a style="float:left" class="btn-sm btn-primary" href="#" id="viewallfollowings" name="@Model.ApplicationUser.Id" data-toggle="modal" data-target="#followins"><h5 style="display:inline">عرض الجميع</h5></a>}
+                        </div>
+                        <!-- Modal -->
+                        <div id="followins" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">الذين تتابعهم</h4><div style="float:left;margin-top:20px" class="loader"></div>
+                                    </div>
+                                    <div id="followingssrefresh" class="modal-body">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h4 style="display:inline"><button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @foreach (var item in Model.Followings.Take(3))
+                        {
+                            <div class="panel-body table-bordered" style="border:1px solid ActiveCaption">
+                                <div class="col-lg-4">
+                                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.FollowedUserId">
+                                        <img src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + item.FollowedUser.ProfileImage)"
+                                             height="60" width="60" class="img-circle table-bordered" style="border:2px solid ActiveCaption" />
+                                    </a>
+                                </div>
+
+                                <div class="col-lg-8">
+                                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.FollowedUserId">
+
+                                        @if (item.FollowedUser.ArName.Length < 15)
+                                        {<h5 style="display:inline" class="text-center"><strong>@item.FollowedUser.ArName</strong></h5><br />}
+                                    else
+                                    {<h5 style="display:inline" class="text-center"><strong>@item.FollowedUser.ArName.Substring(0, 12)..</strong></h5><br />}
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+
+
+            <!--/col-3-->
+            <div class="col-sm-9">
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#home" data-toggle="tab" class="text-info">الرئيسية</a></li>
+                    <li><a href="#posts" id="blogs" name="@Model.ApplicationUser.Id" data-toggle="tab" class="text-info">المدونات</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="home">
+                        <div class="thead-light col-lg-12">
+                            @if (Model.EducationalLevels.Count > 0)
+                            {
+                                @*<table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].AcademicDegreeId)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].SpecialityId)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].ArCertificateName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].EnCertificateName)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].IsCurrent)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].FromYear)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.EducationalLevels[0].ToYear)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="items">
+                                            @foreach (var item in Model.EducationalLevels)
+                                            {
+                                                <tr class="d-flex">
+                                                    <td class="col-md-">
+                                                        @Html.DisplayFor(modelItem => item.AcademicDegree.ArDegreeName)
+                                                    </td>
+                                                    <td class="col-md-">
+                                                        @Html.DisplayFor(modelItem => item.Speciality.Name)
+                                                    </td>
+                                                    <td class="col-md-">
+                                                        @Html.DisplayFor(modelItem => item.ArCertificateName)
+                                                    </td>
+                                                    <td class="col-md-">
+                                                        @Html.DisplayFor(modelItem => item.EnCertificateName)
+                                                    </td>
+                                                    <td class="col-md-">
+                                                        @Html.DisplayFor(modelItem => item.IsCurrent)
+                                                    </td>
+                                                    <td class="col-md-">
+                                                        @Html.DisplayFor(modelItem => item.FromYear)
+                                                    </td>
+                                                    <td class="col-md-">
+                                                        @Html.DisplayFor(modelItem => item.ToYear)
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>*@
+                            }
+                            <div class="table-bordered" style="background-color:whitesmoke;margin-top:5px">
+                                <h4>&nbsp; <span class="glyphicon glyphicon-stats"></span><strong> نبذة مختصرة</strong></h4>
+                            </div>
+                            <div class="table-bordered col-lg-12" style="background-color:whitesmoke;margin-top:3px">
+                                <div class="col-lg-12">
+                                    <h5><strong>@Model.ApplicationUser.Summary</strong></h5>
+                                </div>
+                            </div>
+
+                            <hr style="border:2px solid ActiveCaption" />
+
+                            @if (Model.EducationalLevels.Count() > 0)
+                            {
+                                <div class="table-bordered" style="background-color:whitesmoke;margin-top:5px">
+                                    <h4>&nbsp; <span class="glyphicon glyphicon-education"></span><strong> المؤهلات الاكاديمية</strong></h4>
+                                </div>
+
+                                @foreach (var item in Model.EducationalLevels)
+                                {
+                                    <div class="table-bordered col-lg-12" style="background-color:whitesmoke;margin-top:3px">
+                                        <div class="col-lg-12">
+                                            <h5><strong>@item.AcademicDegree.ArDegreeName</strong></h5>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayNameFor(modelItem => item.SpecialityId):@Html.DisplayFor(modelItem => item.Speciality.Name)</h6>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.ArCertificateName)</h6>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            @if (item.IsCurrent == true)
+                                            {
+                                                <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.FromYear)&nbsp;-&nbsp;@Html.DisplayNameFor(modelItem => item.IsCurrent)</h6>}
+                                            else
+                                            {
+                                                <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.FromYear)&nbsp;-&nbsp;@Html.DisplayFor(modelItem => item.ToYear)</h6>}
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <button class="btn-xs btn-info eldetails h6" name="@item.Id">تفاصيل</button>
+                                        </div>
+                                    </div>
+                                }
+                                <hr style="border:2px solid ActiveCaption" />
+                            }
+                            @if (Model.AcademicPositions.Count() > 0)
+                            {
+                                <div class="table-bordered" style="background-color:whitesmoke;margin-top:5px">
+                                    <h4>
+                                        &nbsp; <span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong>
+                                            المناصب الأكاديمية والإدارية
+                                        </strong>
+                                    </h4>
+                                </div>
+                                @foreach (var item in Model.AcademicPositions)
+                                {
+                                    <div class="table-bordered col-lg-12" style="background-color:whitesmoke;margin-top:3px">
+                                        <div class="col-lg-12">
+                                            <h5><strong>@item.ArDescription</strong></h5>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.University.ArUniversityName)</h6>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.Faculty.ArFacultyName)</h6>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            @if (item.IsCurrent == true)
+                                            {
+                                                <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.FromYear)&nbsp;-&nbsp;@Html.DisplayNameFor(modelItem => item.IsCurrent)</h6>}
+                                            else
+                                            {
+                                                <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.FromYear)&nbsp;-&nbsp;@Html.DisplayFor(modelItem => item.ToYear)</h6>}
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <button name="@item.Id" class="btn-xs btn-info apdetails h6">تفاصيل</button>
+                                        </div>
+                                    </div>
+
+                                }
+                                <hr style="border:2px solid ActiveCaption" />
+                            }
+                            @if (Model.TeachingExperiences.Count() > 0)
+                            {
+
+                                <div class="table-bordered" style="background-color:whitesmoke;margin-top:5px">
+                                    <h4>
+                                        &nbsp; <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><strong>
+                                            الخبرة التدريسية
+                                        </strong>
+                                    </h4>
+                                </div>
+                                @foreach (var item in Model.TeachingExperiences)
+                                {
+                                    <div class="table-bordered col-lg-12" style="background-color:whitesmoke;margin-top:3px">
+                                        <div class="col-lg-12">
+                                            <h5><strong>@item.ArTitle</strong></h5>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            @if (item.IsCurrent == true)
+                                            {
+                                                <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.FromYear)&nbsp;-&nbsp;@Html.DisplayNameFor(modelItem => item.IsCurrent)</h6>}
+                                            else
+                                            {
+                                                <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.FromYear)&nbsp;-&nbsp;@Html.DisplayFor(modelItem => item.ToYear)</h6>}
+                                        </div>
+                                        <div class="col-lg-7"></div>
+                                        <div class="col-lg-1">
+                                            <button name="@item.Id" class="btn-xs btn-info tedetails h6">تفاصيل</button>
+                                        </div>
+                                    </div>
+
+                                }
+                                <hr style="border:2px solid ActiveCaption" />
+                            }
+                            @if (Model.Publications.Count() > 0)
+                            {
+
+                                <div class="table-bordered" style="background-color:whitesmoke;margin-top:5px">
+                                    <h4>
+                                        &nbsp; <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><strong>
+                                            النشر العلمي
+                                        </strong>
+                                    </h4>
+                                </div>
+                                @foreach (var item in Model.Publications)
+                                {
+                                    <div class="table-bordered col-lg-12" style="background-color:whitesmoke;margin-top:3px">
+                                        <div class="col-lg-12">
+                                            <h5><strong>@item.ArTitle</strong></h5>
+
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayNameFor(modelItem => item.PublicationType):@Html.DisplayFor(modelItem => item.PublicationType)</h6>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            @if (item.Publisher != null)
+                                            {
+                                                @if (item.Publisher.Length > 48)
+                                                {
+                                                    <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayNameFor(modelItem => item.Publisher):@item.Publisher.Substring(0, 48)</h6>
+                                                }
+                                                else
+                                                {
+                                                    <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayNameFor(modelItem => item.Publisher):@Html.DisplayFor(modelItem => item.Publisher)</h6>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.PublicationDate)</h6>
+                                        </div>
+                                        <div class="col-lg-10">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.ArAuthors)</h6>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            @if (!string.IsNullOrEmpty(item.FileLink))
+                                            {
+                                                <a class="btn-xs btn-info download" name="@item.Id" href="@Url.Content("~/" + @ARID.Properties.Resources.PublicationFiles + "/" + @item.FileLink)" target="_blank">تحميل <span>(@item.DownloadHits)</span></a>
+                                            }
+                                            else
+                                            {
+                                                @if (SignInManager.IsSignedIn(User))
+                                                {
+
+                                                    <button name="@item.Id" value="@Model.ApplicationUser.Id" hidden class="btn-xs btn-danger requestbtn">طلب البحث</button>
+                                                    <a href="#" data-toggle="modal" data-target="#researchrequest" class="btn-xs btn-danger">طلب البحث</a>
+                                                    <!-- Modal -->
+                                                    <div id="researchrequest" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog">
+
+                                                            <!-- Modal content-->
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    <h4 class="modal-title">رسالة إلى صاحب البحث</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="panel-body table-bordered" style="border:1px solid ActiveCaption">
+                                                                        <textarea placeholder="أدخل 10 حروف على الأقل" class="col-lg-12 form-control comment" maxlength="250" name="adminNotificationfromprojectowner"></textarea>
+                                                                        <button name="@item.Id" type="submit" class="btn-sm btn-default center-block requestbtn" data-dismiss="modal"><h5 style="display:inline">إرسال</h5></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <h4 style="display:inline" class="text-center"><button type="button" class="btn-sm btn-default" data-dismiss="modal">إغلاق</button></h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                else
+                                                {
+                                                    <a class="btn-xs btn-danger" asp-controller="account" asp-action="register">طلب البحث</a>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+
+                                }
+                                <hr style="border:2px solid ActiveCaption" />
+                            }
+                            @if (Model.AcademicActivities.Count() > 0)
+                            {
+
+                                <div class="table-bordered" style="background-color:whitesmoke;margin-top:5px">
+                                    <h4>
+                                        &nbsp; <span class="glyphicon glyphicon-globe" aria-hidden="true"></span><strong>
+                                            النشاطات الأكاديمية
+                                        </strong>
+                                    </h4>
+                                </div>
+                                @foreach (var item in Model.AcademicActivities)
+                                {
+                                    <div class="table-bordered col-lg-12" style="background-color:whitesmoke;margin-top:3px">
+                                        <div class="col-lg-12">
+                                            <h5><strong>@item.ArTitle</strong></h5>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.ActivityType)</h6>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayNameFor(modelItem => item.CountryId):@Html.DisplayFor(modelItem => item.Country.ArCountryName)</h6>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.ActivityDate)</h6>
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <button name="@item.Id" class="btn-xs btn-info aadetails h6">تفاصيل</button>
+                                        </div>
+
+                                    </div>
+
+                                }
+                                <hr style="border:2px solid ActiveCaption" />
+                            }
+                            @if (Model.Projects.Count() > 0)
+                            {
+
+                                <div class="table-bordered" style="background-color:whitesmoke;margin-top:5px">
+                                    <h4>
+                                        &nbsp; <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><strong>
+                                            المشاريع العلمية
+                                        </strong>
+                                    </h4>
+                                </div>
+                                @foreach (var item in Model.Projects)
+                                {
+                                    <div class="table-bordered col-lg-12" style="background-color:whitesmoke;margin-top:3px">
+                                        <div class="col-lg-12">
+                                            <h5><strong>@item.ArProjectName</strong></h5>
+                                        </div>
+                                        <div class="col-lg-11">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">@Html.DisplayFor(modelItem => item.FromYear)&nbsp;-&nbsp; @Html.DisplayFor(modelItem => item.FromYear)</h6>
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <button name="@item.Id" class="btn-xs btn-info prdetails h6">تفاصيل</button>
+                                        </div>
+
+                                    </div>
+
+                                }
+                                <hr style="border:2px solid ActiveCaption" />
+                            }
+                            @if (Model.ProfileLinks.Count() > 0)
+                            {
+
+                                <div class="table-bordered" style="background-color:whitesmoke;margin-top:5px">
+                                    <h4>
+                                        &nbsp; <span class="glyphicon glyphicon-link" aria-hidden="true"></span><strong>
+                                            ملفات شخصية خارجية
+                                        </strong>
+                                    </h4>
+                                </div>
+                                @foreach (var item in Model.ProfileLinks)
+                                {
+                                    <div class="table-bordered col-lg-12" style="background-color:whitesmoke;margin-top:3px">
+                                        <div class="col-lg-12">
+                                            <h5><strong>@item.ProfileType</strong></h5>
+                                        </div>
+                                        <div class="col-lg-11">
+                                            <h6 style="display:inline;margin-right:10px" class="text-center">
+                                                <a href="@item.ProfileUrl" target="_blank">@item.ProfileUrl</a>
+                                            </h6>
+                                        </div>
+                                        <div class="col-lg-1">
+                                            <a href="@item.ProfileUrl" target="_blank" class="btn-xs btn-info h6">تفاصيل</a>
+                                        </div>
+
+                                    </div>
+
+                                }
+                                <hr style="border:2px solid ActiveCaption" />
+                            }
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-4 col-md-offset-4 text-center">
+                                    <ul class="pagination" id="myPager"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/table-resp-->
+                        <hr>
+                    </div>
+                    <!--/tab-pane-->
+                    <!--/tab-pane-->
+                    <div class="tab-pane fade" id="posts">
+                        <h6>&nbsp;</h6>
+                        @if (Model.postsCount > 0)
+                        {
+                            <div id="blogsrefresh">
+                            </div>
+                            <hr style="border:2px solid ActiveCaption" />
+                            <h4> بإمكانك إضافة المزيد من المواضيع <a asp-controller="Blogs" asp-action="Create">أضف موضوع</a></h4>
+
+                        }
+                        else
+                        {
+                            if (SignInManager.IsSignedIn(User))
+                            {
+                                if (currentUser.Id == Model.ApplicationUser.Id)
+                                {
+                                    <h4> لا توجد مدونات لديك <a asp-controller="Posts" asp-action="CreateBlog">أضف مدونة</a></h4>
+                                }
+                                else
+                                {<h4>لا توجد مدونات</h4>}
+
+                            }
+
+                        }
+                    </div>
+                    <!--/tab-content-->
+
+                </div>
+                <!--/col-9-->
+            </div>
+            <!--/row-->
+        </div>
+    </div>
+    <style>
+        .modal-body {
+            max-height: calc(100vh - 212px);
+            overflow-y: auto;
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        .loader {
+            border: 5px solid ActiveCaption; /* Light grey */
+            border-top: 5px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 2s linear infinite;
+        }
+    </style>
+    @section Scripts{
+        <script type="text/javascript" src="~/lib/qrcode.js"></script>
+        <script>
+            $(document).ready(function () {
+            $('#addmessage').click(
+                function () {
+
+                    {
+                                var formData = new FormData();
+                        formData.append('file', $("[name='file']")[0].files[0]); // myFile is the input type="file" control
+                        formData.append('message', $("[name='message']").val()); // myFile is the input type="file" control
+                        formData.append('title', $("[name='title']").val()); // myFile is the input type="file" control
+                        formData.append('appuser', $("[name='appuser']").val()); // myFile is the input type="file" control
+
+                            var _url = '@Url.Action("CreateMessage", "ApplicationUsers")';
+
+                            $.ajax({
+                                url: _url,
+                                type: 'POST',
+                                data: formData,
+                                processData: false,  // tell jQuery not to process the data
+                                contentType: false,  // tell jQuery not to set contentType
+                                success: function () {
+                                },
+                                error: function (jqXHR) {
+                                },
+                                complete: function (jqXHR, status) {
+                                    $("#succesmessagebtn").trigger("click");
+                                }
+
+                            });
+
+                    }
+                  });
+        });
+        </script>
+
+        <script type="text/javascript">
+        new QRCode(document.getElementById("qrCode"),
+            {
+                text: "@Url.Action("Register", "Account", new { id=Model.ApplicationUser.Id }, this.Context.Request.Scheme)",
+                width: 150,
+                height: 150
+            });
+        @*$("#urlstring").text("@Url.Action("Register", "Account", new { id = Model.ApplicationUser.Id }, this.Context.Request.Scheme)");*@
+        </script>
+        <script>
+        $(document).ready(function () {
+            $("#followbtn").click(
+                function () {
+                    if ($("#followbtn").text() == "@Localizer["Follow"]")
+                    {
+                        var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/ApplicationUsers/Follow/";
+                        FollowOptions.data = { id: "@Model.ApplicationUser.Id" };
+                        FollowOptions.success = function () {
+                            $("#followbtn").html("@Localizer["Unfollow"]");
+                            $("#followbtn").addClass("btn-default");
+                            $("#followbtn").removeClass("btn-success");
+                        };
+                        $.ajax(FollowOptions);
+                    }
+                    else
+                    {
+                        var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/ApplicationUsers/Unfollow/";
+                        FollowOptions.data = { id: "@Model.ApplicationUser.Id" };
+                        FollowOptions.success = function () {
+                            $("#followbtn").html('@Localizer["Follow"]');
+                            $("#followbtn").addClass("btn-success  active");
+                            $("#followbtn").removeClass("btn-default");
+                        };
+                        $.ajax(FollowOptions);
+                    }
+                });
+        });
+        </script>
+
+        <script>
+        $(document).ready(function () {
+            $('.requestbtn').prop('disabled', true);
+            $('.comment').keyup(function () {
+                if ($(this).val().length > 10) {
+                    $('.requestbtn').prop('disabled', false);
+                    $('.requestbtn').removeClass('btn-default');
+                    $('.requestbtn').addClass('btn-success');
+                }
+                else {
+                    $('.requestbtn').prop('disabled', true);
+                    $('.requestbtn').removeClass('btn-success');
+                    $('.requestbtn').addClass('btn-default');
+
+                }
+            });
+            $('#addmessage').prop('disabled', true);
+            $("[name='message']").keyup(function () {
+                if ($(this).val().length > 0 && $("[name='title']").val().length > 0) {
+                    $('#addmessage').prop('disabled', false);
+                    $('#addmessage').removeClass('btn-default');
+                    $('#addmessage').addClass('btn-success');
+                }
+                else {
+                    $('#addmessage').prop('disabled', true);
+                    $('#addmessage').removeClass('btn-success');
+                    $('#addmessage').addClass('btn-default');
+
+                }
+            });
+            $("[name='title']").keyup(function () {
+                if ($(this).val().length > 0 && $("[name='message']").val().length > 0) {
+                    $('#addmessage').prop('disabled', false);
+                    $('#addmessage').removeClass('btn-default');
+                    $('#addmessage').addClass('btn-success');
+                }
+                else {
+                    $('#addmessage').prop('disabled', true);
+                    $('#addmessage').removeClass('btn-success');
+                    $('#addmessage').addClass('btn-default');
+
+                }
+            });
+            $('.requestbtn').click(
+
+                function () {
+
+                    {
+                        $('#ResearchRequest').modal('hide');
+                            var formData = new FormData();
+                            formData.append('pid', $(this).prop("name")); // myFile is the input type="file" control
+                            formData.append('comment', $(this).siblings('textarea').val()); // myFile is the input type="file" control
+
+                                var _url = '@Url.Action("ResearchRequest", "ApplicationUsers")';
+
+                                $.ajax({
+                                    url: _url,
+                                    type: 'POST',
+                                    data: formData,
+                                    processData: false,  // tell jQuery not to process the data
+                                    contentType: false,  // tell jQuery not to set contentType
+                                    success: function (result) {
+                                        alert("تم إرسال الطلب بنجاح")
+                                    },
+                                    error: function (jqXHR) {
+                                    },
+                                    complete: function (jqXHR, status) {
+                                    }
+
+                                });
+                            }
+
+                  });
+        });
+        </script>
+        @*المؤهلات الاكاديمية*@
+        <script>
+        $(document).ready(function () {
+            $('.eldetails').click(
+
+                function () {
+
+                    {
+                        $("#detailsmodal").empty();
+                        var _url = '@Url.Action("EducationalLevelsDetails", "ApplicationUsers")';
+                           $.ajax({
+                                type: "GET",
+                               url: _url,
+                               data: { id: $(this).prop("name") },
+                                contentType: "application/json; charset=utf-8",
+
+                        //HERE
+                                dataType: 'json',
+                               success: function (result) {
+                                   var dateFrom = new Date(result.fromYear).toDateString();
+                                   var dateTo = new Date(result.toYear).toDateString();
+
+                                   $("#detailsmodal").append('<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">التفاصيل</h4></div><div class="modal-body"><h5> الشهادة بالعربي:' + result.arCertificateName + '<br/> الشهادة بالإنجليزية : ' + result.enCertificateName + ' <br/> التخصص : ' + result.speciality.name + '<br/> الجامعة : ' + result.university.arUniversityName + '<br/> الكلية : ' + result.faculty.arFacultyName + '<br/> الكلية : ' + result.faculty.arFacultyName + '<br/> البلد : ' + result.country.arCountryName + '<br/> التفاصيل بالعربي : ' + result.arDescription + '<br/> التفاصيل بالإنجليزي : ' + result.enDescription + '<br/> من  : ' + dateFrom + '<br/> إلى  : ' + dateTo + ' </h5></div><div class="modal-footer"><button type="button" class="btn-sm btn-info h6" data-dismiss="modal">إغلاق</button></div></div>');
+                                   $("#detailsbutton").trigger("click");
+                               },
+                                error: function (xhr, status, err) {
+                                       alert(err.toString(), 'Error - LoadListItemsHelper');
+                               },
+                               complete: function (result, jqXHR, status) {
+                               }
+
+                            });
+                    }
+                  });
+        });
+        </script>
+        @*المناصب الاكاديمية و الادارية*@
+        <script>
+        $(document).ready(function () {
+            $('.apdetails').click(
+
+                function () {
+
+                    {
+                        $("#detailsmodal").empty();
+                        var _url = '@Url.Action("AcademicPositionsDetails", "ApplicationUsers")';
+                           $.ajax({
+                                type: "GET",
+                               url: _url,
+                               data: { id: $(this).prop("name") },
+                                contentType: "application/json; charset=utf-8",
+
+                        //HERE
+                                dataType: 'json',
+                               success: function (result) {
+                                   var dateFrom = new Date(result.fromYear).toDateString();
+                                   var dateTo = new Date(result.toYear).toDateString();
+
+                                   $("#detailsmodal").append('<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">التفاصيل</h4></div><div class="modal-body"><h5> المنصب:' + result.positionType.arPositionName + '<br/> البلد : ' + result.country.arCountryName + ' <br/> المدينة : ' + result.city.arCityName + '<br/> الجامعة : ' + result.university.arUniversityName + '<br/> الكلية : ' + result.faculty.arFacultyName + '<br/> التفاصيل بالعربي : ' + result.arDescription + '<br/> التفاصيل بالإنجليزية : ' + result.enDescription + '<br/> من  : ' + dateFrom + '<br/> إلى  : ' + dateTo + ' </h5></div><div class="modal-footer"><button type="button" class="btn-sm btn-info h6" data-dismiss="modal">إغلاق</button></div></div>');
+                                   $("#detailsbutton").trigger("click");
+                               },
+                                error: function (xhr, status, err) {
+                                       alert(err.toString(), 'Error - LoadListItemsHelper');
+                               },
+                               complete: function (result, jqXHR, status) {
+                               }
+
+                            });
+                    }
+                  });
+        });
+        </script>
+        @*الخبرة التدريسية*@
+        <script>
+        $(document).ready(function () {
+            $('.tedetails').click(
+
+                function () {
+
+                    {
+                        $("#detailsmodal").empty();
+                        var _url = '@Url.Action("TeachingExperiencesDetails", "ApplicationUsers")';
+                           $.ajax({
+                                type: "GET",
+                               url: _url,
+                               data: { id: $(this).prop("name") },
+                                contentType: "application/json; charset=utf-8",
+
+                        //HERE
+                                dataType: 'json',
+                               success: function (result) {
+                                   var dateFrom = new Date(result.fromYear).toDateString();
+                                   var dateTo = new Date(result.toYear).toDateString();
+
+                                   $("#detailsmodal").append('<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">التفاصيل</h4></div><div class="modal-body"><h5> العنوان بالعربي:' + result.arTitle + '<br/> العنوان بالانجليزي : ' + result.enTitle + ' <br/> التفاصيل بالعربي : ' + result.arDescription + '<br/> التفاصيل بالإنجليزي : ' + result.enDescription + '<br/> من  : ' + dateFrom + '<br/> إلى  : ' + dateTo + ' </h5></div><div class="modal-footer"><button type="button" class="btn-sm btn-info h6" data-dismiss="modal">إغلاق</button></div></div>');
+                                   $("#detailsbutton").trigger("click");
+                               },
+                                error: function (xhr, status, err) {
+                                       alert(err.toString(), 'Error - LoadListItemsHelper');
+                               },
+                               complete: function (result, jqXHR, status) {
+                               }
+
+                            });
+                    }
+                  });
+        });
+        </script>
+        @*النشاطات الأكاديمية*@
+        <script>
+        $(document).ready(function () {
+            $('.aadetails').click(
+
+                function () {
+
+                    {
+                        $("#detailsmodal").empty();
+                        var _url = '@Url.Action("AcademicActivitiesDetails", "ApplicationUsers")';
+                           $.ajax({
+                                type: "GET",
+                               url: _url,
+                               data: { id: $(this).prop("name") },
+                                contentType: "application/json; charset=utf-8",
+
+                        //HERE
+                                dataType: 'json',
+                               success: function (result) {
+                                   var date = new Date(result.activityDate).toDateString();
+                                   $("#detailsmodal").append('<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">التفاصيل</h4></div><div class="modal-body"><h5> <img  src="/ActivityPhotos/' + result.photo + '" height="120" width="120" class=""/> <br/> العنوان بالعربي:' + result.arTitle + '<br/> العنوان بالانجليزي : ' + result.enTitle + ' <br/> التفاصيل بالعربي : ' + result.arDescription + '<br/> التفاصيل بالإنجليزي : ' + result.enDescription + '<br/> البلد : ' + result.country.arCountryName + ' <br/> التأريخ : ' + date + ' <br/>  الرابط :<a target="_blank"/* href="' + result.activityURL + '"*/>' + result.activityURL + '</a></h5></div><div class="modal-footer"><button type="button" class="btn-sm btn-info h6" data-dismiss="modal">إغلاق</button></div></div>');
+                                   $("#detailsbutton").trigger("click");
+                               },
+                                error: function (xhr, status, err) {
+                                       alert(err.toString(), 'Error - LoadListItemsHelper');
+                               },
+                               complete: function (result, jqXHR, status) {
+                               }
+
+                            });
+                    }
+                  });
+        });
+        </script>
+        @*المشاريع*@
+        <script>
+        $(document).ready(function () {
+            $('.prdetails').click(
+
+                function () {
+
+                    {
+                        $("#detailsmodal").empty();
+                        var _url = '@Url.Action("ProjectsDetails", "ApplicationUsers")';
+                           $.ajax({
+                                type: "GET",
+                               url: _url,
+                               data: { id: $(this).prop("name") },
+                                contentType: "application/json; charset=utf-8",
+
+                        //HERE
+                                dataType: 'json',
+                               success: function (result) {
+                                   var dateFrom = new Date(result.fromYear).toDateString();
+                                   var dateTo = new Date(result.toYear).toDateString();
+                                   $("#detailsmodal").append('<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">التفاصيل</h4></div><div class="modal-body"><h5>  الإسم بالعربي:' + result.arProjectName + '<br/> الإسم بالانجليزي : ' + result.enProjectName + ' <br/> التفاصيل بالعربي : ' + result.arDescription + '<br/> التفاصيل بالإنجليزي : ' + result.enDescription + '<br/> البلد : ' + result.country.arCountryName + ' <br/> من : ' + dateFrom + '<br/> الى : ' + dateTo + '</h5></div><div class="modal-footer"><button type="button" class="btn-sm btn-info h6" data-dismiss="modal">إغلاق</button></div></div>');
+                                   $("#detailsbutton").trigger("click");
+                               },
+                                error: function (xhr, status, err) {
+                                       alert(err.toString(), 'Error - LoadListItemsHelper');
+                               },
+                               complete: function (result, jqXHR, status) {
+                               }
+                            });
+                    }
+                  });
+        });
+        </script>
+        <script>
+        $(document).ready(function () {
+            $('#viewallsu').click(
+
+                function () {
+
+                    {
+                        $("#refresh").empty();
+
+
+                        var _url = '@Url.Action("SameUniversityUsers", "ApplicationUsers")';
+                        $(".loader").fadeIn();
+                           $.ajax({
+                                type: "GET",
+                               url: _url,
+                               data: { id: $(this).prop("name") },
+                                contentType: "application/json; charset=utf-8",
+
+                        //HERE
+                                dataType: 'json',
+                               success: function (result) {
+                                   var ActionU='@(Url.Action("Details", "ApplicationUsers"))';
+                                   for (var i = 0; i < result.list.length; i++) {
+                                       $("#refresh").append('<div class="panel-body table-bordered" style="border:1px solid ActiveCaption"><div class="col-lg-2"><a target="_blank"/* href="' + ActionU + '?id=' + result.list[i].id + '"*/><img onerror="this.onerror=null;this.src="https://portal.arid.my/profileimages/default_small.png";" src="/ProfileImages/' + result.list[i].profileImage + '" height="64px" width="64px" height="60" width="60" class="img-circle table-bordered" style="border:2px solid ActiveCaption" /></a></div><div class="col-lg-8"><a target="_blank" /*href="' + ActionU + '?id=' + result.list[i].id + '"*/><h5 style="display:inline" class="text-center"><strong>' + result.list[i].arName + '</strong></h5><br /></a><h5 style="display:inline" class="text-center"><strong>' + result.list[i].faculty.arFacultyName + '</strong></h5><br /></div></div>');
+                                    }
+                                },
+                                error: function (xhr, status, err) {
+                                       alert(err.toString(), 'Error - LoadListItemsHelper');
+                               },
+                               complete: function (result, jqXHR, status) {
+                                   $(".loader").fadeOut();
+                               }
+
+                            });
+                    }
+                  });
+        });
+        </script>
+        <script>
+        $(document).ready(function () {
+            $('#viewallfollowers').click(
+
+                function () {
+
+                    {
+                        $("#followersrefresh").empty();
+
+                           var _url = '@Url.Action("FollowersUsers", "ApplicationUsers")';
+                        $(".loader").fadeIn();
+                           $.ajax({
+                                type: "GET",
+                               url: _url,
+                               data: { id: $(this).prop("name") },
+                                contentType: "application/json; charset=utf-8",
+
+                        //HERE
+                                dataType: 'json',
+                               success: function (result) {
+                                   var ActionU='@(Url.Action("Details", "ApplicationUsers"))';
+                                   for (var i = 0; i < result.list.length; i++) {
+                                       $("#followersrefresh").append('<div class="panel-body table-bordered" style="border:1px solid ActiveCaption"><div class="col-lg-2"><a target="_blank" /*href="' + ActionU + '?id=' + result.list[i].userId + '"*/><img onerror="this.onerror=null;this.src="https://portal.arid.my/profileimages/default_small.png";" src="/ProfileImages/' + result.list[i].user.profileImage + '" height="64px" width="64px" height="60" width="60" class="img-circle table-bordered" style="border:2px solid ActiveCaption" /></a></div><div class="col-lg-8"><a target="_blank" /*href="' + ActionU + '?id=' + result.list[i].userId + '"*/><h5 style="display:inline" class="text-center"><strong>' + result.list[i].user.arName + '</strong></h5><br /></a><h5 style="display:inline" class="text-center"><strong>' + result.list[i].user.university.arUniversityName + '</strong></h5>/<h5 style="display:inline" class="text-center"><strong>' + result.list[i].user.faculty.arFacultyName + '</strong></h5><br /></div></div>');
+                                    }
+                                },
+                                error: function (xhr, status, err) {
+                                       alert(err.toString(), 'Error - LoadListItemsHelper');
+                               },
+                                complete: function (result, jqXHR, status) {
+                                   $(".loader").fadeOut();
+                               }
+
+                            });
+                    }
+                  });
+        });
+        </script>
+        <script>
+        $(document).ready(function () {
+            $('#viewallfollowings').click(
+
+                function () {
+
+                    {
+                        $("#followingssrefresh").empty();
+                        var _url = '@Url.Action("FollowingsUsers", "ApplicationUsers")';
+                        $(".loader").fadeIn();
+                           $.ajax({
+                                type: "GET",
+                               url: _url,
+                               data: { uid: $(this).prop("name") },
+                                contentType: "application/json; charset=utf-8",
+
+                        //HERE
+                                dataType: 'json',
+                               success: function (result) {
+                                   var ActionU='@(Url.Action("Details", "ApplicationUsers"))';
+                                   for (var i = 0; i < result.list.length; i++) {
+                                       $("#followingssrefresh").append('<div class="panel-body table-bordered" style="border:1px solid ActiveCaption"><div class="col-lg-2"><a target="_blank" /*href="' + ActionU + '?id=' + result.list[i].followedUserId + '"*/><img onerror="this.onerror=null;this.src="https://portal.arid.my/profileimages/default_small.png";" src="/ProfileImages/' + result.list[i].followedUser.profileImage + '" height="64px" width="64px" height="60" width="60" class="img-circle table-bordered" style="border:2px solid ActiveCaption" /></a></div><div class="col-lg-8"><a target="_blank" /*href="' + ActionU + '?id=' + result.list[i].followedUserId + '" */ ><h5 style="display:inline" class="text-center"><strong>' + result.list[i].followedUser.arName + '</strong></h5><br /></a><h5 style="display:inline" class="text-center"><strong>' + result.list[i].followedUser.university.arUniversityName + '</strong></h5>/<h5 style="display:inline" class="text-center"><strong>' + result.list[i].followedUser.faculty.arFacultyName + '</strong></h5><br /></div></div>');
+                                    }
+                                },
+                                error: function (xhr, status, err) {
+                                       alert(err.toString(), 'Error - LoadListItemsHelper');
+                               },
+                               complete: function (result, jqXHR, status) {
+                                   $(".loader").fadeOut();
+                               }
+
+                            });
+                    }
+                  });
+        });
+        </script>
+
+        <script>
+        $(document).ready(function () {
+            $('#blogs').click(
+
+                function () {
+
+                    {
+                        $("#blogsrefresh").empty();
+                           var _url = '@Url.Action("Blogs", "ApplicationUsers")';
+
+                           $.ajax({
+                                type: "GET",
+                               url: _url,
+                               data: { id: $(this).prop("name") },
+                                contentType: "application/json; charset=utf-8",
+
+                        //HERE
+                                dataType: 'json',
+                               success: function (result) {
+                                   var ActionU = '@(Url.Action("Details", "Posts"))';
+                                   for (var i = 0; i < result.list.length; i++) {
+                                       var dateFormatted = new Date(result.list[i].dateTime).toDateString();
+                                       $("#blogsrefresh").append('<div class="table-bordered col-lg-12" style="background-color:whitesmoke;margin-top:3px"><div class="col-lg-12"><h5><strong>' + result.list[i].title + '</strong></h5></div><div class="col-lg-11"><h6 style="display:inline;margin-right:10px" class="text-center">' + dateFormatted + '@*@Html.DisplayFor(modelItem => item.DateTime)*@</h6></div><div class="col-lg-1"><a class="btn-xs btn-info" href="' + ActionU +'?id='+ result.list[i].id +'">تفاصيل</a></div></div>')
+                                   }
+                                },
+                                error: function (xhr, status, err) {
+                                       alert(err.toString(), 'Error - LoadListItemsHelper');
+                                }
+                            });
+                    }
+                  });
+        });
+        </script>
+
+        <script>
+        $(document).ready(function () {
+            $('.download').click(
+
+                function () {
+
+                    {
+                            var formData = new FormData();
+                        formData.append('id', $(this).prop("name")); // myFile is the input type="file" control
+
+                                var _url = '@Url.Action("PublicationDownloads", "ApplicationUsers")';
+
+                        $.ajax
+                            ({
+                                    url: _url,
+                                    type: 'POST',
+                                    data: formData,
+                                    processData: false,  // tell jQuery not to process the data
+                                    contentType: false,  // tell jQuery not to set contentType
+                                success: function (result) {
+                                    },
+                                error: function (jqXHR) {
+                                    },
+                                complete: function (result, jqXHR, status) {
+                                    }
+
+                            });
+                     }
+                });
+        });
+        </script>
+
+    }

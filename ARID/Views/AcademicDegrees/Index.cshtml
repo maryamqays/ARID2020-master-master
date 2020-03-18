@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ARID.Models.AcademicDegree>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ArDegreeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnDegreeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Indx)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArDegreeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnDegreeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Indx)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

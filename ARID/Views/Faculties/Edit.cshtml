@@ -1,0 +1,103 @@
+@*@inject IViewLocalizer Localizer*@
+@using System.Globalization
+
+@model ARID.Models.Faculty
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Faculty</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="ArFacultyName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArFacultyName" class="form-control" />
+                <span asp-validation-for="ArFacultyName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EnFacultyName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EnFacultyName" class="form-control" />
+                <span asp-validation-for="EnFacultyName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="HasPostGraduation" />
+                    <label asp-for="HasPostGraduation"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsIndexed" />
+                    <label asp-for="IsIndexed"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UniversityId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select id="uniid" asp-for="UniversityId" class="form-control" asp-items="ViewBag.UniversityId">
+                    <option value="">Select University</option>
+                </select>
+                <span asp-validation-for="UniversityId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SpecialityId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId">
+                    <option value="">Select Speciality</option>
+                </select>
+                <span asp-validation-for="SpecialityId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            $("#uniid").change(function() {
+                $("#ctyid").empty();
+                $("#ctyid").append($('<option>', { text: "Select City" }));
+                if ($("#uniid").val() > 0) {
+                var CountryOptions = { };
+                CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Faculties/GetCitiesList/";
+                CountryOptions.data = { universityid: $("#uniid").val() };
+                CountryOptions.success = function(data) {
+                        $.each(data, function(index, row) {
+                            $("#ctyid").append($('<option>', { value: row.value, text: row.text}))
+                        });
+                };
+                CountryOptions.error = function() { alert("Error: can't retrieve the list of cities!!!!"); };
+                    $.ajax(CountryOptions);
+            }
+        });
+    });
+    </script>
+}
+

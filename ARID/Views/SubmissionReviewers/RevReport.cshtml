@@ -1,0 +1,250 @@
+﻿@model ARID.Models.SubmissionReviewer
+@{
+    ViewData["Title"] = "Details";
+}
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+
+<h2>تقرير المحكم</h2>
+<div class="col-lg-12">
+    <hr />
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.DueDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DueDate)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.ReviewerStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReviewerStatus)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.EICInstructions)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EICInstructions)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.ReviewerInstructionsToEIC)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReviewerInstructionsToEIC)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.ReviewerInstructionsToAuthor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReviewerInstructionsToAuthor)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfRecord)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateOfRecord)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.ReviewDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReviewDate)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.DecisionDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DecisionDate)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsNewInfo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsNewInfo)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsWithinJournalScope)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsWithinJournalScope)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.AbstractCompatibility)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AbstractCompatibility)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFormsAccepted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsFormsAccepted)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPublishedPreviously)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPublishedPreviously)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsValuable)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsValuable)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsRepeatedInfo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsRepeatedInfo)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.ResearchLength)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ResearchLength)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.TheoreticalResults)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TheoreticalResults)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.Method)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Method)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCommitted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsCommitted)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsMatchTitleContent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsMatchTitleContent)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsModernSourcesAdopted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsModernSourcesAdopted)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDiscussionDocumentedJustified)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsDiscussionDocumentedJustified)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.IsInterpretedResult)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsInterpretedResult)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.Evaluation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Evaluation)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.RecommendationToPublish)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RecommendationToPublish)
+        </dd>
+        <hr />
+        @if (Model.NotForPublicationReason != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.NotForPublicationReason)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NotForPublicationReason)
+            </dd>
+            <hr />
+        }
+        @if (Model.Adjustments != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Adjustments)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Adjustments)
+            </dd>
+            <hr />
+        }
+        @if (Model.PublishLocation != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.PublishLocation)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PublishLocation)
+            </dd>
+            <hr />
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.ReviewReportFile)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReviewReportFile)
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.CieAeUserId)
+        </dt>
+        <dd>
+            <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@Model.CieAeUserId"> @Html.DisplayFor(model => model.CieAeUser.ArName)</a>
+        </dd>
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.ReviewerUserId)
+        </dt>
+        <dd>
+            <a asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@Model.ReviewerUserId">@Html.DisplayFor(model => model.ReviewerUser.ArName)</a>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Details" asp-controller="Manuscripts" asp-route-id="@ViewData["mid"]" class="btn btn-primary bold">رجوع</a>
+</div>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>

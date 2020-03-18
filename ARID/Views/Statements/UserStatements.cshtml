@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ARID.Models.Statement>
+
+@{
+    ViewData["Title"] = "عمليات المستخدم";
+}
+
+<h1>
+    @ViewData["username"]/ <a asp-action="Create" asp-controller="Statements" asp-route-id="@ViewData["userid"]" class="btn btn-success">Add</a>
+
+</h1>
+
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Details)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUserId)
+            </th>
+         
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecordDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Details)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Destination)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.ArName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.ArName)
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+</table>
+<a class="btn btn-primary" asp-controller="ApplicationUsers" asp-action="Edit" asp-route-id="@ViewData["userid"]">رجوع</a>

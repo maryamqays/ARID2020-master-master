@@ -1,0 +1,224 @@
+﻿@model ARID.Models.FreelancerProjectViewModel
+@{
+    ViewData["Title"] = "قائمة مشاريعي";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+<div class="form-group row col-lg-12">
+    <h2 class="text-center">قائمة مشاريعي</h2>
+    <p>
+        <h4 style="float:left;margin-left:15px;">
+            <a asp-action="Create" class="btn btn-info"> <span class="glyphicon glyphicon-plus"></span> &nbsp; أضف مشروع</a>
+            <a asp-action="Index" class="btn btn-info"> <span class="glyphicon glyphicon-th-list"></span> &nbsp; جميع المشاريع</a>
+        </h4>
+    </p>
+
+    <div class="col-lg-12">
+        <hr />
+        <h3>مشاريع مفتوحة</h3>
+
+        @if (Model.FreelancerProjects.Count() == 0)
+        {
+            <div class="col-lg-12 table-bordered img-rounded text-center" style="background-color:whitesmoke">
+                <a asp-action="Index" class="text-info">لا توجد مشاريع خاصة بكم</a>
+            </div>
+        }
+        @foreach (var item in Model.FreelancerProjects.Where(f => f.FreelancerProjectStatus == FreelancerProjectStatus.Acceptingoffers || f.FreelancerProjectStatus == FreelancerProjectStatus.Delivered || f.FreelancerProjectStatus == FreelancerProjectStatus.Execution || f.FreelancerProjectStatus == FreelancerProjectStatus.underreview || f.FreelancerProjectStatus == FreelancerProjectStatus.FreelancerReadyServices))
+        {
+            <div class="col-lg-12 table-bordered img-rounded" style="background-color:ghostwhite;border-color:ActiveCaption;margin:10px">
+                @if (item.ApplicationUser.ProfileImage != null)
+                {
+                    <div class="col-lg-2">
+                        <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId"><img class="img-thumbnail img-thumbnail" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + item.ApplicationUser.ProfileImage)" width="75" /></a>
+                    </div>
+                }
+                <a class="col-lg-10" asp-action="Details" asp-route-id="@item.Id" style="color:deepskyblue"><h5 class="text-center col-lg-12">@item.Name</h5></a>
+                <div class="col-lg-1"></div>
+                <h4 class="text-center">
+                    @if (item.ApplicationUser.ArName.Length > 11)
+                    {
+                        <a target="_blank" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId" title="صاحب المشروع"><small> <span class="glyphicon glyphicon-user"></span>@item.ApplicationUser.ArName.Substring(0, 9)..</small></a>
+                    }
+                    else
+                    {
+                        <a target="_blank" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId" title="صاحب المشروع"><small> <span class="glyphicon glyphicon-user"></span>@item.ApplicationUser.ArName </small></a>
+                    }
+                    <a title="الوقت" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                        <small>
+                            <span class="glyphicon glyphicon-hourglass"></span>&nbsp; @FreelancerProject.GetDate(item.DateOfRecord)
+
+                        </small>
+                    </a>
+                    <a title="عدد العروض" class="col-lg-1"><small> <span class="glyphicon glyphicon-envelope"></span>&nbsp;@Model.FreelancerProposals.Where(p => p.FreelancerProjectId == item.Id).Count()</small></a>
+                    @if (item.Speciality.Name.Length > 16)
+                    {
+                        <a title="التخصص" class="col-lg-4"><small> <span class="glyphicon glyphicon-tag"></span>&nbsp;@item.Speciality.Name.Substring(0, 16) ...</small></a>
+                    }
+                    else
+                    {
+                        <a title="التخصص" class="col-lg-4"><small> <span class="glyphicon glyphicon-tag"></span>&nbsp;@item.Speciality.Name</small></a>
+                    }
+                    <input hidden class="speciality" value="@item.Speciality.Name" />
+                    <input hidden class="budget" value="@item.BugetType.ToString()" />
+                </h4>
+            </div>
+            <br />
+            <br />
+            <br />
+
+        }
+        <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+             page-class="btn border" page-class-normal="btn btn-info active"
+             page-class-selected="btn btn-primary active" class="btn-group m-1"></div>
+
+
+    </div>
+    <hr />
+    <div class="col-lg-12">
+        <hr />
+        <h3>مشاريع مغلقة</h3>
+
+        @if (Model.FreelancerProjects.Count() == 0)
+        {
+            <div class="col-lg-12 table-bordered img-rounded text-center" style="background-color:whitesmoke">
+                <a asp-action="Index" class="text-info">لا توجد مشاريع خاصة بكم</a>
+            </div>
+        }
+        @foreach (var item in Model.FreelancerProjects.Where(f => f.FreelancerProjectStatus == FreelancerProjectStatus.Completed || f.FreelancerProjectStatus == FreelancerProjectStatus.Closed))
+        {
+            <div class="col-lg-12 table-bordered img-rounded" style="background-color:ghostwhite;border-color:ActiveCaption;margin:10px">
+                @if (item.ApplicationUser.ProfileImage != null)
+                {
+                    <div class="col-lg-2">
+                        <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId"><img class="img-thumbnail img-thumbnail" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + item.ApplicationUser.ProfileImage)" width="75" /></a>
+                    </div>
+                }
+                <a class="col-lg-10" asp-action="Details" asp-route-id="@item.Id" style="color:deepskyblue"><h5 class="text-center col-lg-12">@item.Name</h5></a>
+                <div class="col-lg-1"></div>
+                <h4 class="text-center">
+                    @if (item.ApplicationUser.ArName.Length > 11)
+                    {
+                        <a target="_blank" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId" title="صاحب المشروع"><small> <span class="glyphicon glyphicon-user"></span>@item.ApplicationUser.ArName.Substring(0, 9)..</small></a>
+                    }
+                    else
+                    {
+                        <a target="_blank" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId" title="صاحب المشروع"><small> <span class="glyphicon glyphicon-user"></span>@item.ApplicationUser.ArName </small></a>
+                    }
+                    <a title="الوقت" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                        <small>
+                            <span class="glyphicon glyphicon-hourglass"></span>&nbsp; @FreelancerProject.GetDate(item.DateOfRecord)
+
+                        </small>
+                    </a>
+                    <a title="عدد العروض" class="col-lg-1"><small> <span class="glyphicon glyphicon-envelope"></span>&nbsp;@Model.FreelancerProposals.Where(p => p.FreelancerProjectId == item.Id).Count()</small></a>
+                    @if (item.Speciality.Name.Length > 16)
+                    {
+                        <a title="التخصص" class="col-lg-4"><small> <span class="glyphicon glyphicon-tag"></span>&nbsp;@item.Speciality.Name.Substring(0, 16) ...</small></a>
+                    }
+                    else
+                    {
+                        <a title="التخصص" class="col-lg-4"><small> <span class="glyphicon glyphicon-tag"></span>&nbsp;@item.Speciality.Name</small></a>
+                    }
+                    <input hidden class="speciality" value="@item.Speciality.Name" />
+                    <input hidden class="budget" value="@item.BugetType.ToString()" />
+                </h4>
+            </div>
+            <br />
+            <br />
+            <br />
+
+        }
+        <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+             page-class="btn border" page-class-normal="btn btn-info active"
+             page-class-selected="btn btn-primary active" class="btn-group m-1"></div>
+
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#remove").click(function () {
+                $('input[name=ss]').val("")
+                $("#formname").submit();
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".c").each(function () {
+                if ($(this).val() == $("#bs").val()) {
+                    $(this).attr('checked', true);
+
+                }
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".b").each(function () {
+                if ($(this).val() == $("#bb").val()) {
+                    $(this).attr('checked', true);
+
+                }
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".c").change(function () {
+                var ischecked = $(this).is(':checked');
+                if (ischecked) {
+                    $("#bs").val($(this).val());
+                    $("#sub").trigger("click");
+                }
+                else {
+                    $("#bs").val("");
+                    $("#sub").trigger("click");
+
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".b").change(function () {
+                var ischecked = $(this).is(':checked');
+                if (ischecked) {
+                    $("#bb").val($(this).val());
+                    $("#sub").trigger("click");
+                }
+                else {
+                    $("#bb").val("");
+                    $("#sub").trigger("click");
+
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".b").change(function () {
+                var ischecked = $(this).is(':checked');
+                if (ischecked) {
+                    $("#bb").val($(this).val());
+                    $("#sub").trigger("click");
+                }
+                else {
+                    $("#bb").val("");
+                    $("#sub").trigger("click");
+
+                }
+            });
+        });
+    </script>
+}

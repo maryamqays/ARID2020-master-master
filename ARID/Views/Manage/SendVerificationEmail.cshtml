@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@Localizer["Message"]</h2>
+
+<input type="submit" value="Ok" class="btn btn-default" asp-controller="Home" asp-action="index"/>
+

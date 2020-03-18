@@ -1,0 +1,108 @@
+﻿@model ARID.Models.FreelancerProposal
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>FreelancerProposal</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class ="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsNameVisible" /> @Html.DisplayNameFor(model => model.IsNameVisible)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsPrivate" /> @Html.DisplayNameFor(model => model.IsPrivate)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsAssigned" /> @Html.DisplayNameFor(model => model.IsAssigned)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsReported" /> @Html.DisplayNameFor(model => model.IsReported)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Isvisible" /> @Html.DisplayNameFor(model => model.Isvisible)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReportedByUserId" class="control-label"></label>
+                <select asp-for="ReportedByUserId" class ="form-control" asp-items="ViewBag.ReportedByUserId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DaysRequired" class="control-label"></label>
+                <input asp-for="DaysRequired" class="form-control" />
+                <span asp-validation-for="DaysRequired" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FreelancerProjectId" class="control-label"></label>
+                <input asp-for="FreelancerProjectId" class="form-control" />
+                <span asp-validation-for="FreelancerProjectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateofRecord" class="control-label"></label>
+                <input asp-for="DateofRecord" class="form-control" />
+                <span asp-validation-for="DateofRecord" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfAssignment" class="control-label"></label>
+                <input asp-for="DateOfAssignment" class="form-control" />
+                <span asp-validation-for="DateOfAssignment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveredDate" class="control-label"></label>
+                <input asp-for="DeliveredDate" class="form-control" />
+                <span asp-validation-for="DeliveredDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BidAmount" class="control-label"></label>
+                <input asp-for="BidAmount" class="form-control" />
+                <span asp-validation-for="BidAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProposalStatus" class="control-label"></label>
+                <select asp-for="ProposalStatus" class="form-control"></select>
+                <span asp-validation-for="ProposalStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

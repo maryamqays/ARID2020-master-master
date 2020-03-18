@@ -1,0 +1,99 @@
+﻿@model IEnumerable<ARID.Models.AcademicActivity>
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h3>@Localizer["Index"]</h3>
+<p>
+    <a asp-action="Create" class="btn btn-default" style="color:black;font-weight:800">@Localizer["CreateNew"]</a>
+</p>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityURL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RelationType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Language)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Photo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityURL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RelationType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Language)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+            </td>
+            <td>
+                @if (item.Photo != null) { 
+                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ActivityPhotos + "/" + item.Photo)" width="100" />
+                }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

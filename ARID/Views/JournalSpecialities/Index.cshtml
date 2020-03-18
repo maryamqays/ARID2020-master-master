@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ARID.Models.JournalSpeciality>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>تخصصات  @ViewData["jan"]</h2>
+
+<p>
+    <a class="btn btn-success bold" asp-action="Create" asp-route-id="@ViewData["jid"]">إضافة</a>
+</p>
+@if (Model.Count() > 0)
+{
+    <table class="table-hover table table-striped table-bordered dt-responsive">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.JournalId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SpecialityId)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Journal.ArName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Speciality.Name)
+                    </td>
+                    <td>
+                        <a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بعملية الحذف؟');" asp-action="DeleteItem" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>}
+<a class="btn btn-primary bold" asp-controller="Journals" asp-action="Home" asp-route-id="@ViewData["jsn"]">رجوع</a>
+
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>

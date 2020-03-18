@@ -1,0 +1,285 @@
+﻿@model ARID.Models.ManuscriptViewModel
+@{
+    ViewData["Title"] = @Html.DisplayNameFor(model => model.Manuscript.ArTitle);
+}
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+<h2> @Html.DisplayFor(model => model.Manuscript.Journal.ArName)</h2>
+<h3>
+    @Html.DisplayFor(model => model.Manuscript.ArTitle)
+</h3>
+<div class="col-lg-12">
+    <hr />
+    <div class="col-lg-8">
+      
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.ArTitle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.ArTitle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.EnTitle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.EnTitle)
+            </dd>
+            @*<dt>
+                @Html.DisplayNameFor(model => model.Manuscript.RunningTitle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.RunningTitle)
+            </dd>*@
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.EnAbstract)
+            </dt>
+            <dd>
+                @Html.Raw(Model.Manuscript.EnAbstract)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.ArAbstract)
+            </dt>
+            <dd>
+                @Html.Raw(Model.Manuscript.ArAbstract)
+            </dd>
+          
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.Keywords)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.Keywords)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.Areas)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.Areas)
+            </dd>
+         
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.FundingInfo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.FundingInfo)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.CorrespondingAuthor)
+            </dt>
+            <dd>
+                <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.Manuscript.CorrespondingAuthor.Id">
+                    @Html.DisplayFor(model => model.Manuscript.CorrespondingAuthor.ArName)
+                        </a>
+</dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.JournalId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.Journal.ArName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.JournalArticleTypeId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.JournalArticleType.ArticleType.Type)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.SpecialityId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.Speciality.EnSpecialityName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.SubmittedforIssueId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.SubmittedforIssue.Name)
+            </dd>
+            @if (Model.Manuscript.GraphicalAbstract != null)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Manuscript.GraphicalAbstract)
+                </dt>
+                <dd>
+                    <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + Model.Manuscript.GraphicalAbstract)" width="280" height="200" />
+                </dd>}
+        </dl>
+    </div>
+    <div class="col-lg-1"></div>
+    
+</div>
+<div class="col-lg-12">
+    @if (Model.SubmissionReviewers != null && Model.SubmissionReviewers.Where(a => a.ReviewerUserId != null && a.ReviewerUserId == currentUser.Id).Count() == 0)
+    {
+        <table class="table-hover table table-striped table-bordered dt-responsive">
+            <caption><h3>مؤلفوا المقالة</h3></caption>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.AuthorUserId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.DateOfRecord)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.Indx)
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.Email)
+                    </th>*@
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.Contribution)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.CountryId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.UniversityId)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ArticleAuthorships)
+                {
+                    <tr>
+                        <td>
+                            <a target="_blank" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.AuthorUserId">@Html.DisplayFor(modelItem => item.AuthorUser.ArName)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateOfRecord)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Indx)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Contribution)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+   
+    <table class="table-hover table table-striped table-bordered dt-responsive">
+        <caption><h3>تحميل البحث</h3></caption>
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubmissionFile.FileName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubmissionFile.JournalFileTypeId)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.SubmissionFiles != null)
+            {
+                @foreach (var item in Model.SubmissionFiles)
+                {
+                    <tr>
+                        <td>
+                            <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + item.FileName)">
+                                @Html.DisplayFor(modelItem => item.FileName)
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.JournalFileType.FileType.FileName)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <hr />
+</div>
+
+<style>
+
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+@section scripts{
+    <script>
+        //window.location.reload();
+    </script>
+    @*<script>
+            $(document).ready(function () {
+                $('#remvdecln').click(
+
+                    function () {
+                           var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/removedeclined/";
+                        //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                        FollowOptions.data = { id: @Model.Manuscript.Id };
+                        FollowOptions.success = function () {
+                        };
+                       $.ajax(FollowOptions);
+                      });
+            });
+        </script>*@
+    @*<script>
+            $(document).ready(function () {
+                $('#sentback').click(
+
+                    function () {
+                           var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/sentbacktoauthor/";
+                        //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                        FollowOptions.data = { id: @Model.Manuscript.Id };
+                        FollowOptions.success = function () {
+                        };
+                       $.ajax(FollowOptions);
+                      });
+            });
+        </script>*@
+    <script>
+        $(document).ready(function () {
+            $('#rejectediting').click(
+
+                function () {
+                       var FollowOptions = {};
+                    FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/rejectediting/";
+                    FollowOptions.data = { id: @Model.Manuscript.Id };
+                    FollowOptions.success = function () {
+                    };
+                   $.ajax(FollowOptions);
+                  });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#acceptediting').click(
+
+                function () {
+                       var FollowOptions = {};
+                    FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/acceptediting/";
+                    FollowOptions.data = { id: @Model.Manuscript.Id };
+                    FollowOptions.success = function () {
+                    };
+                   $.ajax(FollowOptions);
+                  });
+        });
+    </script>
+    <script>
+        $(window).load(function () {
+            if (window.location.href.indexOf('reload') == -1) {
+                window.location.replace(window.location.href + '?reload');
+            }
+        });
+    </script>
+}

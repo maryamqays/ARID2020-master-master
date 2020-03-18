@@ -1,0 +1,148 @@
+﻿@model ARID.Models.FreelancerProject
+@{
+    ViewData["Title"] = "إضافة مشروع جديد";
+}
+<h2>إضافة مشروع جديد</h2>
+<hr />
+<div class="row">
+
+
+    <div class="col-md-8">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" placeholder="يجب أن يكون العنوان موجز وواضح في وصف المشروع" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" placeholder="وضح تفاصيل المشروع بالتفصيل" rows="10" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="File" class="control-label"></label>
+                <input type="file" name="myfile" id="file" accept=".docx" class="btn btn-primary col-lg-12" />
+                <input asp-for="File" id="fileinput" placeholder="ملف توضيحي" class="form-control" />
+                <span asp-validation-for="File" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialityId" class="control-label"></label>
+                <select asp-for="SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId"><option selected disabled>إختر التخصص</option></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SkillCategoryType" class="control-label"></label>
+                <select asp-for="SkillCategoryType" asp-items="Html.GetEnumSelectList<SkillCategoryType>()" class="form-control"><option selected disabled>إختر فئمة المهارات</option></select>
+                <span asp-validation-for="SkillCategoryType" class="text-danger"></span>
+            </div>
+            <div class="form-group ">
+                <label asp-for="Skills" class="control-label"></label><br />
+                <input asp-for="Skills" type="text" class="form-control" data-role="tagsinput" width="100"/> <br />
+                <span asp-validation-for="Skills" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BugetType" class="control-label"></label>
+                <select asp-for="BugetType" asp-items="Html.GetEnumSelectList<BugetType>()" class="form-control"><option disabled selected>إختر الميزانية</option></select>
+                <span asp-validation-for="BugetType" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="PurposeType" class="control-label"></label>
+                <select asp-for="PurposeType" asp-items="Html.GetEnumSelectList<PurposeType>()" class="form-control"><option disabled selected>إختر الغرض</option></select>
+                <span asp-validation-for="PurposeType" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="RecruiterProjectType" class="control-label"></label>
+                <select asp-for="RecruiterProjectType" asp-items="Html.GetEnumSelectList<RecruiterProjectType>()" class="form-control"><option disabled selected>إختر من القائمة</option></select>
+                <span asp-validation-for="RecruiterProjectType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DaysRequired" class="control-label"></label>
+                <input type="number" min="1" asp-for="DaysRequired" placeholder="مدة التنفيذ التقديرية بالايام" class="form-control" />
+                <span asp-validation-for="DaysRequired" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="HideProjectOwnerDetails" /> @Html.DisplayNameFor(model => model.HideProjectOwnerDetails)
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h4 style="display:inline-block"><input type="submit" value="إضافة" class="btn btn-success" /></h4>
+                <h4 style="display:inline-block;float:left"> <a asp-action="Index" class="btn btn-primary">العودة إلى القائمة</a></h4>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-4">
+        <h3>شرح توضيحي</h3>
+        <iframe width="350" height="250" src="https://www.youtube.com/embed/GRpNo9cggyc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <hr />
+        <h3>شروط مركز خبرة</h3>
+        <p>الرجاء الالتزام بالشروط أدناه قبل استخدام مركز خدمات الباحثين</p>
+        <p>الخدمات لا تتعارض مع اخلاقيات البحث العلمي والنشر والسياقات العلمية في المؤسسات الاكاديمية وسيتم ايقاف المشاريع من هذا النوع من قبل الادارة </p>
+        <h4>رسوم الخدمات</h4>
+        <p>تم تقسيم الرسوم لثلاث فئات حسب حجم المشروع، وتحدد من قبل صاحب المشروع ثم تخضع لمراجعة الادارة. المهام الصغيرة يجب ان تتراوم بين 10 الى 30 دولار. المشاريع المتوسطة 30-100 دولار. اما المشاريع الاكبر فرسومها بين 100-300 دولار.</p>
+        <h4>حماية المستخدمين</h4>
+        <p>تلتزم إدارة "مركز خدمات الباحثين" في منصة أريد بحماية المشتري من الاحتيال أو عدم تقديم خدمة له، بشرط أن تكون المراسلات والاتفاق كله ضمن المركز دون أي تواصل ولو لمرة واحدة خارجه.</p>
+        <p>من خلال استخدامك للمركز فأنت موافق على حكم الإدارة في المشاكل التي تحدث بين الطرفين (صاحب المشروع ومقدم الخدمة)، ولا يحق ﻷي من الطرفين الاعتراض على حكم الادارة في المشكلة بأي حال، كما يعتبر هذا الحكم ملزما للطرفين بشكل كامل.</p>
+        <p>في حال عدم رضى صاحب المشروع عن الخدمة وعدم قدرة "مقدم الخدمة" على إثبات ما قام به، على المشتري أن يبلغ الدعم الفني وسيعيد النظام المبلغ في حال قررت إدارة الموقع ذلك.</p>
+        <p>يمتلك المشتري كامل الحقوق الملكية الفكرية وحقوق التأليف والنشر للخدمات التي استلمها في المركز. لا يحق للبائع فرض حقوق اضافية على الخدمة بعد البدء بتنفيذها أو تسليمها.</p>
+        <p>يمكن لصاحب المشروع تعبئة رصيده في منصة اريد عبر بوابة الدفع الالكترونية فلسبي ويمكن لمقدم الخدمة سحب أرباحهم مباشرة الى بوابة فلسبي بعد تسليم المشروع والموافقة على استلامه من قبل صاحب المشروع.</p>
+    </div>
+
+</div>
+@section scripts{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
+    <link rel="stylesheet" href="~/Scripts/bootstrap_tagsinput/bootstrap-tagsinput.css">
+    <script src="~/Scripts/bootstrap_tagsinput/bootstrap-tagsinput.js"></script>
+
+    <link href="~/css/jquery-ui.css"
+          rel="stylesheet"
+          type="text/css" />
+    <link href="~/css/tokenize2.css"
+          rel="stylesheet"
+          type="text/css" />
+    <script src="~/js/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/js/tokenize2.js"></script>
+    <script type="text/javascript">
+        function Submit() {
+            debugger
+            var tags = $("#Tagsddl").val();
+            var b = tags.join(", ")
+            $("#Tags").val(tags.join(", "));
+            $('#createform').submit();
+
+        }
+        function onAdditionalData() {
+            return {
+                text: $("#Tags").val()
+            };
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#Tagsddl').tokenize2({
+                searchMinLength: 5
+            });
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

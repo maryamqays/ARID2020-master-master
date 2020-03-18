@@ -1,0 +1,114 @@
+@model ARID.Models.UserBadge
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>UserBadge</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="UserId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <a target="_blank" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@Model.UserId">Click here to view user page</a>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="BadgeId" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="BadgeId" class="form-control" asp-items="ViewBag.BadgeId"></select>
+                <span asp-validation-for="BadgeId" class="text-danger"></span>
+                <hr />
+
+                @Html.Raw(Model.Badge.ArBadgeDesc)
+                <hr />
+             
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateofRequest" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateofRequest" class="form-control" />
+                <span asp-validation-for="DateofRequest" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateofGrant" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateofGrant" class="form-control" />
+                <span asp-validation-for="DateofGrant" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsGranted" />
+                    <label asp-for="IsGranted"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="IsRejected" />
+                    <label asp-for="IsRejected"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RejectCount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="RejectCount" class="form-control" />
+                <span asp-validation-for="RejectCount" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RejectReason" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="RejectReason" class="control-label"></textarea>
+                <span asp-validation-for="RejectReason" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="Disabled" />
+                    <label asp-for="Disabled"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-route-Id="@Model.Id" asp-action="Delete">Delete</a> |  <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    <script>
+tinymce.init({
+            selector: 'textarea',
+            directionality: 'rtl',
+            //language: 'ar_SA',
+    plugins: "link",
+    mode: "textareas",
+    relative_urls: false,
+    remove_script_host: false,
+    convert_urls: true,
+
+            //plugins: "table,contextmenu,paste,-externalplugin"
+
+});</script>}

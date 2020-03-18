@@ -1,0 +1,654 @@
+﻿@model ARID.Models.ManuscriptViewModel
+@{
+    ViewData["Title"] = @Html.DisplayNameFor(model => model.Manuscript.ArTitle);
+}
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+<h2>
+    تفاصيل المقالة
+</h2>
+<div class="col-lg-12">
+    <hr />
+    <div class="col-lg-8">
+        @if (Model.Manuscript.Journal.EiCId == currentUser.Id)
+        {
+            <dl>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Submission.CoverLetter)
+                </dt>
+                <dd>
+                    @Html.Raw(Model.Submission.CoverLetter)
+                </dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Submission.DateOfSubmission)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Submission.DateOfSubmission)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Submission.PlagiarismConfirmation)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Submission.PlagiarismConfirmation)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Submission.DuplicateSubmissionConfirmation)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Submission.DuplicateSubmissionConfirmation)
+                </dd>
+            </dl>
+        }
+        @if (Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor)
+        {
+            <dl class="dl-horizontal">
+                <dt>
+                    <label>النقوصات</label>
+                </dt>
+                <dd>
+                    @Html.Raw(Model.Submission.EicDecisionText)
+                </dd>
+            </dl>
+
+        }
+        @if (Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.SubmissionsNeedingRevision || Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.Declined)
+        {
+            @if (Model.Submission.EicDecisionText != null)
+            {
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Submission.EicDecisionText)
+                    </dt>
+                    <dd>
+                        @Html.Raw(Model.Submission.EicDecisionText)
+                    </dd>
+                </dl>
+
+            }
+            @if (Model.Submission.AEDecisionText != null)
+            {
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Submission.AEDecisionText)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Submission.AEDecisionText)
+                    </dd>
+                </dl>
+
+            }
+
+        }
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.ArTitle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.ArTitle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.EnTitle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.EnTitle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.RunningTitle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.RunningTitle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.EnAbstract)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.EnAbstract)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.ArAbstract)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.ArAbstract)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.CreationDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.CreationDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.Keywords)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.Keywords)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.Areas)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.Areas)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.CurrentStatus)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.CurrentStatus)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.FundingInfo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.FundingInfo)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.CorrespondingAuthor)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.CorrespondingAuthor.ArName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.JournalId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.Journal.ArName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.JournalArticleTypeId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.JournalArticleType.ArticleType.Type)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.SpecialityId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.Speciality.EnSpecialityName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Manuscript.SubmittedforIssueId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Manuscript.SubmittedforIssue.Name)
+            </dd>
+            @if (Model.Manuscript.GraphicalAbstract != null)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Manuscript.GraphicalAbstract)
+                </dt>
+                <dd>
+                    <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + Model.Manuscript.GraphicalAbstract)" width="280" height="200" />
+                </dd>}
+        </dl>
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-3">
+        @if ((Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.Submitted || Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.UnderReview) && currentUser.Id == Model.Manuscript.Journal.EiCId)
+        {<a asp-controller="Submissions" asp-action="AddAreaEditor" asp-route-id="@ViewData["sid"]" class="btn btn-success bold col-lg-12"><span class="glyphicon glyphicon-user"></span> تعيين مساعد علمي</a><br /><br />}
+        @if (Model.Submissions != null)
+        {
+            @if (currentUser.Id == Model.Manuscript.Journal.EiCId && Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.Submitted && Model.Manuscript.CurrentStatus != ManuscriptCurrentStatus.Declined)
+            {<a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بهذه العملية؟');" id="reject" asp-controller="Manuscripts" asp-action="Reject" asp-route-id="@ViewData["mid"]" class="btn btn-danger bold col-lg-12"><span class="glyphicon glyphicon-remove-sign"></span> رفض المقالة</a><br /><br />}
+        }
+        @if (Model.Submissions != null)
+        {
+            @if ((currentUser.Id == Model.Manuscript.Journal.EiCId || Model.Submissions.Where(a => a.AEId != null && a.AE.ApplicationUserId == currentUser.Id && a.AE.IsActive == true).Count() > 0) && (Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.Submitted || Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.UnderReview))
+
+            {<a asp-action="Create" asp-controller="SubmissionReviewers" asp-route-mid="@ViewData["mid"]" class="btn btn-success col-lg-12 bold"><span class="glyphicon glyphicon-plus"></span>  إضافة محكم</a><br /><br />}
+        }
+        @if (currentUser.Id == Model.Manuscript.Journal.EiCId && Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.Declined)
+        {<a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بهذه العملية؟');" id="remvdecln" asp-action="removedeclined" asp-controller="Manuscripts" asp-route-id="@ViewData["mid"]" class="btn btn-success col-lg-12 bold">تراجع عن رفض المقالة</a><br /><br />}
+        @if (Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.SubmissionsNeedingRevision && Model.Manuscript.CorrespondingAuthorId == currentUser.Id)
+        {
+            <a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بهذه العملية؟');" asp-action="AcceptEditing" asp-route-id="@Model.Submission.Id" class="btn btn-success bold col-lg-12" id="acceptediting">الموافقة على التعديلات</a><br /><br />
+            <a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بهذه العملية؟');" asp-action="RejectEditing" asp-route-id="@Model.Submission.Id" class="btn btn-default bold col-lg-12" id="rejectediting">رفض التعديلات</a><br /><br />
+        }
+        @if (Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.SubmissionsBeingProcessed && Model.Manuscript.CorrespondingAuthorId == currentUser.Id)
+        {
+            <a asp-action="Resubmission" asp-controller="Submissions" asp-route-mid="@ViewData["mid"]" class="btn btn-success bold col-lg-12">التعديل على البحث</a><br /><br />
+        }
+        @if (Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor && Model.Manuscript.CorrespondingAuthorId == currentUser.Id)
+        {
+            <a class="btn btn-success bold col-lg-12" asp-controller="Manuscripts" asp-action="Edit" asp-route-id="@Model.Manuscript.Id">إكمال النقوصات</a><br /><br />
+        }
+        @if (Model.Submissions != null)
+        {
+            @if (User.IsInRole("Admin") || currentUser.Id == Model.Manuscript.Journal.EiCId || (Model.Submission.AEId != null && Model.Submissions.Where(a => a.AEId != null && a.AE.ApplicationUserId == currentUser.Id && a.AE.IsActive == true).Count() > 0))
+            {
+                if (Model.Submission.AEId != null || Model.SubmissionReviewers.Where(a => a.ReviewerUserId != null).Count() > 0)
+                {
+                    <a class="btn btn-default bold col-lg-12" asp-controller="Submissions" asp-action="Details" asp-route-id="@ViewData["sid"]">معلومات محرري و محكمي المقالة</a><br /><br />}
+            }
+        }
+        @if (Model.SubmissionReviewers != null)
+        {
+            @foreach (var item in Model.SubmissionReviewers)
+            {
+                if (item.ReviewerUserId == currentUser.Id && item.ReviewerDecisionToReview == ReviewerDecisionToReview.WaitingInvitationAcceptance && item.IsAccess == true && item.Submission.Manuscript.CurrentStatus != ManuscriptCurrentStatus.Declined)
+                {
+                    <p class="bold">تمت اقتراحكم كمحكم لهذه المقالة للاطلاع على التفاصيل اكثر اضغط على زر قرار المحكم</p>
+                    <br />
+                    <a class="btn btn-success col-lg-12 bold" asp-action="Details" asp-controller="SubmissionReviewers" asp-route-id="@item.Id">قرار المحكم</a><br /><br />
+                }
+                if (item.ReviewerUserId == currentUser.Id && item.ReviewerDecisionToReview == ReviewerDecisionToReview.AcceptedToReview && item.IsAccess == true && item.Submission.Manuscript.CurrentStatus != ManuscriptCurrentStatus.Declined)
+                {
+                    <p class="bold">تمت اضافتكم كمحكم لهذه المقالة لتحكيم المقالة اضغط على زر تحكيم المقالة</p>
+                    <br />
+                    <a class="btn btn-success col-lg-12 bold" asp-action="Process" asp-controller="SubmissionReviewers" asp-route-id="@item.Id" asp-route-mid="@Model.Manuscript.Id">تحكيم المقالة</a><br /><br />
+                }
+            }
+        }
+        @if ((User.IsInRole("Admin") || currentUser.Id == Model.Manuscript.Journal.EiCId) && Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.Submitted)
+        {
+            <a asp-controller="Submissions" asp-action="SentBackToAuthor" asp-route-id="@ViewData["sid"]" class="btn btn-success bold col-lg-12"><span class="glyphicon glyphicon-log-out"></span> إرجاع لإكمال النقوصات</a><br /><br />
+        }
+        @if (Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor && currentUser.Id == Model.Manuscript.Journal.EiCId)
+        {
+            <a class="danger bold col-lg-12">تم الإرجاع لإكمال النقوصات</a><br /><br />
+        }
+
+        <br /><br /><br /><br />
+    </div>
+</div>
+<div class="col-lg-12">
+    @if (Model.SubmissionReviewers != null && Model.SubmissionReviewers.Where(a => a.ReviewerUserId != null && a.ReviewerUserId == currentUser.Id).Count() == 0)
+    {
+        <table class="table-hover table table-striped table-bordered dt-responsive">
+            <caption><h3>مؤلفوا المقالة</h3></caption>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.AuthorUserId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.DateOfRecord)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.Indx)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.Contribution)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.CountryId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ArticleAuthorship.UniversityId)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ArticleAuthorships)
+                {
+                    <tr>
+                        <td>
+                            <a target="_blank" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.AuthorUserId">@Html.DisplayFor(modelItem => item.AuthorUser.ArName)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateOfRecord)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Indx)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Contribution)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    @if (Model.SubmissionReviewers != null && Model.SubmissionReviewers.Where(a => a.ReviewerUserId != null && a.ReviewerUserId == currentUser.Id).Count() == 0)
+    {
+        <hr />
+        <table class="table-hover table table-striped table-bordered dt-responsive">
+            <caption><h3>المحكمون المقترحون</h3></caption>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SuggestedReviewer.ReviewerUserId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SuggestedReviewer.CanReviewEnglish)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SuggestedReviewer.CanReviewArabic)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SuggestedReviewer.ReasonForSuggesion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SuggestedReviewer.SuggestionStatus)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SuggestedReviewers)
+                {
+                    <tr>
+                        <td>
+                            <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ReviewerUserId">@Html.DisplayFor(modelItem => item.ReviewerUser.ArName)</a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CanReviewEnglish)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CanReviewArabic)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReasonForSuggesion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SuggestionStatus)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    <hr />
+    <table class="table-hover table table-striped table-bordered dt-responsive">
+        <caption><h3>الملفات المرفقة بالبحث</h3></caption>
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubmissionFile.FileName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubmissionFile.JournalFileTypeId)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.SubmissionFiles != null)
+            {
+                @foreach (var item in Model.SubmissionFiles)
+                {
+                    <tr>
+                        <td>
+                            <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + item.FileName)">
+                                @Html.DisplayFor(modelItem => item.FileName)
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.JournalFileType.FileType.FileName)
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <hr />
+</div>
+@if (Model.Submissions != null)
+{
+    @if (User.IsInRole("Admins") || currentUser.Id == Model.Manuscript.Journal.EiCId || Model.Submissions.Where(a => a.AEId != null && a.AE.ApplicationUserId == currentUser.Id && a.AE.IsActive == true).Count() > 0 || Model.SubmissionReviewers.Where(a => a.ReviewerUserId != null && a.ReviewerUserId == currentUser.Id).Count() > 0)
+    {
+        <div class="col-lg-12">
+            @if (Model.Submissions != null)
+            {
+                @foreach (var i in Model.Submissions.Where(a => a.ManuscriptId == Model.Manuscript.Id))
+                {
+                    <table class="table-hover table table-striped table-bordered dt-responsive">
+                        <caption><h2 style="color:orangered">نتائج التحكيم</h2></caption>
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SubmissionReviewer.DueDate)
+                                </th>
+                                @if (Model.SubmissionReviewers.Where(a => a.ReviewerUserId != null && a.ReviewerUserId == currentUser.Id).Count() == 0)
+                                {
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.SubmissionReviewer.ReviewerStatus)
+                                    </th>
+                                }
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SubmissionReviewer.ReviewDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SubmissionReviewer.DecisionDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SubmissionReviewer.CieAeUserId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SubmissionReviewer.ReviewerUserId)
+                                </th>
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.SubmissionReviewer.Submission.)
+                                    </th>*@
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.SubmissionReviewers.Where(a => a.IsAccess == false))
+                            {
+                                if (Model.SubmissionReviewers.Where(a => a.ReviewerUserId != null && a.ReviewerUserId == currentUser.Id).Count() > 0)
+                                {
+                                    if (item.ReviewerUserId != currentUser.Id)
+                                    {
+                                        continue;
+                                    }
+                                }
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DueDate)
+                                    </td>
+                                    @if (Model.SubmissionReviewers.Where(a => a.ReviewerUserId != null && a.ReviewerUserId == currentUser.Id).Count() == 0)
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ReviewerStatus)
+                                        </td>
+                                    }
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ReviewDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DecisionDate)
+                                    </td>
+                                    <td>
+                                        <a target="_blank" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.CieAeUserId">@Html.DisplayFor(modelItem => item.CieAeUser.ArName)</a>
+                                    </td>
+                                    <td>
+                                        <a target="_blank" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.ReviewerUserId">@Html.DisplayFor(modelItem => item.ReviewerUser.ArName)</a>
+                                    </td>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.Submission.CoverLetter)
+                                        </td>*@
+                                    <td>
+                                        <a asp-action="RevReport" asp-controller="SubmissionReviewers" asp-route-id="@item.Id">تقرير المحكم</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            }
+        </div>
+        @if (Model.Submissions != null && Model.Submission.AEDecisionText != null)
+        {
+            <table class="table-hover table table-striped table-bordered dt-responsive">
+                <caption><h3>قرار المحرر المساعد</h3></caption>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Submission.AEId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Submission.AEDecision)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Submission.AEDecisionText)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Submission.AEDecisionDate)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Submissions)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AE.ApplicationUser.ArName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AEDecision)
+                            </td>
+                            <td>
+                                @Html.Raw(item.AEDecisionText)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AEDecisionDate)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        @if (Model.Submission != null && Model.Submission.EicDecisionText != null && currentUser.Id == Model.Manuscript.Journal.EiCId)
+        {
+
+            <table class="table-hover table table-striped table-bordered dt-responsive">
+                <caption><h3>قرار رئيس التحرير</h3></caption>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Submission.EICDecision)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Submission.EicDecisionText)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Submissions)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EICDecision)
+                            </td>
+                            <td>
+                                @Html.Raw(item.EicDecisionText)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+}
+<div class="col-lg-12">
+    @if (currentUser.Id == Model.Manuscript.Journal.EiCId && Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.UnderReview)
+    {
+        <a style="float:left;" class="btn btn-default bold col-lg-3" asp-action="EICDecision" asp-controller="Submissions" asp-route-id="@Model.Submission.Id">قرار رئيس التحرير</a> <br /><br />
+    }
+    @if (Model.Submissions != null && Model.Submissions.Where(a => a.AEId != null && a.AE.ApplicationUserId == currentUser.Id && a.AE.IsActive == true).Count() > 0 && Model.Manuscript.CurrentStatus == ManuscriptCurrentStatus.UnderReview)
+    {
+        <a style="float:left;" class="btn btn-default bold col-lg-3" asp-action="AEDecision" asp-controller="Submissions" asp-route-id="@Model.Submission.Id">قرار مساعد رئيس التحرير</a> <br /><br />}
+</div>
+@if (Model.Submissions != null && Model.Submissions.Where(a => a.AEId != null && a.AE.ApplicationUserId == currentUser.Id && a.AE.IsActive == true).Count() == 0 && currentUser.Id != Model.Manuscript.Journal.EiCId)
+{<div>
+        <a asp-action="Index" asp-route-id="@Model.Manuscript.CurrentStatus" asp-route-jid="@Model.Manuscript.JournalId" class="btn btn-primary bold">رجوع</a>
+    </div>}
+@if (Model.Submissions != null && Model.Submissions.Where(a => a.AEId != null && a.AE.ApplicationUserId == currentUser.Id && a.AE.IsActive == true).Count() > 0 && currentUser.Id != Model.Manuscript.Journal.EiCId)
+{<div>
+        <a asp-action="AEManuscripts" class="btn btn-primary bold">رجوع</a>
+    </div>}
+@if (currentUser.Id == Model.Manuscript.Journal.EiCId)
+{<div>
+        <a asp-action="Index" asp-route-id="@Model.Manuscript.CurrentStatus" asp-route-jid="@Model.Manuscript.JournalId" asp-route-j="1" class="btn btn-primary bold">رجوع</a>
+    </div>}
+<style>
+
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+@section scripts{
+    <script>
+        //window.location.reload();
+    </script>
+    @*<script>
+            $(document).ready(function () {
+                $('#remvdecln').click(
+
+                    function () {
+                           var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/removedeclined/";
+                        //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                        FollowOptions.data = { id: @Model.Manuscript.Id };
+                        FollowOptions.success = function () {
+                        };
+                       $.ajax(FollowOptions);
+                      });
+            });
+        </script>*@
+    @*<script>
+            $(document).ready(function () {
+                $('#sentback').click(
+
+                    function () {
+                           var FollowOptions = {};
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/sentbacktoauthor/";
+                        //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                        FollowOptions.data = { id: @Model.Manuscript.Id };
+                        FollowOptions.success = function () {
+                        };
+                       $.ajax(FollowOptions);
+                      });
+            });
+        </script>*@
+    <script>
+        $(document).ready(function () {
+            $('#rejectediting').click(
+
+                function () {
+                       var FollowOptions = {};
+                    FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/rejectediting/";
+                    FollowOptions.data = { id: @Model.Manuscript.Id };
+                    FollowOptions.success = function () {
+                    };
+                   $.ajax(FollowOptions);
+                  });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#acceptediting').click(
+
+                function () {
+                       var FollowOptions = {};
+                    FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/acceptediting/";
+                    FollowOptions.data = { id: @Model.Manuscript.Id };
+                    FollowOptions.success = function () {
+                    };
+                   $.ajax(FollowOptions);
+                  });
+        });
+    </script>
+    <script>
+        $(window).load(function () {
+            if (window.location.href.indexOf('reload') == -1) {
+                window.location.replace(window.location.href + '?reload');
+            }
+        });
+    </script>
+}

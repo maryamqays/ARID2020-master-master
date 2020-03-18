@@ -1,0 +1,98 @@
+﻿@model ARID.Models.Committee
+@{
+    ViewData["Title"] = "التعديل على اللجان";
+}
+<h2>تعديل</h2>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">الصورة الحالية</label>
+                <br />
+                <img id="img1" class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Image)" width="280" height="200" />
+            </div>
+            <br />
+            <input id="btn" type="button" class="btn btn-primary" value="تعديل الصورة" />
+            <br />
+            <div class="form-group" id="img">
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-default col-lg-12" />
+                <input asp-for="Image" id="fileinput" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <br />
+            @if (User.IsInRole("Admins"))
+            {
+                <div class="form-group">
+                    <label class="control-label">إسم مقدم الطلب</label>
+                    <br />
+                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">
+                        @Html.DisplayFor(model => Model.ApplicationUser.ArName)
+                    </a>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ApplicationUserId" class="control-label"></label>
+                    <input asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId" />
+                    <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+                </div>
+            }
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">العودة الى القائمة</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                //to show new image at a time of image selected from file input type
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#img").hide();
+            $("#btn").click(function () {
+                $("#img").slideToggle();
+            });
+
+        });
+    </script>
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

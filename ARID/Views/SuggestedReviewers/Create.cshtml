@@ -1,0 +1,486 @@
+﻿@model ARID.Models.SuggestedReviewerViewModel
+@{
+    ViewData["Title"] = "إضافة محكمين للبحث";
+}
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+
+<h2>إضافة محكمين للبحث</h2>
+<div class="row">
+    <div class="col-md-8">
+        <div class="col-lg-12 row">
+            <form asp-action="Create" method="get">
+                <div class="form-group col-lg-12">
+                    <label class="control-label">البحث عن المحكم في منصة اريد</label>
+                    <input id="srch" minlength="4" placeholder="ادخل اسم المؤلف او ابريده الالكتروني او معرف اريد الخاص به ثم اضغط زر بحث --ادخل اربع حروف على الاقل--" class="form-control col-lg-10" name="ss" />
+                    <span id="spanvalid"></span>
+                    <input type="hidden" name="mid" value="@ViewData["mid"]" /><br />
+                    <input class="btn btn-success col-lg-2" type="submit" value="بحث" id="search" />
+                </div>
+            </form>
+            <div class="col-lg-12">
+                @if (Model.ApplicationUsers.Count() > 0)
+                {
+                    <table id="users" class="table-hover table table-striped table-bordered dt-responsive">
+                        <caption><h3>اختر أحد المستخدمين</h3></caption>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ApplicationUser.ArName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ApplicationUser.EnName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ApplicationUser.CountryId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ApplicationUser.UniversityId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ApplicationUser.Email)
+                                </th>
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.ApplicationUser.Id)
+                                    </th>*@
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ApplicationUsers)
+                            {
+                                <tr>
+                                    @if (Model.SuggestedReviewers.Where(a => a.ReviewerUserId == item.Id).Count() == 0 && Model.ArticleAuthorships.Where(a => a.AuthorUserId == item.Id).Count() == 0 && Model.Manuscript.CorrespondingAuthorId != item.Id)
+                                    {
+                                        <td>
+                                            <input type="checkbox" name="IdsToAdd" value="@item.Id">
+                                            <input hidden name="itmname" value="@item.ArName" />
+                                            <input hidden name="itmmail" value="@item.Email" />
+                                        </td>
+                                    }
+                                    @if (Model.SuggestedReviewers.Where(a => a.ReviewerUserId == item.Id).Count() > 0 || Model.ArticleAuthorships.Where(a => a.AuthorUserId == item.Id).Count() > 0 || Model.Manuscript.CorrespondingAuthorId == item.Id)
+                                    {
+                                        <td>
+                                            <input disabled type="checkbox" name="IdsToAdd" value="@item.Id">
+                                            <input hidden name="itmname" value="@item.ArName" />
+                                            <input hidden name="itmmail" value="@item.Email" />
+                                        </td>
+                                    }
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ArName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EnName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    @*<td>
+                                            @Html.DisplayFor(modelItem => item.Id)
+                                        </td>*@
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                }
+                <a id="addnew" class="btn btn-success bold">إضافة محكم من خارج المنصة</a>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <br /><br /><br />
+        </div>
+        <hr />
+
+        <form asp-action="Create" id="form1">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" id="app" hidden>
+                <label asp-for="SuggestedReviewer.ReviewerUserId" class="control-label"></label>
+                <input readonly required id="appuser" asp-for="SuggestedReviewer.ReviewerUserId" class="form-control" />
+                <span asp-validation-for="SuggestedReviewer.ReviewerUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group req">
+                <label asp-for="SuggestedReviewer.ReviewerUserId" class="control-label"></label>*
+                <input readonly name="revname" required class="form-control" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group req">
+                <label asp-for="SuggestedReviewer.ManuscriptId" class="control-label"></label>*
+                <select asp-for="SuggestedReviewer.ManuscriptId" class="form-control" asp-items="ViewBag.ManuscriptId"></select>
+            </div>
+            <div class="form-group req">
+                <label asp-for="SuggestedReviewer.ReasonForSuggesion" class="control-label"></label>
+                <input asp-for="SuggestedReviewer.ReasonForSuggesion" class="form-control" />
+                <span asp-validation-for="SuggestedReviewer.ReasonForSuggesion" class="text-danger"></span>
+            </div>
+            <div class="form-group req">
+                <label asp-for="SuggestedReviewer.SuggestionStatus" class="control-label"></label>
+                <select required asp-for="SuggestedReviewer.SuggestionStatus" asp-items="Html.GetEnumSelectList<SuggestionStatus>()" class="form-control"><option disabled selected>إختر من القائمة</option></select>
+                <span asp-validation-for="SuggestedReviewer.SuggestionStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group req">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="SuggestedReviewer.CanReviewEnglish" /> @Html.DisplayNameFor(model => model.SuggestedReviewer.CanReviewEnglish)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group req">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="SuggestedReviewer.CanReviewArabic" /> @Html.DisplayNameFor(model => model.SuggestedReviewer.CanReviewArabic)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group req">
+                <input type="submit" value="إضافة" class="btn btn-success col-lg-2" />
+            </div>
+        </form>
+        <form id="form2" asp-route-maid="@ViewData["mid"]" asp-controller="SuggestedReviewers" asp-action="Register" class="form-horizontal">
+            <hr />
+            <input type="hidden" asp-for="RegisterFromOutsideViewModel.UILanguage" value="@CultureInfo.CurrentCulture.Name" />
+            <input type="hidden" asp-for="RegisterFromOutsideViewModel.ReferredById" class="form-control" value="@currentUser.Id" />
+            <div class="form-group">
+                <label asp-for="RegisterFromOutsideViewModel.ArName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="RegisterFromOutsideViewModel.ArName" onpaste="return false" class="form-control" />
+                    <span asp-validation-for="RegisterFromOutsideViewModel.ArName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegisterFromOutsideViewModel.EnName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="RegisterFromOutsideViewModel.EnName" onpaste="return false" class="form-control" />
+                    <span asp-validation-for="RegisterFromOutsideViewModel.EnName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegisterFromOutsideViewModel.Email" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="RegisterFromOutsideViewModel.Email" class="form-control" />
+                    <span asp-validation-for="RegisterFromOutsideViewModel.Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegisterFromOutsideViewModel.CountryId" class="col-md-2 control-label"></label>
+                <div class="col-lg-10">
+                    <select id="cntid" asp-for="RegisterFromOutsideViewModel.CountryId" class="form-control" asp-items="ViewBag.CountryId"><option selected disabled>إختر الدولة</option></select>
+                    <span asp-validation-for="RegisterFromOutsideViewModel.CountryId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegisterFromOutsideViewModel.UniversityId" class="col-md-2 control-label"></label>
+                <div class="col-lg-10">
+                    <select id="uniid" asp-for="RegisterFromOutsideViewModel.UniversityId" class="form-control"><option selected disabled>إختر الجامعة</option></select>
+                    <span asp-validation-for="RegisterFromOutsideViewModel.UniversityId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-2">
+                    <label asp-for="SuggestedReviewer.ReasonForSuggesion" class="control-label"></label>
+                </div>
+                <div class="col-lg-10">
+                    <input name="ros" class="form-control" />
+                    <span asp-validation-for="SuggestedReviewer.ReasonForSuggesion" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group ">
+                <div class="col-lg-2">
+                    <label asp-for="SuggestedReviewer.SuggestionStatus" class="control-label"></label>
+                </div>
+                <div class="col-lg-10">
+                    <select required name="sstatus" asp-items="Html.GetEnumSelectList<SuggestionStatus>()" class="form-control"><option disabled selected>إختر من القائمة</option></select>
+                    <span asp-validation-for="SuggestedReviewer.SuggestionStatus" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="form-group col-lg-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="cre" /> @Html.DisplayNameFor(model => model.SuggestedReviewer.CanReviewEnglish)
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="form-group col-lg-10">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="cra" /> @Html.DisplayNameFor(model => model.SuggestedReviewer.CanReviewArabic)
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-success bold">تسجيل المؤلف الجديد في المنصة</button>
+                </div>
+            </div>
+        </form>
+        @if (Model.SuggestedReviewers.Count() > 0)
+        {
+            <div class="col-lg-12">
+                <hr />
+                <table class="table-hover table table-striped table-bordered dt-responsive">
+                    <caption>
+                        <h2>المحكمون الذين تم إضافتهم</h2>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SuggestedReviewer.ReviewerUserId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SuggestedReviewer.ReasonForSuggesion)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SuggestedReviewer.SuggestionStatus)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SuggestedReviewer.CanReviewEnglish)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SuggestedReviewer.CanReviewArabic)
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.SuggestedReviewers)
+                        {
+                            <tr>
+                                <td>
+                                    <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ReviewerUserId">@Html.DisplayFor(modelItem => item.ReviewerUser.ArName)</a>
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReasonForSuggesion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SuggestionStatus)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CanReviewEnglish)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CanReviewArabic)
+                                </td>
+                                <td class="form-horizontal">
+                                    <a title="تعديل" asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <form id="myform_id" asp-action="Delete" method="post">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بعملية الحذف؟');" title="حذف" href="javascript:$('#myform_id').submit();"><span class="glyphicon glyphicon-trash"></span></a>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        }
+
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-3">
+        <a id="manu" asp-action="Edit" asp-controller="Manuscripts" asp-route-id="@ViewData["mid"]" class="bold">إضافة معلومات عامة</a> <span id="manu-t" class="glyphicon glyphicon-ok"></span>
+        <br /><h3 style="display:inline;" class="text-center"><span style="left:-70px" class="glyphicon glyphicon-chevron-down text-info"></span></h3><br>
+        <a id="author" asp-action="Create" asp-controller="ArticleAuthorships" asp-route-mid="@ViewData["mid"]" class="bold">إضافة مؤلفي البحث&nbsp;&nbsp;</a> <span id="author-t" class="glyphicon glyphicon-ok"></span>
+        <br /><h3 style="display:inline;" class="text-center"><span style="left:-70px" class="glyphicon glyphicon-chevron-down text-info"></span></h3><br>
+        @if (Model.SuggestedReviewers.Count() > 0)
+        {<a id="reviewer" class="bold btn btn-success">إضافة محكمي البحث</a> <span class="glyphicon glyphicon-arrow-right"></span>
+            <br /><h3 style="display:inline;" class="text-center"><span style="left:-70px" class="glyphicon glyphicon-chevron-down text-info"></span></h3><br>
+        }
+        @if (Model.SuggestedReviewers.Count() == 0)
+        {<a id="reviewer" class="bold btn btn-default">إضافة محكمي البحث</a> <span class="glyphicon glyphicon-arrow-right"></span>
+            <br /><h3 style="display:inline;" class="text-center"><span style="left:-70px" class="glyphicon glyphicon-chevron-down text-info"></span></h3><br>
+        }
+        @if (Model.Submissions.Count() > 0)
+        {
+            <a id="submit" asp-controller="Submissions" asp-action="Edit" asp-route-id="@ViewData["sid"]" class="bold">&nbsp;&nbsp;رسالة  لرئيس التحرير</a> <span id="reviewer-t" class="glyphicon glyphicon-ok"></span>
+            <br /><h3 style="display:inline;" class="text-center"><span style="left:-70px" class="glyphicon glyphicon-chevron-down text-info"></span></h3><br>
+        }
+        @if (Model.Submissions.Count() == 0)
+        {
+            <a id="submit" asp-controller="Submissions" asp-action="Create" asp-route-mid="@ViewData["mid"]" class="bold">&nbsp;&nbsp;رسالة  لرئيس التحرير</a> <span id="submit-t" class="glyphicon glyphicon-ok"></span>
+            <br /><h3 style="display:inline;" class="text-center"><span style="left:-70px" class="glyphicon glyphicon-chevron-down text-info"></span></h3><br>
+        }
+        @if (Model.Submissions.Count() > 0)
+        {<a id="attach" asp-controller="SubmissionFiles" asp-action="Create" asp-route-sid="@ViewData["sid"]" class="bold">&nbsp;&nbsp;إضافة ملفات البحث</a> <span id="attach-t" class="glyphicon glyphicon-ok"></span>
+            <br /><h3 style="display:inline;" class="text-center"><span style="left:-70px" class="glyphicon glyphicon-chevron-down text-info"></span></h3><br>
+        }
+        @if (Model.Submissions.Count() == 0)
+        {<a id="attach" class="bold">&nbsp;&nbsp;إضافة ملفات البحث</a> <span id="attach-t" class="glyphicon glyphicon-ok"></span>
+            <br /><h3 style="display:inline;" class="text-center"><span style="left:-70px" class="glyphicon glyphicon-chevron-down text-info"></span></h3><br>
+        }
+        <hr />
+        @if (Model.SubmissionFiles.Count() > 0)
+        {
+            @if (Model.Manuscripts.Count() > 0 && Model.ArticleAuthorships.Count() > 0 && ViewData["subfiles"].ToString() == "true")
+            {
+                <a asp-controller="Submissions" asp-action="FinalShow" asp-route-id="@ViewData["sid"]" class="btn btn-danger bold">&nbsp;&nbsp;&nbsp;&nbsp;تسليم البحث نهائياً</a>
+                <p style="color:red;" id="compt"> اتممت المتطلبات كاملة بامكانك التسليم</p>
+            }
+        }
+        @if (Model.SubmissionFiles.Count() == 0 || Model.ArticleAuthorships.Count() == 0 || ViewData["subfiles"].ToString() != "true")
+        {
+            <a id="submnot" href="#" class="btn btn-default bold">&nbsp;&nbsp;&nbsp;&nbsp;تسليم البحث نهائياً</a>
+            <p style="color:red;" id="notcompt">لم تكمل جميع المتطلبات بعد</p>
+        }
+    </div>
+    @if (Model.SubmissionFiles.Count() > 0)
+    {<input id="test" hidden value="@ViewData["subfiles"].ToString()" />}
+
+</div>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#subm").click(
+                function () {
+                        if (confirm('الرجاء تأكيد تسليم البحث')) {
+                              var FollowOptions = {};
+                            FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/ResearchSubmission/";
+                            FollowOptions.data = { id: @ViewData["mid"] };
+                            FollowOptions.success = function () {
+                                $("#subm").prop("text", "تم الارسال بنجاح");
+                                window.location.href = "@Url.Action("Details", "Journals" , new {/* routeValues, for example: */ id = Model.Manuscript.JournalId })";
+                                                                                       };
+
+                   $.ajax(FollowOptions);
+                            alert('تم ارسال البحث بنجاح');
+                        } else {
+                            alert('لم يتم ارسال البحث');
+                        }
+                });
+        });
+    </script>
+    <script>
+        if (@Model.Manuscripts.Count()> 0) {
+            $('#manu').addClass("btn btn-success")
+        }
+        else {
+            $('#manu').addClass("btn btn-default")
+            $('#manu-t').hide();
+        }
+        if (@Model.ArticleAuthorships.Count()> 0) {
+            $('#author').addClass("btn btn-success")
+        }
+        else {
+            $('#author').addClass("btn btn-danger")
+            $('#author-t').hide();
+
+        }
+        if (@Model.Submissions.Count()> 0) {
+            $('#submit').addClass("btn btn-success")
+        }
+        else {
+            $('#submit').addClass("btn btn-default")
+            $('#submit-t').hide();
+        }
+        if ($("#test").val()=="true") {
+            $('#attach').addClass("btn btn-success")
+        }
+        else {
+            $('#attach').addClass("btn btn-danger")
+            $('#attach-t').hide();
+        }
+    </script>
+    <script>
+        $('.req').hide();
+        $("input[name=IdsToAdd]").change(function () {
+            $('#appuser').val($(this).val());
+            $("input[name=IdsToAdd]").not(this).attr('checked', false);
+            $("input[type=email]").val($("input[name=IdsToAdd]:checked").siblings("input[name=itmmail]").val());
+            $("input[name=revname]").val($("input[name=IdsToAdd]:checked").siblings("input[name=itmname]").val());
+            $('#users').slideUp();
+            $('.req').slideDown();
+
+        });
+        $("#compt").hide();
+        $("#notcompt").hide();
+        $("#subm").click(function () {
+            $("#compt").show();
+        });
+        $("#submnot").click(function () {
+            $("#notcompt").show();
+        });
+        $('#form2').hide();
+        $("#addnew").click(function () {
+            $('#form1').slideUp();
+            $('#form2').slideToggle();
+            $('#users').hide();
+        });
+        if (@Model.ApplicationUsers.Count()> 0) {
+            $("#addnew").hide()
+        }
+
+    </script>
+    @*<script>
+            $("input[name=IdsToAdd]").change(function () {
+                $('#appuser').val($(this).val());
+                $("input[name=IdsToAdd]").not(this).attr('checked', false);
+                $("#app").hide()
+            });
+            $('#add').click(function () {
+                $('#srch').val($("input[name=IdsToAdd]:checked").siblings('input[name=itmname]').val());
+                $("input[name=revname]").val($("input[name=IdsToAdd]:checked").siblings('input[name=itmname]').val());
+
+                $('#users').hide();
+                $(this).hide();
+            });
+        </script>*@
+    <script>
+        $('.req').hide();
+
+        $("input[name=IdsToAdd]").change(function () {
+            $('#appuser').val($(this).val());
+            $("input[name=IdsToAdd]").not(this).attr('checked', false);
+            $("input[name=revname]").val($("input[name=IdsToAdd]:checked").siblings("input[name=itmname]").val());
+            $('#users').slideUp();
+            $('.req').slideDown();
+
+        });
+
+    </script>
+    <script>
+        //$("#uniid").append($('<option>', { text: 1 }));
+        $(document).ready(function () {
+            $("#cntid").change(function () {
+                //$("#uniid").append($('<option>', { text: 1 }));
+                if ($("#cntid").val() > 0) {
+                    var CountryOptions = {};
+                    CountryOptions.url = "/@CultureInfo.CurrentCulture.Name/Account/GetUniversitiesList/";
+                    CountryOptions.data = { countryid: $("#cntid").val() };
+                    CountryOptions.success = function (data) {
+                        $.each(data, function (index, row) {
+                            $("#uniid").append($('<option>', {value: row.value, text: row.text}))
+                        });
+                    };
+                    CountryOptions.error = function () { alert("@Localizer["UniError"]"); };
+                    $.ajax(CountryOptions);
+                }
+            });
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

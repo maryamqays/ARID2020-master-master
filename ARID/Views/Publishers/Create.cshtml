@@ -1,0 +1,159 @@
+﻿@model ARID.Models.Publisher
+@{
+    ViewData["Title"] = "Create";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+<br />
+<h1>اضافة دار نشر</h1>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ArName" class="control-label"></label>
+                <input asp-for="ArName" class="form-control" />
+                <span asp-validation-for="ArName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnName" class="control-label"></label>
+                <input asp-for="EnName" class="form-control" />
+                <span asp-validation-for="EnName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                @Html.TextAreaFor(model => model.ContactUs, new { rows = 10, cols = 50, @class = "form-control", @maxlength = "5000" })
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EstablishmentDate" class="control-label"></label>
+                <input asp-for="EstablishmentDate" class="form-control" />
+                <span asp-validation-for="EstablishmentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialityId" class="control-label"></label>
+                <select asp-for="SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control" asp-items="ViewBag.CountryId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Website" class="control-label"></label>
+                <input asp-for="Website" class="form-control" />
+                <span asp-validation-for="Website" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fb" class="control-label"></label>
+                <input asp-for="Fb" class="form-control" />
+                <span asp-validation-for="Fb" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Twitter" class="control-label"></label>
+                <input asp-for="Twitter" class="form-control" />
+                <span asp-validation-for="Twitter" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactUs" class="control-label"></label>
+                <input asp-for="ContactUs" class="form-control" />
+                <span asp-validation-for="ContactUs" class="text-danger"></span>
+            </div>
+            <br />
+            <input id="btn" type="button" class="btn btn-primary" value="اضف صورة" />
+            <br />
+            <div class="form-group" id="img">
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-default" />
+                <input asp-for="Logo" id="fileinput" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="RegistrationNumber" class="control-label"></label>
+                <input asp-for="RegistrationNumber" class="form-control" />
+                <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Languages" class="control-label"></label>
+                <input asp-for="Languages" class="form-control" />
+                <span asp-validation-for="Languages" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input asp-for="Tags" class="form-control" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
+                    </label>
+                </div>
+            </div>
+            @if (User.IsInRole("Admins"))
+            {
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsAdminAccepted" /> @Html.DisplayNameFor(model => model.IsAdminAccepted)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsFeatured" /> @Html.DisplayNameFor(model => model.IsFeatured)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsVisible" /> @Html.DisplayNameFor(model => model.IsVisible)
+                        </label>
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="أنشاء" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">العودة الى القائمة</a>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+<script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+</script>
+<script>
+        $(document).ready(function () {
+            $("#img").hide();
+            $("#btn").click(function () {
+                $("#img").slideToggle();
+            });
+
+        });
+</script>

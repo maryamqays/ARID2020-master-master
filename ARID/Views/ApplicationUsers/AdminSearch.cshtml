@@ -1,0 +1,189 @@
+﻿@model IEnumerable<ARID.Models.ApplicationUser>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ApplicationUser currentUser = null;
+    @if (SignInManager.IsSignedIn(User))
+    {
+        currentUser = await UserManager.GetUserAsync(User);
+    }
+}
+
+@{
+    ViewData["Title"] = "Index";
+}
+@*@section styles{
+        <link href="https://cdn.datatables.net/v/dt/dt-1.10.15/datatables.min.css" type="text/css" rel="stylesheet" />
+    }*@
+
+<h2> </h2>
+
+<table id="table1" class="table-hover table table-striped table-bordered dt-responsive">
+    <thead class="display">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ARID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UniversityId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacultyId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CityId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Localizer["Edit"]
+            </th>
+            <th>
+                @Localizer["Delete"]
+            </th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#table1').DataTable({
+                "serverSide": true,
+                "oredr": [1, "asc"],
+                "processing": true,
+                "searchDelay": 1600,
+                ajax: {
+                    url: "/api/FullApplicationUsers",
+                    // dataSrc: "", // this must not be used
+                    datatype: "json",
+                    type: "POST"
+                },
+                columns: [                    
+                    {
+                        data: "arid",
+                        render: function (data, type, appuser) {
+                            if (data == "0000-0000") {
+                                return "<a id='assignbtn' " +
+                                    "class='btn btn-default' style='color:blue;font-size:large;font-synthesis:weight'>" +
+                                    "@Localizer["AssignARID"]</a>";
+                            }
+                            else {
+                                return "<a href='"
+                                    + "Details/"
+                                    + appuser.id + "' target='blank'>"
+                                    + appuser.arid + "</a>";
+                            }
+                        }
+                    },
+                    { data: "regDate" },
+                    {
+                        data: "arName",
+                        render: function (data, type, appuser) {
+                            return "<a href='"
+                                + "Details/"
+                                + appuser.id + "' target='blank'>"
+                                + appuser.arName + "</a>";
+                        }
+                    },
+                    {
+                        data: "enName",
+                        render: function (data, type, appuser) {
+                            return "<a href='"
+                                + "Details/"
+                                + appuser.id + "' target='blank'>"
+                                + appuser.enName + "</a>";
+                        }
+                    },
+                    { data: "university"},
+                    { data: "faculty" },
+                    { data: "country" },
+                    { data: "city" },
+                    { data: "status" },
+                    {
+                        data: "edit",
+                        render: function (data, type, appuser) {
+                            return "<a href='"
+                                + "Edit/"
+                                + appuser.id + "' target='blank'>"
+                                + "@Localizer["Edit"]</a>";
+                        }
+                    },
+                    {
+                        data: "delete",
+                        render: function (data, type, appuser) {
+                            if (appuser.id == "@currentUser.Id") {
+                                return "<a>" + "@Localizer["NotAllowed"]</a>";
+                            }
+                            else {
+                                return "<a href='"
+                                    + "Delete/"
+                                    + appuser.id + "' target='blank'>"
+                                    + "@Localizer["Delete"]</a>";
+                            }
+                        }
+                    }
+
+                ],
+                "oLanguage":
+                {
+                    "processing": "@Localizer["Processing"]",
+                    "sSearch": "@Localizer["Search"]",
+                    "oPaginate":
+                    {
+                        "sPrevious": "@Localizer["Previous"]",
+                        "sNext": "@Localizer["Next"]"
+                    },
+                    "sLengthMenu": "@Localizer["Show"] _MENU_ @Localizer["Records"]",
+                    //"sLengthMenu": '@Localizer["Show"] <select>'+
+                    //'<option value="1">1</option>' +
+                    //'<option value="2">2</option>' +
+                    //'</select> @Localizer["Records"]',
+                    "sInfo": "@Localizer["Show"] _START_ @Localizer["To"] _END_ @Localizer["OFTotal"] _TOTAL_ @Localizer["Records"]"
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var table = $("#table1").DataTable();
+            var myid;
+            $("#table1").on("click", "td", function () {
+                myid = table.row(this).data().id;
+            });
+
+            $("#table1").on("click", ".btn", function () {
+                bootbox.confirm("@Localizer["Q1"]", function (result) {
+                    if (result) {
+                        var AssignARIDOptions = {};
+                        AssignARIDOptions.url = "/@CultureInfo.CurrentCulture.Name/ApplicationUsers/AssignARID/";
+                        AssignARIDOptions.data = { id: myid };
+                        AssignARIDOptions.success = function () {
+                            window.location.reload();
+                        };
+                        $.ajax(AssignARIDOptions);
+                    }
+                });
+            });
+        });
+    </script>
+}

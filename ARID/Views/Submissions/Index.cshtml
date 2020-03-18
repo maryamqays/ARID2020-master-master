@@ -1,0 +1,119 @@
+﻿@model IEnumerable<ARID.Models.Submission>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfSubmission)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ResponsetoDecision)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EICDecision)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubmissionStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DecisionDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EicDecisionText)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DecisionLetter)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlagiarismConfirmation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DuplicateSubmissionConfirmation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CoverLetter)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AEDecision)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AEDecisionDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AEDecisionText)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Manuscript)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfSubmission)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResponsetoDecision)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EICDecision)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubmissionStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DecisionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EicDecisionText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DecisionLetter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlagiarismConfirmation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DuplicateSubmissionConfirmation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CoverLetter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AEDecision)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AEDecisionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AEDecisionText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AE.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manuscript.ArAbstract)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

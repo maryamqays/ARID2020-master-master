@@ -1,0 +1,128 @@
+﻿@model ARID.Models.MOOCList
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>حذف</h1>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFree)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsFree)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsReported)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsReported)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Language)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Language)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Certificate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Certificate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Link)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Link)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.YouTubeLink)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.YouTubeLink)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tags)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tags)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Instructor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Instructor)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfRecord)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateOfRecord)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MOOCProvider)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MOOCProvider.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Speciality)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Speciality.EnSpecialityName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.University)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.University.ArUniversityName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd>
+            <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Image)" width="280" height="200" />
+        </dd>
+
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="حذف" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-primary">العودة الى القائمة</a>
+    </form>
+</div>

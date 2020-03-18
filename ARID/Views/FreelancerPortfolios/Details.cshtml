@@ -1,0 +1,119 @@
+﻿@model ARID.Models.FreelancerPortfolio
+
+@{
+    ViewData["Title"] = "تفاصيل العمل";
+}
+
+
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            @if (Model.Image != null)
+            {
+                <img style="border: 2px solid deepskyblue;border-radius: 5px;" class="img-rounded center-block img-thumbnail"
+                     src="@Url.Content("~/" + ARID.Properties.Resources.ScientificEvent +
+                                            "/" + Model.Image)" width="250" height="250" />
+            }
+            <div class="text-center">
+                <h3>@Model.Title</h3>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <h4 style="float:left;background-color:whitesmoke;border-color:ActiveCaption;padding:5px;" class="img-rounded table-bordered"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;@Model.Views</h4><br />
+    <br />
+    <br />
+    <p align="left">
+        <a href="#" class="btn-sm btn-success btn-like"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+        <span style="outline:none" class="commentCountClass">@Model.Likes</span>
+        <a href="#" class="btn-sm btn-danger btn-dislike"><span class="glyphicon glyphicon-thumbs-down"></span></a>
+    </p>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Skills)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Skills)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ExternalLink)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ExternalLink)
+        </dd>
+        @if (Model.File != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.File)
+            </dt>
+            <dd>
+                <a href="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.File)" width="280" height="200">
+                    تحميل الملف
+                </a>
+            </dd>
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.Likes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Likes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfAchievement)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateOfAchievement)
+        </dd>
+    </dl>
+</div>
+<div>
+    <h4><a asp-action="FreelancerDetails" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUserId" class="btn btn-info">رجوع</a></h4>
+</div>
+<style>
+    input:focus {
+        outline: none;
+    }
+</style>
+@section Scripts{
+    <script>
+        var old = parseInt($(".commentCountClass").text());
+        var n = parseInt(1);
+
+        $(document).ready(function () {
+                    $('a.btn-like').click(function (e) {
+                             e.preventDefault();
+                        $(this).toggleClass("btn-active");
+                        var update = old + n;
+                        $(".commentCountClass").text(update);
+
+    $.ajax({
+    url: '@Url.Action("LikesUp", "FreelancerPortfolios")',
+    data: { id: @Model.Id }
+    });
+    });
+    });
+    </script>
+    <script>
+    $(document).ready(function() {
+    $('a.btn-dislike').click(function(e) {
+        e.preventDefault();
+        $(this).toggleClass("btn-active");
+        var update = old - n;
+        $(".commentCountClass").text(update);
+
+    $.ajax({
+    url: '@Url.Action("LikesDown", "FreelancerPortfolios")',
+    data: { id: @Model.Id }
+    });
+    });
+    });
+    </script>
+
+}

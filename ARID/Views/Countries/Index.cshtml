@@ -1,0 +1,61 @@
+@model IEnumerable<ARID.Models.Country>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ArCountryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnCountryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CountryCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ShortName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Flag)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArCountryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnCountryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountryCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShortName)
+            </td>
+            <td>
+                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.CountryFlagFolder + "/" + item.Flag)" width="50" height="30" />
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-controller="Universities" asp-action="Index" asp-route-id="@item.Id">Universities</a>|
+                <a asp-controller="Cities" asp-action="Index" asp-route-id="@item.Id">Cities</a>|
+                <a asp-controller="ApplicationUsers" asp-action="Index" asp-route-id="@item.Id">Users</a>|
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

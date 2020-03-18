@@ -1,0 +1,84 @@
+﻿@model ARID.Models.FreelancerRating
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FreelancerRating</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FreelancerProjectId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FreelancerProjectId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Isvisible)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Isvisible)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateofRecord)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateofRecord)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Professionalism)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Professionalism)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Communication)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Communication)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Quality)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quality)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Experience)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Experience)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Delivery)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Delivery)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RehirePossibility)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RehirePossibility)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

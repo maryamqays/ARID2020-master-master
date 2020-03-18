@@ -1,0 +1,245 @@
+﻿@model ARID.Models.ManuscriptViewModel
+@{
+    ViewData["Title"] = "معلومات البحث";
+}
+<h2>
+    معلومات البحث
+    <a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بعملية الحذف؟');" style="float:left" class="btn btn-danger bold" asp-action="TechniclaEditorSubmission" asp-route-id="@Model.Manuscript.Id">تسليم نهائي</a>
+</h2>
+@*<div>
+        <h4>Manuscript</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ArTitle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ArTitle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EnTitle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EnTitle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.RunningTitle)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.RunningTitle)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EnAbstract)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EnAbstract)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ArAbstract)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ArAbstract)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CorrespondingAuthorId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CorrespondingAuthorId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CreationDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DueDateforAuthorResponse)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.DueDateforAuthorResponse)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Keywords)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Keywords)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Areas)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Areas)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.JournalArticleTypeId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.JournalArticleTypeId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.SubmittedforIssueId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.SubmittedforIssueId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.SpecialityId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.SpecialityId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.JournalId)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.JournalId)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CurrentStatus)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CurrentStatus)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsDeleted)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.OpenAccess)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.OpenAccess)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.FundingInfo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FundingInfo)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.GraphicalAbstract)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.GraphicalAbstract)
+            </dd>
+        </dl>
+    </div>*@
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <caption><h3>مؤلفوا المقالة</h3></caption>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleAuthorship.AuthorUserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleAuthorship.DateOfRecord)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleAuthorship.Indx)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleAuthorship.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleAuthorship.Contribution)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleAuthorship.CountryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleAuthorship.UniversityId)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ArticleAuthorships)
+        {
+            <tr>
+                <td>
+                    <a target="_blank" asp-controller="ApplicationUsers" asp-action="Details" asp-route-id="@item.AuthorUserId">@Html.DisplayFor(modelItem => item.AuthorUser.ArName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfRecord)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Indx)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Contribution)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <caption><h3>الملفات المرفقة بالبحث</h3></caption>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SubmissionFile.FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubmissionFile.JournalFileTypeId)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.SubmissionFiles != null)
+        {
+            @foreach (var item in Model.SubmissionFiles)
+            {
+                <tr>
+                    <td>
+                        <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.Secured + "/" + item.FileName)">
+                            @Html.DisplayFor(modelItem => item.FileName)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.JournalFileType.FileType.FileName)
+                    </td>
+                    <td>
+                        @if (item.JournalFileType.FileTypeId == 3 || item.JournalFileType.FileTypeId == 4)
+                        {
+                            <a title="حذف" onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بهذه العملية؟');" asp-action="DeleteGallyproofFile" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<div>
+    <a class="btn btn-primary bold" asp-action="TechnicalEditorIndex" asp-route-id="@ViewData["jid"]">رجوع</a>
+    @if (Model.SubmissionFiles.Where(a => a.JournalFileType.FileTypeId == 3).Count() == 0 || Model.SubmissionFiles.Where(a => a.JournalFileType.FileTypeId == 4).Count() == 0)
+    {
+        <a class="btn btn-success bold" asp-action="TechnicalCreate" asp-controller="SubmissionFiles" asp-route-sid="@Model.Submission.Id">إضافة الملف بعد تطبيق القالب وملف الpdf</a>
+    }
+    <a style="float:left;" class="btn btn-warning bold" asp-action="TechnicalEditorEdit" asp-controller="Manuscripts" asp-route-id="@Model.Submission.ManuscriptId">التعديل على الملخص العربي و الانجليزي</a>
+</div>
+<style>
+
+
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>

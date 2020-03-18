@@ -1,0 +1,85 @@
+﻿@model IEnumerable<ARID.Models.FreelancerReadyService>
+
+@{
+    ViewData["Title"] = "الخدمات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<div class="navbar navbar-inverse">
+        <div class="container-fluid  btn-default">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <h4 style="display:inline"><a class="navbar-brand" href="#">الخدمات الجاهزة</a></h4>
+            </div>
+            <div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        @foreach (SkillCategoryType skillCategoryType in Enum.GetValues(typeof(SkillCategoryType)))
+                        {
+                            if (Model.Where(f => f.SkillCategoryType == skillCategoryType).Count() > 0)
+                            {
+                                <li><a href="#section1"><h5>@Html.DisplayFor(e => skillCategoryType)</h5></a></li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>*@
+<div class="col-lg-12">
+    <p>
+        <h4 style="float:left"><a asp-action="Create" class="btn btn-info text-left" style="margin-right:26px"><span class="glyphicon glyphicon-plus"></span>&nbsp;إضافة خدمة</a></h4>
+    </p>
+    <div class="col-lg-12 row img-rounded center-block text-center">
+        <h4 class="text-right text-info">الخدمات الحديثة  <span style="margin-right:-2px;margin-top:-12px" class="glyphicon glyphicon-menu-left"></span><span style="margin-right:-12px;margin-top:-12px" class="glyphicon glyphicon-menu-left"></span></h4>
+        <hr style="border-color:ActiveCaption" />
+        <div class="col-lg-12">
+            @foreach (var item in Model.Take(8))
+            {
+                <div class="img-rounded table-bordered col-lg-3" style="width:24rem;margin:8px;padding:3px;background-color:whitesmoke;height:35rem">
+                    <img class="img-rounded center-block table-bordered" style="border-color:ActiveCaption" src="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + item.Image)" width="232" height="200" />
+                    <div class="center-block" style="height:3rem">
+                        <h5 class="card-title">@item.Title</h5>
+                    </div>
+                    <div style="height:2rem">
+                        <hr style="border-color:ActiveCaption" />
+                        <h4><a asp-action="Details" asp-controller="FreelancerReadyServices" asp-route-id="@item.Id" class="btn btn-info center-block">تفاصيل الخدمة</a></h4>
+                    </div>
+                </div>
+            }
+        </div>
+        <h2>&nbsp;</h2>
+
+
+        @foreach (SkillCategoryType skillCategoryType in Enum.GetValues(typeof(SkillCategoryType)))
+        {
+            if (Model.Where(f => f.SkillCategoryType == skillCategoryType).Count() > 0)
+            {
+                <h4 class="text-right text-info">@Html.DisplayFor(e => skillCategoryType) <span style="margin-right:-2px;margin-top:-12px" class="glyphicon glyphicon-menu-left"></span><span style="margin-right:-12px;margin-top:-12px" class="glyphicon glyphicon-menu-left"></span></h4>
+                <hr style="border-color:ActiveCaption" />
+                <div class="col-lg-12">     
+                    @foreach (var item in Model.Where(f => f.SkillCategoryType == skillCategoryType).Take(4))
+                    {
+                        <div class="img-rounded table-bordered col-lg-3" style="width:24rem;margin:8px;padding:3px;background-color:whitesmoke;height:35rem">
+                            <img class="img-rounded center-block table-bordered" style="border-color:ActiveCaption" src="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + item.Image)" width="232" height="200" />
+                            <div class="center-block" style="height:3rem">
+                                <h5 class="card-title">@item.Title</h5>
+                            </div>
+                            <div style="height:2rem">
+                                <hr style="border-color:ActiveCaption" />
+                                <h4><a asp-action="Details" asp-controller="FreelancerReadyServices" asp-route-id="@item.Id" class="btn btn-info center-block">تفاصيل الخدمة</a></h4>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <h2>&nbsp;</h2>
+            }
+        }
+
+    </div>
+</div>

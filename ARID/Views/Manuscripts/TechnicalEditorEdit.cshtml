@@ -1,0 +1,275 @@
+﻿@model ARID.Models.ManuscriptViewModel
+@{
+    ViewData["Title"] = "إضافة معلومات المقالة";
+}
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@inject IJsonHelper Json;
+<h2>إضافة معلومات المقالة</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="TechnicalEditorEdit" asp-route-mid="@ViewData["mid"]" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Manuscript.Id" />
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.JournalArticleTypeId" class="control-label"></label>
+                <select asp-for="Manuscript.JournalArticleTypeId" class="form-control" asp-items="ViewBag.JournalArticleTypeId"></select>
+                <span asp-validation-for="Manuscript.JournalArticleTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.SpecialityId" class="control-label"></label>
+                <select asp-for="Manuscript.SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId"></select>
+                <span asp-validation-for="Manuscript.SpecialityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Manuscript.ArTitle" class="control-label"></label>
+                <input asp-for="Manuscript.ArTitle" class="form-control" />
+                <span asp-validation-for="Manuscript.ArTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Manuscript.EnTitle" class="control-label"></label>
+                <input asp-for="Manuscript.EnTitle" class="form-control" />
+                <span asp-validation-for="Manuscript.EnTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.RunningTitle" class="control-label"></label>
+                <input asp-for="Manuscript.RunningTitle" class="form-control" />
+                <span asp-validation-for="Manuscript.RunningTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Manuscript.ArAbstract" class="control-label"></label>
+                <textarea rows="10" asp-for="Manuscript.ArAbstract" class="form-control"></textarea>
+                <span asp-validation-for="Manuscript.ArAbstract" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Manuscript.EnAbstract" class="control-label"></label>
+                <textarea rows="10" asp-for="Manuscript.EnAbstract" class="form-control"></textarea>
+                <span asp-validation-for="Manuscript.EnAbstract" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.Keywords" class="control-label"></label>
+                <input asp-for="Manuscript.Keywords" class="form-control" />
+                <span asp-validation-for="Manuscript.Keywords" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.Areas" class="control-label"></label>
+                <input asp-for="Manuscript.Areas" class="form-control" />
+                <span asp-validation-for="Manuscript.Areas" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.SubmittedforIssueId" class="control-label"></label>
+                <select asp-for="Manuscript.SubmittedforIssueId" class="form-control" asp-items="ViewBag.SubmittedforIssueId"></select>
+                <span asp-validation-for="Manuscript.SubmittedforIssueId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.FundingInfo" class="control-label"></label>
+                <input asp-for="Manuscript.FundingInfo" class="form-control" />
+                <span asp-validation-for="Manuscript.FundingInfo" class="text-danger"></span>
+            </div>
+            @*@if (Model.Manuscript.GraphicalAbstract != null)
+                {
+                    <div class="form-group">
+                        <label class="control-label"> الصورة التعبيريةالحالية</label>
+                        <br />
+                        <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Manuscript.GraphicalAbstract)" width="280" height="200" />
+                    </div>
+                }
+                <label class="control-label">تغيير الصورة التعبيرية</label>
+                <div class="form-group" id="img">
+                    <img id="img1" class="img-rounded" src="" />
+                    <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-primary col-lg-12" />
+                    <span asp-validation-for="Manuscript.GraphicalAbstract" class="text-danger"></span>
+                </div>*@
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.JournalId" class="control-label"></label>
+                <select asp-for="Manuscript.JournalId" class="form-control" asp-items="ViewBag.JournalId"></select>
+                <span asp-validation-for="Manuscript.JournalId" class="text-danger"></span>
+            </div>
+            <br />
+            <br />
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.CorrespondingAuthorId" class="control-label"></label>
+                <input asp-for="Manuscript.CorrespondingAuthorId" class="form-control" asp-items="ViewBag.CorrespondingAuthorId" />
+                <span asp-validation-for="Manuscript.CorrespondingAuthorId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.CreationDate" class="control-label"></label>
+                <input asp-for="Manuscript.CreationDate" class="form-control" />
+                <span asp-validation-for="Manuscript.CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.DueDateforAuthorResponse" class="control-label"></label>
+                <input asp-for="Manuscript.DueDateforAuthorResponse" class="form-control" />
+                <span asp-validation-for="Manuscript.DueDateforAuthorResponse" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="Manuscript.CurrentStatus" class="control-label"></label>
+                <select asp-for="Manuscript.CurrentStatus" asp-items="Html.GetEnumSelectList<ManuscriptCurrentStatus>()" class="form-control"></select>
+                <span asp-validation-for="Manuscript.CurrentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Manuscript.IsDeleted" /> @Html.DisplayNameFor(model => model.Manuscript.IsDeleted)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" hidden>
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Manuscript.OpenAccess" /> @Html.DisplayNameFor(model => model.Manuscript.OpenAccess)
+                    </label>
+                </div>
+            </div>
+            @if (User.IsInRole("Admins"))
+            {
+                <h3 style="color:red">تفاصيل تظهر للادارة فقط</h3>
+                <div class="form-group">
+                    <label asp-for="Manuscript.CorrespondingAuthorId" class="control-label"></label>
+                    <input asp-for="Manuscript.CorrespondingAuthorId" class="form-control" asp-items="ViewBag.CorrespondingAuthorId" />
+                    <span asp-validation-for="Manuscript.CorrespondingAuthorId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Manuscript.CreationDate" class="control-label"></label>
+                    <input asp-for="Manuscript.CreationDate" class="form-control" />
+                    <span asp-validation-for="Manuscript.CreationDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Manuscript.DueDateforAuthorResponse" class="control-label"></label>
+                    <input asp-for="Manuscript.DueDateforAuthorResponse" class="form-control" />
+                    <span asp-validation-for="Manuscript.DueDateforAuthorResponse" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Manuscript.CurrentStatus" class="control-label"></label>
+                    <select asp-for="Manuscript.CurrentStatus" asp-items="Html.GetEnumSelectList<ManuscriptCurrentStatus>()" class="form-control"></select>
+                    <span asp-validation-for="Manuscript.CurrentStatus" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="Manuscript.IsDeleted" /> @Html.DisplayNameFor(model => model.Manuscript.IsDeleted)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="Manuscript.OpenAccess" /> @Html.DisplayNameFor(model => model.Manuscript.OpenAccess)
+                        </label>
+                    </div>
+                </div>
+
+            }
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn btn-success col-lg-2" />
+            </div>
+        </form>
+        <a style="float:left;" asp-controller="Manuscripts" asp-action="TechnicalEditorDetails" asp-route-id="@Model.Manuscript.Id" class="btn btn-info bold">رجوع</a>
+    </div>
+    <div class="col-lg-4">
+    </div>
+</div>
+@if (Model.SubmissionFiles.Count() > 0)
+{<input id="test" hidden value="@ViewData["subfiles"].ToString()" />}
+<style>
+
+
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#subm").click(
+                function () {
+                        if (confirm('الرجاء تأكيد تسليم البحث')) {
+                              var FollowOptions = {};
+                            FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Manuscripts/ResearchSubmission/";
+                            FollowOptions.data = { id: @ViewData["mid"] };
+                            FollowOptions.success = function () {
+                                $("#subm").prop("text", "تم الارسال بنجاح");
+                                window.location.href = "@Url.Action("Details", "Journals" , new {/* routeValues, for example: */ id = Model.Manuscript.JournalId })";
+                                                                                       };
+
+                   $.ajax(FollowOptions);
+                            alert('تم ارسال البحث بنجاح');
+                        } else {
+                            alert('لم يتم ارسال البحث');
+                        }
+                });
+        });
+    </script>
+    <script>tinymce.init({
+            selector: 'textarea',
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link",
+            mode: "textareas",
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+            toolbar: false,
+            menubar: false
+            //plugins: "table,contextmenu,paste,-externalplugin"
+        });</script>
+    <script>$(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });</script>
+    <script>
+        if (@Model.Manuscripts.Count()> 0) {
+            $('#manu').addClass("btn btn-success")
+        }
+        else {
+            $('#manu').addClass("btn btn-default")
+            $('#manu-t').hide();
+        }
+        if (@Model.ArticleAuthorships.Count()> 0) {
+            $('#author').addClass("btn btn-success")
+        }
+        else {
+            $('#author').addClass("btn btn-danger")
+            $('#author-t').hide();
+
+        }
+        if (@Model.Submissions.Count()> 0) {
+            $('#submit').addClass("btn btn-success")
+        }
+        else {
+            $('#submit').addClass("btn btn-danger")
+            $('#submit-t').hide();
+        }
+        if ($("#test").val()=="true") {
+            $('#attach').addClass("btn btn-success")
+        }
+        else {
+            $('#attach').addClass("btn btn-danger")
+            $('#attach-t').hide();
+
+        }
+        $("#compt").hide();
+        $("#notcompt").hide();
+        $("#subm").click(function () {
+            $("#compt").show();
+        });
+        $("#submnot").click(function () {
+            $("#notcompt").show();
+        });
+
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

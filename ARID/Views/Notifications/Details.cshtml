@@ -1,0 +1,61 @@
+﻿@model ARID.Models.Notification
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Notification</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsRead)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsRead)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReadDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReadDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,76 @@
+@*@inject IViewLocalizer Localizer*@
+@using System.Globalization
+
+@model ARID.Models.Faculty
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        @*<h3>«÷› ﬂ·Ì… ÃœÌœ…</h3>*@
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ArFacultyName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArFacultyName" class="form-control" />
+                <span asp-validation-for="ArFacultyName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EnFacultyName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EnFacultyName" class="form-control" />
+                <span asp-validation-for="EnFacultyName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="checkbox">
+                    <input asp-for="HasPostGraduation" />
+                    <label asp-for="HasPostGraduation"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UniversityId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select id="uniid" asp-for="UniversityId" class="form-control" asp-items="ViewBag.UniversityId">
+                    
+                </select>
+                <span asp-validation-for="UniversityId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SpecialityId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="SpecialityId" class="form-control" asp-items="ViewBag.SpecialityId">
+                    <option value="">Select Speciality</option>
+                </select>
+                <span asp-validation-for="SpecialityId" class="text-danger"></span>
+            </div>
+        </div>
+        @*<div class="form-group">
+            <label asp-for="CityId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select id="ctyid" asp-for="CityId" class="form-control" asp-items="ViewBag.CityId">
+                    <option value="">Select City</option>
+                </select>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+        </div>*@
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+

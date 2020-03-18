@@ -1,0 +1,23 @@
+﻿@using ARID.Views.Manage
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+
+<ul class="nav nav-pills nav-stacked">
+    <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-action="Index">@Localizer["ProfileData"]</a></li>
+    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a asp-action="ChangePassword">@Localizer["ChangePassword"]</a></li>
+    @if (hasExternalLogins)
+    {
+        <li class="@ManageNavPages.ExternalLoginsNavClass(ViewContext)"><a asp-action="ExternalLogins">@Localizer["Externallogins"]</a></li>
+    }
+    <li><a asp-action="DirectAccessLink">@Localizer["DirectAccessLink"]</a></li>
+    <li><a asp-action="Index" asp-controller="Statements">@Localizer["Statements"]</a></li>
+    <li><a asp-action="TransferCredit">@Localizer["TransferCredit"]</a></li>
+    @*  <li class="@ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"><a asp-action="TwoFactorAuthentication">@Localizer["Twofactorauthentication"]</a></li>*@
+</ul>
+

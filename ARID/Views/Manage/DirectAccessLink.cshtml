@@ -1,0 +1,25 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Title"];
+}
+<div class="row">
+    <div class="col-md-12">
+
+        <h3>@Localizer["Title"]</h3>
+        <p>@Localizer["Details"]</p>
+        <center>
+            <h3 style="color:red;">
+                https://portal.arid.my/ar-LY/Account/DAL/@ViewData["DAL"]
+            </h3>
+        </center>
+        <br />
+        @*<a id="bookmarkme" href="#" title="bookmark this page">@Localizer["Bookmark"]</a>*@
+
+    </div>
+</div>
+
+@section Scripts {
+    
+}

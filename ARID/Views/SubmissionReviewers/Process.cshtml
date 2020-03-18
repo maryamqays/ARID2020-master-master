@@ -1,0 +1,317 @@
+﻿@model ARID.Models.SubmissionReviewerViewModel
+@{
+    ViewData["Title"] = "Process";
+}
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+
+<h2>
+    تحكيم البحث
+    @if (Model.SubmissionReviewer.ReviewerInstructionsToAuthor != null) 
+    {<a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بهذه العملية؟');" asp-controller="SubmissionReviewers" asp-action="Reviewsubmit" asp-route-id="@Model.SubmissionReviewer.Id" style="float:left;" class="btn btn-danger bold">التسليم النهائي للتحكيم</a>
+    }
+</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Process" asp-route-maid="@ViewData["mid"]" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SubmissionReviewer.Id" />
+            <div class="form-group" hidden>
+                <label asp-for="SubmissionReviewer.SubmissionId" class="control-label"></label>
+                <select asp-for="SubmissionReviewer.SubmissionId" class="form-control" asp-items="ViewBag.SubmissionId"></select>
+                <span asp-validation-for="SubmissionReviewer.SubmissionId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="SubmissionReviewer.ReviewerUserId" class="control-label"></label>
+                <select asp-for="SubmissionReviewer.ReviewerUserId" class="form-control" asp-items="ViewBag.ReviewerUserId"></select>
+                <span asp-validation-for="SubmissionReviewer.ReviewerUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="SubmissionReviewer.DueDate" class="control-label"></label>
+                <input asp-for="SubmissionReviewer.DueDate" class="form-control" />
+                <span asp-validation-for="SubmissionReviewer.DueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="SubmissionReviewer.ReviewerStatus" class="control-label"></label>
+                <select asp-for="SubmissionReviewer.ReviewerStatus" asp-items="Html.GetEnumSelectList<ReviewerStatus>()" class="form-control"></select>
+                <span asp-validation-for="SubmissionReviewer.ReviewerStatus" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsCertificateOfReviewingGranted" /> @Html.DisplayNameFor(model => model.IsCertificateOfReviewingGranted)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateRevisionCertificae" class="control-label"></label>
+                    <input asp-for="DateRevisionCertificae" class="form-control" />
+                    <span asp-validation-for="DateRevisionCertificae" class="text-danger"></span>
+                </div>*@
+            @*<div class="form-group">
+                    <label asp-for="EICInstructions" class="control-label"></label>
+                    <textarea asp-for="EICInstructions" class="form-control"></textarea>
+                    <span asp-validation-for="EICInstructions" class="text-danger"></span>
+                </div>*@
+            @*<div class="form-group">
+                    <label asp-for="DateOfRecord" class="control-label"></label>
+                    <input asp-for="DateOfRecord" class="form-control" />
+                    <span asp-validation-for="DateOfRecord" class="text-danger"></span>
+                </div>*@
+            @*<div class="form-group">
+                    <label asp-for="ReviewDate" class="control-label"></label>
+                    <input asp-for="ReviewDate" class="form-control" />
+                    <span asp-validation-for="ReviewDate" class="text-danger"></span>
+                </div>*@
+            <div class="form-group" hidden>
+                <label asp-for="SubmissionReviewer.CieAeUserId" class="control-label"></label>
+                <select asp-for="SubmissionReviewer.CieAeUserId" class="form-control" asp-items="ViewBag.CieAeUserId"></select>
+                <span asp-validation-for="SubmissionReviewer.CieAeUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="SubmissionReviewer.DecisionDate" class="control-label"></label>
+                <input asp-for="SubmissionReviewer.DecisionDate" class="form-control" />
+                <span asp-validation-for="SubmissionReviewer.DecisionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="SubmissionReviewer.ReviewerDecisionToReview" class="control-label"></label>
+                <select asp-for="SubmissionReviewer.ReviewerDecisionToReview" asp-items="Html.GetEnumSelectList<ReviewerDecisionToReview>()" class="form-control"></select>
+                <span asp-validation-for="SubmissionReviewer.ReviewerDecisionToReview" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsAccess" /> @Html.DisplayNameFor(model => model.IsAccess)
+                        </label>
+                    </div>
+                </div>*@
+            <div class="form-group">
+                <div class="checkbox sub">
+                    <label>
+                        <input asp-for="SubmissionReviewer.IsNewInfo" /> @Html.DisplayNameFor(model => model.SubmissionReviewer.IsNewInfo)
+                    </label>*
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox sub">
+                    <label>
+                        <input asp-for="SubmissionReviewer.IsWithinJournalScope" /> @Html.DisplayNameFor(model => model.SubmissionReviewer.IsWithinJournalScope)
+                    </label>*
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox sub">
+                    <label>
+                        <input asp-for="SubmissionReviewer.AbstractCompatibility" /> @Html.DisplayNameFor(model => model.SubmissionReviewer.AbstractCompatibility)
+                    </label>*
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox sub">
+                    <label>
+                        <input asp-for="SubmissionReviewer.IsFormsAccepted" /> @Html.DisplayNameFor(model => model.SubmissionReviewer.IsFormsAccepted)
+                    </label>*
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox sub">
+                    <label>
+                        <input asp-for="SubmissionReviewer.IsValuable" /> @Html.DisplayNameFor(model => model.SubmissionReviewer.IsValuable)
+                    </label>*
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox sub">
+                    <label>
+                        <input asp-for="SubmissionReviewer.IsRepeatedInfo" /> @Html.DisplayNameFor(model => model.SubmissionReviewer.IsRepeatedInfo)
+                    </label>*
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox sub">
+                    <label>
+                        <input asp-for="SubmissionReviewer.IsDiscussionDocumentedJustified" /> @Html.DisplayNameFor(model => model.SubmissionReviewer.IsDiscussionDocumentedJustified)
+                    </label>*
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox sub">
+                    <label>
+                        <input asp-for="SubmissionReviewer.IsInterpretedResult" /> @Html.DisplayNameFor(model => model.SubmissionReviewer.IsInterpretedResult)
+                    </label>*
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox sub">
+                    <label>
+                        <input asp-for="SubmissionReviewer.IsPublishedPreviously" /> @Html.DisplayNameFor(model => model.SubmissionReviewer.IsPublishedPreviously)
+                    </label>*
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.PublishLocation" class="control-label"></label>(إن وجد)
+                <input asp-for="SubmissionReviewer.PublishLocation" class="form-control sub" />
+                <span asp-validation-for="SubmissionReviewer.PublishLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.ResearchLength" class="control-label"></label>*
+                <select asp-for="SubmissionReviewer.ResearchLength" asp-items="Html.GetEnumSelectList<ResearchLength>()" class="form-control sub req"><option disabled selected>اختر من القائمة</option></select>
+                <span asp-validation-for="SubmissionReviewer.ResearchLength" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.TheoreticalResults" class="control-label"></label>*
+                <select asp-for="SubmissionReviewer.TheoreticalResults" asp-items="Html.GetEnumSelectList<TheoreticalResults>()" class="form-control sub req"><option disabled selected>اختر من القائمة</option></select>
+                <span asp-validation-for="SubmissionReviewer.TheoreticalResults" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.Method" class="control-label"></label>*
+                <select asp-for="SubmissionReviewer.Method" asp-items="Html.GetEnumSelectList<Method>()" class="form-control sub req"><option disabled selected>اختر من القائمة</option></select>
+                <span asp-validation-for="SubmissionReviewer.Method" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.IsCommitted" class="control-label"></label>*
+                <select asp-for="SubmissionReviewer.IsCommitted" asp-items="Html.GetEnumSelectList<IsCommitted>()" class="form-control sub req"><option disabled selected>اختر من القائمة</option></select>
+                <span asp-validation-for="SubmissionReviewer.IsCommitted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.IsMatchTitleContent" class="control-label"></label>*
+                <select asp-for="SubmissionReviewer.IsMatchTitleContent" asp-items="Html.GetEnumSelectList<IsMatchTitleContent>()" class="form-control sub req"><option disabled selected>اختر من القائمة</option></select>
+                <span asp-validation-for="SubmissionReviewer.IsMatchTitleContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.IsModernSourcesAdopted" class="control-label"></label>*
+                <select asp-for="SubmissionReviewer.IsModernSourcesAdopted" asp-items="Html.GetEnumSelectList<IsModernSourcesAdopted>()" class="form-control sub req"><option disabled selected>اختر من القائمة</option></select>
+                <span asp-validation-for="SubmissionReviewer.IsModernSourcesAdopted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.Evaluation" class="control-label"></label>*
+                <select asp-for="SubmissionReviewer.Evaluation" asp-items="Html.GetEnumSelectList<IsModernSourcesAdopted>()" class="form-control sub req"><option disabled selected>اختر من القائمة</option></select>
+                <span asp-validation-for="SubmissionReviewer.Evaluation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.RecommendationToPublish" class="control-label"></label>*
+                <select asp-for="SubmissionReviewer.RecommendationToPublish" asp-items="Html.GetEnumSelectList<RecommendationToPublish>()" class="form-control sub req"><option disabled selected>اختر من القائمة</option></select>
+                <span asp-validation-for="SubmissionReviewer.RecommendationToPublish" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.Adjustments" class="control-label"></label>(إن وجدت)
+                <textarea asp-for="SubmissionReviewer.Adjustments" class="form-control sub"></textarea>
+                <span asp-validation-for="SubmissionReviewer.Adjustments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.NotForPublicationReason" class="control-label"></label>(إن وجد)
+                <textarea asp-for="SubmissionReviewer.NotForPublicationReason" class="form-control sub"></textarea>
+                <span asp-validation-for="SubmissionReviewer.NotForPublicationReason" class="text-danger"></span>
+            </div>
+            @if (Model.SubmissionReviewer.ReviewReportFile != null)
+            {
+                <div>
+                    <label>الملف الذي قمت ب رفعه في اخر جلسة</label>
+                    <br />
+                    <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.SubmissionReviewer.ReviewReportFile)">
+                        @Html.DisplayFor(model => model.SubmissionReviewer.ReviewReportFile)
+                    </a>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.ReviewReportFile" class="control-label"></label>
+                <input type="file" name="myfile" id="file" accept=".docx" class="btn btn-primary col-lg-12 sub" />
+                <input readonly asp-for="SubmissionReviewer.ReviewReportFile" id="fileinput" class="form-control sub" />
+                <span asp-validation-for="SubmissionReviewer.ReviewReportFile" class="text-danger"></span>
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.ReviewerInstructionsToEIC" class="control-label"></label>*
+                <textarea asp-for="SubmissionReviewer.ReviewerInstructionsToEIC" class="form-control sub req"></textarea>
+                <span asp-validation-for="SubmissionReviewer.ReviewerInstructionsToEIC" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubmissionReviewer.ReviewerInstructionsToAuthor" class="control-label"></label>*
+                <textarea asp-for="SubmissionReviewer.ReviewerInstructionsToAuthor" class="form-control sub req"></textarea>
+                <span asp-validation-for="SubmissionReviewer.ReviewerInstructionsToAuthor" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input onclick=" javascript:return confirm('تم الحفظ بنجاح. لم يتم ارسال التقرير الى رئيس التحرير. الرجاء الضغط على زر التسليم النهائي للتحكيم لارسال البحث.');" id="save" type="submit" value="حفظ" class="btn btn-success" />
+                <a asp-action="Details" asp-controller="Manuscripts" asp-route-id="@ViewData["mid"]" class="btn btn-primary bold">رجوع</a>
+                <p style="float:left;" class="notcomp">تحتاج الى ملأ الحقول المطلوبة قبل التسليم النهائي</p><br />
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-3">
+        <h3 class="bold">الملفات المرفقة بالمقالة</h3>
+        @foreach (var item in Model.SubmissionFiles)
+        {
+            <div>
+                <label>-@item.JournalFileType.FileType.FileName</label>
+                <br />
+                <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + item.FileName)">
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </a>
+            </div>
+
+        }
+    </div>
+</div>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script>
+        $(".notcomp").hide();
+
+        $(".req").each(function () {
+            if ($(this).val() == "") {
+                $("#revsub").hide();
+            };
+        });
+        $(".req").each(function () {
+            if ($(this).val() == "") {
+                $('[name=notcomp]').text("5");
+            };
+        });
+        if ($('[name=notcomp]').text() == 5) {
+            $(".notcomp").show();
+        }
+
+        $(".sub").change(function () {
+            $("#revsub").hide();
+            $(".notcomp").show();
+        });
+    </script>
+    @*<script>
+        $(document).ready(function () {
+            $('#revsub').click(
+
+                function () {
+                       var FollowOptions = {};
+                    FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/SubmissionReviewers/Reviewsubmit/";
+                    //FollowOptions.url = "/ar-LY/Posts/Follow/";
+                    FollowOptions.data = { id: @Model.SubmissionReviewer.Id };
+                    FollowOptions.success = function () {
+                    };
+                   $.ajax(FollowOptions);
+                  });
+        });
+    </script>*@
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

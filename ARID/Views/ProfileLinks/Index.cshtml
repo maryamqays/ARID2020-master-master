@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ARID.Models.ProfileLink>
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h3>@Localizer["Index"]</h3>
+<hr />
+<p>
+    <a asp-action="Create" class="btn btn-default" style="color:black;font-weight:800">@Localizer["CreateNew"]</a>
+</p>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfileType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfileUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccessType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProfileType)
+                </td>
+                <td>
+                    <a href="@item.ProfileUrl" target="_blank">@item.ProfileUrl</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccessType)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

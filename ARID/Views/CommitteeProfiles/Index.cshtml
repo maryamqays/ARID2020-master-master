@@ -1,0 +1,76 @@
+﻿@model ARID.Models.CommitteeProfileViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+<h2></h2>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.IsCommitteeAdmin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.JoinDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.Task)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.ApplicationUser)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommitteeProfile.Committee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CommitteeProfiles)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsCommitteeAdmin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JoinDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Task)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Committee.Name)
+                </td>
+                <td>
+                    @if (User.IsInRole("Admins") || item.ApplicationUserId == currentUser.Id)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+
+                    }
+                    @if (User.IsInRole("Admins"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

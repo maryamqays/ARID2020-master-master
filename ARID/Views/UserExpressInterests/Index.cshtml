@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ARID.Models.UserExpressInterest>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<form method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreationDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationUser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationUser)
+                </th>
+                <th>
+                    University
+                </th>
+                <th>
+                    College
+                </th>
+                <th>Country</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
+                </td>
+                <td>
+                    <a target="_blank" asp-action="details" asp-controller="ApplicationUsers" asp-route-Id="@item.ApplicationUserId"> @Html.DisplayFor(modelItem => item.ApplicationUser.EnName)</a>
+                </td>
+                <td>
+                    <a target="_blank" asp-action="details" asp-controller="ApplicationUsers" asp-route-Id="@item.ApplicationUserId"> @Html.DisplayFor(modelItem => item.ApplicationUser.ArName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.University.ArUniversityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.Faculty.ArFacultyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.Country.ArCountryName)
+                </td>
+                <td>
+                    @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |*@
+                    @*<a href="http://almahfal.org/control/Default.aspx?uc=DownloadCertificate&name=@Html.DisplayFor(modelItem => item.ApplicationUser.EnName)">PDF Iraq</a>*@
+                    <a target="_blank" asp-controller="ApplicationUsers" asp-action="Print" asp-route-id="@item.ApplicationUser.Id">Print</a>
+
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</form>

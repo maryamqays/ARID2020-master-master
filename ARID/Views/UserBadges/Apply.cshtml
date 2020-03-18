@@ -1,0 +1,36 @@
+@model ARID.Models.UserBadge
+
+<br />
+
+
+<h3>@ViewData["BadgeName"]</h3>
+<h4 style="color:red;">
+    @if (@ViewData["Message"] != "")
+    {@ViewData["Conditions"]}
+</h4>
+
+@Html.Raw(ViewData["Message"])
+
+@*@Html.Raw(ViewData["UsersWithEntBadgefromSameOrganization"])
+@Html.Raw(ViewData["UsersWithEntBadgefromSameOrganization"])*@
+
+<hr />
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <br />
+        <center>
+            @if (@ViewData["Message"] == "")
+            {
+                <a class="btn btn-success" asp-route-id="@ViewData["Id"]" asp-action="BadgeApplication"><span class="glyphicon glyphicon-check"></span>Begin Application</a>
+            }
+            else if (@ViewData["ReApply"] == "ReApply")
+            {
+                <a class="btn btn-success" asp-route-id="@ViewData["Id"]" asp-action="ReApply"><span class="glyphicon glyphicon-check"></span>Begin Application</a>
+            }
+        </center>
+        <br />
+    </div>
+</div>
+
+
+

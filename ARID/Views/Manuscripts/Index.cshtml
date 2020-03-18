@@ -1,0 +1,288 @@
+﻿@model ARID.Models.ManuscriptViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@foreach (var item in Model.Manuscripts)
+{
+    ViewData["mmcs"] = @Html.DisplayFor(modelItem => item.CurrentStatus);
+    ViewData["eicid"] = item.Journal.EiCId;
+}
+
+<h2>
+    @if (ViewData["j"].ToString() == "1" && currentUser.Id == ViewData["eicid"].ToString())
+        {
+            <a style="float:left; margin-left:90px;" asp-action="DeleteIndex" asp-route-id="@ViewData["journalid"]" class="btn btn-success col-lg-2 bold"><span class="glyphicon glyphicon-trash"></span></a>}
+
+        else
+        {
+            <a style="float:left; margin-left:90px;" asp-action="Create" asp-controller="Manuscripts" asp-route-jid="@ViewData["journalid"]" class="btn btn-success col-lg-2 bold">إرسال بحث جديد</a>}
+    @if (ViewData["mcs"].ToString() != "CoAuthor")
+    {@ViewData["mmcs"]}
+    @if (ViewData["mcs"].ToString() == "CoAuthor")
+    {<h2>البحوث التي ساهمت فيها كباحث مشارك</h2>}
+
+</h2>
+<br />
+<div class="col-lg-12">
+    <div class="col-lg-8">
+        <table class="table-hover table table-striped table-bordered dt-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Manuscript.CreationDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Manuscript.ArTitle)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Manuscript.EnTitle)
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.Manuscript.RunningTitle)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manuscript.Areas)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manuscript.CurrentStatus)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manuscript.CorrespondingAuthorId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manuscript.JournalArticleTypeId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manuscript.SpecialityId)
+                        </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Manuscript.SubmittedforIssueId)
+                    </th>
+                    @if (currentUser.Id == ViewData["EiC"].ToString() && ViewData["j"].ToString() == "1")
+                    {
+                        <th>
+                            التحكيم
+                        </th>
+
+                        <th>
+                        </th>
+                    }
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Manuscripts)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreationDate)
+                    </td>
+
+                    @if (item.CurrentStatus == ManuscriptCurrentStatus.InComplete && ViewData["mcs"].ToString() != "CoAuthor")
+                    {
+                        <td>
+                            <a asp-controller="Manuscripts" asp-action="Edit" asp-route-id="@item.Id">     @Html.DisplayFor(modelItem => item.ArTitle)</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a asp-controller="Manuscripts" asp-action="Details" asp-route-id="@item.Id">     @Html.DisplayFor(modelItem => item.ArTitle)</a>
+                        </td>
+                    }
+                    @if (item.CurrentStatus == ManuscriptCurrentStatus.InComplete && ViewData["mcs"].ToString() != "CoAuthor")
+                    {
+                        <td>
+                            <a asp-controller="Manuscripts" asp-action="Edit" asp-route-id="@item.Id">     @Html.DisplayFor(modelItem => item.EnTitle)</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a asp-controller="Manuscripts" asp-action="Details" asp-route-id="@item.Id">     @Html.DisplayFor(modelItem => item.EnTitle)</a>
+                        </td>
+                    }
+                    @*@if (item.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor && item.CorrespondingAuthorId == currentUser.Id)
+        {
+            <td>
+                <a asp-controller="Submissions" asp-action="Resubmission" asp-route-mid="@item.Id">     @Html.DisplayFor(modelItem => item.ArTitle)</a>
+            </td>
+        }*@
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.RunningTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Areas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CorrespondingAuthor.ArName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JournalArticleType.ArticleType.Type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Speciality.Name)
+        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubmittedforIssue.Name)
+                    </td>
+                    @if (currentUser.Id == ViewData["EiC"].ToString() && ViewData["j"].ToString() == "1")
+                    {
+                        <td>
+                            @foreach (var i in Model.SubmissionReviewers.Where(a => a.Submission.ManuscriptId == item.Id && a.IsAccess == false))
+                            {
+                                <a title="@i.ReviewerUser.ArName" style="color:green" class="glyphicon glyphicon-ok"></a>
+                            }
+                            @foreach (var j in Model.Submissions.Where(a => a.AE != null && a.ManuscriptId == item.Id && a.AEDecisionText != null))
+                            {
+                                <a title="@j.AE.ApplicationUser.ArName" style="color:red" class="glyphicon glyphicon-ok"></a>
+                            }
+
+                        </td>
+                        <td>
+                            <a onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بهذه العملية؟');" asp-action="IsDelete" asp-route-id="@item.Id" asp-route-cs="@item.CurrentStatus"><span class="glyphicon glyphicon-trash"></span></a>
+                        </td>
+                    }
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (ViewData["j"].ToString() == "1")
+    {
+        <div class="col-lg-4">
+            <fieldset style="background-color:aliceblue;padding-left: 15px">
+                <legend>المقالات الجديدة</legend>
+                <a class="bold" id="Submitted" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Submitted).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Submitted" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Submitted).Count())البحوث المستلمة</a>
+                <br />
+                <a class="bold" id="UnderReview" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.UnderReview).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="UnderReview" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.UnderReview).Count())بحوث قيد المراجعة</a>
+                <br />
+                <a class="bold" id="SubmissionSentBackToAuthor" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="SubmissionSentBackToAuthor" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor).Count())أرجعت لإكمال النقوصات</a>
+            </fieldset><br />
+            <fieldset style="background-color:aliceblue;padding-left: 15px">
+                <legend>بحاجة إلى مراجعة</legend>
+                <a class="bold" id="SubmissionsNeedingRevision" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsNeedingRevision).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="SubmissionsNeedingRevision" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsNeedingRevision).Count())البحوث التي تحتاج لمراجعة</a>
+                <br />
+                <a class="bold" id="AuthorRejectedEditings" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.AuthorRejectedEditings).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="AuthorRejectedEditings" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.AuthorRejectedEditings).Count())مراجعات سحبت من قبل المؤلف</a>
+                <br />
+                <a class="bold" id="SubmissionsBeingProcessed" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsBeingProcessed).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="SubmissionsBeingProcessed" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsBeingProcessed).Count())بحوث تحت المراجعة بعد التسليم</a>
+            </fieldset>
+            <fieldset style="background-color:aliceblue;padding-left: 15px">
+                <legend>قرارات</legend>
+                <a class="bold" id="GalleyProof" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.GalleyProof).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="GalleyProof" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.GalleyProof).Count())بحوث في مرحلة ما قبل الطباعة</a>
+                <br />
+                <a class="bold" id="Published" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Published).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Published" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Published).Count())بحوث اتخذ القرار بنشرها</a>
+                <br />
+                <a class="bold" id="Declined" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Declined).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Declined" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Declined).Count())بحوث تم رفضها</a>
+
+                @*<a class="bold" id="ReviewCompleted" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ReviewCompleted).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="ReviewCompleted">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ReviewCompleted).Count())بحوث تمت مراجعتها</a>*@
+            </fieldset>
+
+            @*<br />
+                <a class="bold" id="RevisionsBeingProcessed" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.RevisionsBeingProcessed).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="RevisionsBeingProcessed" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.RevisionsBeingProcessed).Count())بحوث تحت المراجعة</a>
+                <br />
+                <a class="bold" id="ManuscriptSenttoAuthorforPayment" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ManuscriptSenttoAuthorforPayment).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="ManuscriptSenttoAuthorforPayment" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ManuscriptSenttoAuthorforPayment).Count())بحوث تم ارسالها للدفع</a>
+                <br />
+                <a class="bold" id="GalleyProof" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.GalleyProof).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="GalleyProof" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.GalleyProof).Count())بحوث في مرحلة ما قبل الطباعة</a>
+                <br />
+                <a class="bold" id="Published" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Published).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Published" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Published).Count())بحوث اتخذ القرار بنشرها</a>
+                <br />
+                <a class="bold" id="Declined" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Declined).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Declined" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Declined).Count())بحوث تم رفضها</a>
+                <br />
+                <a class="bold" id="ReviewCompleted" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ReviewCompleted).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="ReviewCompleted" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ReviewCompleted).Count())بحوث تمت مراجعتها</a>
+                <br />
+                <a class="bold" id="CoAuthor" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.CoAuthor).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="CoAuthor" asp-route-j="1">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.CoAuthor).Count())بحوث التي ساهمت فيها كباحث مشارك</a>*@
+        </div>
+    }
+    @if (ViewData["j"].ToString() != "1")
+    {
+        <div class="col-lg-4">
+            <fieldset style="background-color:aliceblue;padding-left: 15px">
+                <legend>المقالات الجديدة</legend>
+                <a class="bold" id="InComplete" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.InComplete).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="InComplete">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.InComplete).Count())البحوث التي لم تكتمل</a>
+                <br />
+                <a class="bold" id="Submitted" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Submitted).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Submitted">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Submitted).Count())البحوث المرسلة</a>
+                <br />
+                <a class="bold" id="UnderReview" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.UnderReview).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="UnderReview">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.UnderReview).Count())بحوث قيد المراجعة من قبل الادارة</a>
+                <br />
+                <a class="bold" id="SubmissionSentBackToAuthor" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="SubmissionSentBackToAuthor">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor).Count())أرجعت لإكمال النقوصات</a>
+                <br /> <br />
+                <a class="bold" id="CoAuthor" name="@Model.CoAuthorManuscripts.Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="CoAuthor">(@Model.CoAuthorManuscripts.Count())بحوث التي ساهمت فيها كباحث مشارك</a>
+            </fieldset>
+            <br />
+            <fieldset style="background-color:aliceblue;padding-left: 15px">
+                <legend>بحاجة إلى مراجعة</legend>
+                <a class="bold" id="SubmissionsNeedingRevision" title="اتخاذ قرار من المؤلف  بالموافقة او سحب البحث" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsNeedingRevision).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="SubmissionsNeedingRevision">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsNeedingRevision).Count())البحوث التي تحتاج لمراجعة</a>
+                <br />
+                <a class="bold" id="SubmissionsBeingProcessed" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsBeingProcessed).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="SubmissionsBeingProcessed">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.SubmissionsBeingProcessed).Count())بحوث قيد المراجعة</a>
+                <br />
+                <a class="bold" id="AuthorRejectedEditings" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.AuthorRejectedEditings).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="AuthorRejectedEditings">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.AuthorRejectedEditings).Count())مراجعات مرفوضة</a>
+                @*<a class="bold" id="RevisionsBeingProcessed" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.RevisionsBeingProcessed).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="RevisionsBeingProcessed">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.RevisionsBeingProcessed).Count())بحوث تحت المراجعة</a>*@
+
+                @*<a class="bold" id="ManuscriptSenttoAuthorforPayment" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ManuscriptSenttoAuthorforPayment).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="ManuscriptSenttoAuthorforPayment">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ManuscriptSenttoAuthorforPayment).Count())بحوث تم ارسالها للدفع</a>*@
+            </fieldset>
+            <br />
+            <fieldset style="background-color:aliceblue;padding-left: 15px">
+                <legend>قرارات</legend>
+                <a class="bold" id="GalleyProof" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.GalleyProof).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="GalleyProof">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.GalleyProof).Count())بحوث في مرحلة ما قبل الطباعة</a>
+                <br />
+                <a class="bold" id="Published" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Published).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Published">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Published).Count())بحوث اتخذ القرار بنشرها</a>
+                <br />
+                <a class="bold" id="Declined" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Declined).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="Declined">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.Declined).Count())بحوث تم رفضها</a>
+
+                @*<a class="bold" id="ReviewCompleted" name="@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ReviewCompleted).Count()" asp-route-jid="@ViewData["journalid"]" asp-action="Index" asp-controller="Manuscripts" asp-route-id="ReviewCompleted">(@Model.ManuscriptsManuscripts.Where(a => a.CurrentStatus == ManuscriptCurrentStatus.ReviewCompleted).Count())بحوث تمت مراجعتها</a>*@
+            </fieldset>
+        </div>
+
+    }
+</div>
+@if (ViewData["j"].ToString() != "1")
+{
+    <div>
+        <a asp-controller="Journals" asp-action="Details" asp-route-id="@ViewData["journalid"]" class="btn btn-primary bold">رجوع</a>
+    </div>
+}
+@if (ViewData["j"].ToString() == "1")
+{
+    <div>
+        <a asp-controller="Journals" asp-action="Home" asp-route-id="@ViewData["jshortname"]" class="btn btn-primary bold">رجوع</a>
+    </div>
+}
+<style>
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+        color: ActiveCaption;
+    }
+
+    a.clicked {
+        color: red;
+        text-decoration: underline;
+    }
+
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+<script>
+        $("a").each(function () {
+            if ($(this).attr('name') == "0") {
+                $(this).addClass("disabled");
+            }
+        });
+        $("a").each(function () {
+            if ($(this).attr('id') == "@ViewData["mcs"]") {
+                $(this).addClass("clicked");
+            }
+        });
+</script>

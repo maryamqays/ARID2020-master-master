@@ -1,0 +1,428 @@
+﻿@model ARID.Models.FreelancerProjectViewModel
+@{
+    ViewData["Title"] = "مركز خبرة - قائمة المشاريع";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@*<div class="form-group row col-lg-12">
+        <div class="col-lg-2">
+            <span class="glyphicon glyphicon-search" id="span" title="بحث"></span>
+            <span class="glyphicon glyphicon-remove" id="spanx" title="الغاء نتائج البحث"></span>
+        </div>
+        <div class="col-lg-6">
+            <form asp-controller="Courses" asp-action="Index" id="form" class="row">
+                <p>
+                    <input id="in" type="text" name="SearchString">
+                    <input type="submit" value="بحث" id="search" />
+                </p>
+            </form>
+        </div>
+    </div>*@
+<h2>&nbsp;</h2>
+<div class="form-group row col-lg-12">
+    @*<h4 class="text-center">مركز خبرة - مركز تقديم الخدمات العلمية عبر منصة اريد</h4>*@
+    <a asp-action="Index" asp-controller="FreelancerReadyServices">
+        <img class="img-responsive center-block" src="~/images/readysericeads.gif" />
+    </a>
+    <div class="col-lg-3">
+        <h3 style="display:inline" class="text-right col-lg-10">قائمة المشاريع</h3><div style="float:left;margin-top:20px" class="loader"></div><br />    <br />
+
+        <hr />
+        <div class="form-group">
+            <input value="@ViewData["search"]" id="ss" placeholder="إبحث" type="text" class="form-control col-lg-12 input-sm">
+        </div>
+        <br /><br /><br />
+        <h4>التخصص</h4>
+        <hr />
+        @foreach (var item in Model.Specialities)
+        {
+            <label class="label text-info"><input class="c" type="checkbox" value="@item.Name"> @item.Name</label><br />
+        }
+
+        <br /><br />
+        <h4>التكلفة</h4>
+        <hr />
+        @foreach (string bugetType in Enum.GetNames(typeof(BugetType)))
+        {
+            if (Model.AllFreelancerProjects.Where(f => f.BugetType.ToString() == bugetType).Count() > 0)
+            {
+                <h5 class="label text-info"><input class="b" type="checkbox" value="@bugetType"> @bugetType</h5><br />
+            }
+        }
+
+        <input hidden value="@ViewData["bugettype"]" id="bb" type="text" name="b">
+        <input hidden value="@ViewData["speciality"]" id="bs" type="text" name="s">
+        <input hidden id="sub" type="submit">
+
+
+
+
+
+
+    </div>
+    <div class="col-lg-9">
+        <br />
+
+        @if (User.IsInRole("Admins"))
+        {
+            <div class="dropdown" style="float:left">
+                <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">
+                    الادمن
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a asp-action="RejectedProjects" class="">المرفوضة</a></li>
+                    <li><a asp-action="RecentlyProjects" class="">قيد الإنجاز</a></li>
+                </ul>
+            </div>
+        }
+        <p>
+            <h4 style="float:left;margin-left:6px;">
+                @if (SignInManager.IsSignedIn(User))
+                {
+
+                    @if (currentUser.IsFreelancer == false)
+                    {
+                        <a id="notifyme" class="btn btn-warning"> <span class="glyphicon glyphicon-bell"></span> &nbsp; إشعاري بالمشاريع الجديدة</a>
+                    }
+                    <a asp-action="Create" class="btn btn-info"> <span class="glyphicon glyphicon-plus"></span> &nbsp; أضف مشروع</a>
+                    <a asp-action="Index" asp-controller="FreelancerReadyServices" class="btn btn-primary"> <span class="glyphicon glyphicon-asterisk"></span> &nbsp; الخدمات الجاهزة</a>
+                    @if (Model.FreelancerProjects.Where(f => f.ApplicationUserId == currentUser.Id).Count() > 0)
+                    {
+                        <a asp-action="MyProjects" class="btn btn-info"> <span class="glyphicon glyphicon-list-alt"></span> &nbsp; مشاريعي</a>
+                    }
+                    @if (Model.FreelancerProposals.Where(f => f.IsAssigned == true && f.ApplicationUserId == currentUser.Id).Any())
+                    {
+                        <a asp-action="IndependentProjects" class="btn btn-danger"> <span class="glyphicon glyphicon-list-alt"></span> &nbsp; المكلف بانجازها</a>
+                    }
+                    @if (Model.FreelancerProposals.Where(f => f.ApplicationUserId == currentUser.Id).Any())
+                    {
+                        <a asp-action="AllOffersProjects" class="btn btn-info"> <span class="glyphicon glyphicon-list-alt"></span> &nbsp; مشاريع تهمني</a>
+                    }
+                }
+            </h4>
+        </p>
+    </div>
+    <div class="col-lg-9">
+        @if (Model.FreelancerProjects.Count() == 0)
+        {
+            <div class="col-lg-12 table-bordered img-rounded text-center" style="background-color:whitesmoke">
+                <h4 style="display:inline"><a asp-action="Index" class="text-info">لا توجد نتائج لعملية البحث,غير إعدادت البحث أو إرجع إالى جميع المشاريع</a></h4>
+            </div>
+        }
+        @foreach (var item in Model.FreelancerProjects.Where(f => f.FreelancerProjectStatus == FreelancerProjectStatus.Acceptingoffers))
+        {
+            <div class="col-lg-12 table-bordered img-rounded div" style="background-color:ghostwhite;border-color:ActiveCaption;margin:10px">
+                @if (item.HideProjectOwnerDetails == false)
+                {
+                    @if (item.ApplicationUser.ProfileImage != null)
+                    {
+                        <div class="col-lg-2">
+                            <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId">
+                                <img style="position:relative" onerror="this.onerror=null;this.src='https://portal.arid.my/profileimages/default_small.png';" src="@Url.Content("~/" + ARID.Properties.Resources.ProfileImageFolder + "/" + item.ApplicationUser.ProfileImage)"
+                                     height="80" width="80" class="img-circle center-block" />
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-lg-2">
+                            <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId"><img src="@Url.Content("~/images/default_small.png")" height="60" width="60" class="img-circle" /></a>
+                        </div>
+
+                    }
+                }
+                else
+                {
+                    <div class="col-lg-2">
+                        <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId"><img src="@Url.Content("~/images/default_small.png")" height="60" width="60" class="img-circle" /></a>
+                    </div>
+
+                }
+                <a class="col-lg-10" asp-action="Details" asp-route-id="@item.Id" style="color:deepskyblue"><h5 class="text-center col-lg-12">@item.Name</h5></a>
+                <div class="col-lg-1"></div>
+                <h4 class="text-center">
+                    @if (item.HideProjectOwnerDetails == false)
+                    {
+                        @if (item.ApplicationUser.ArName.Length > 11)
+                        {
+                            <a target="_blank" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId" title="صاحب المشروع"><small> <span class="glyphicon glyphicon-user"></span>@item.ApplicationUser.ArName.Substring(0, 9)..</small></a>
+                        }
+                        else
+                        {
+                            <a target="_blank" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId" title="صاحب المشروع"><small> <span class="glyphicon glyphicon-user"></span>@item.ApplicationUser.ArName </small></a>
+                        }
+
+                    }
+                    else
+                    {
+                        <a target="_blank" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" title="صاحب المشروع"><small> <span class="glyphicon glyphicon-user"></span>مخفي </small></a>
+
+                    }
+                    <a title="الوقت" class="col-lg-2" style="color:grey;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                        <small>
+                            <span class="glyphicon glyphicon-hourglass"></span>&nbsp; @FreelancerProject.GetDate(item.DateOfRecord)
+
+                        </small>
+                    </a>
+                    <a title="عدد العروض" class="col-lg-1"><small> <span class="glyphicon glyphicon-envelope"></span>&nbsp;@Model.FreelancerProposals.Where(p => p.FreelancerProjectId == item.Id).Count()</small></a>
+                    @if (item.Speciality.Name.Length > 16)
+                    {
+                        <a title="التخصص" class="col-lg-4"><small> <span class="glyphicon glyphicon-tag"></span>&nbsp;@item.Speciality.Name.Substring(0, 16) ...</small></a>
+                    }
+                    else
+                    {
+                        <a title="التخصص" class="col-lg-4"><small> <span class="glyphicon glyphicon-tag"></span>&nbsp;@item.Speciality.Name</small></a>
+                    }
+                    <input hidden class="speciality" value="@item.Speciality.Name" />
+                    <input hidden class="budget" value="@item.BugetType.ToString()" />
+                </h4>
+            </div>
+            <br />
+            <br />
+            <br />
+
+        }
+        @if (Model.FreelancerProjects.Count() > 10)
+        {
+            <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+                 page-class="btn border" page-class-normal="btn btn-info"
+                 page-class-selected="btn btn-info active" class="btn-group m-1" style="margin-right:8px"></div>}
+
+        @*<table class="table-hover table table-striped table-bordered dt-responsive">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FreelancerProject.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FreelancerProject.DateOfRecord)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FreelancerProject.Skills)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FreelancerProject.BugetType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FreelancerProject.RecruiterProjectType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FreelancerProject.DaysRequired)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FreelancerProject.ApplicationUserId)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.FreelancerProjects)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Name)</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateOfRecord)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Skills)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BugetType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RecruiterProjectType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DaysRequired)
+                            </td>
+                            <td>
+                                <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.ApplicationUserId">@Html.DisplayFor(modelItem => item.ApplicationUser.ArName)</a>
+                            </td>
+                            <td>
+                                @if (User.IsInRole("Admins") || item.ApplicationUserId == currentUser.Id)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+
+                                }
+                                @if (User.IsInRole("Admins"))
+                                {
+                                    <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>*@
+    </div>
+</div>
+<style>
+    .loader {
+        border: 5px solid ActiveCaption; /* Light grey */
+        border-top: 5px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 2s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".c").each(function () {
+                if ($(this).val() == $("#bs").val()) {
+                    $(this).attr('checked', true);
+
+                }
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".b").each(function () {
+                if ($(this).val() == $("#bb").val()) {
+                    $(this).attr('checked', true);
+
+                }
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".c").change(function () {
+                var ischecked = $(this).is(':checked');
+                if (ischecked) {
+                    $("#bs").val($(this).val());
+                }
+                else {
+                    $("#bs").val("");
+
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".b").change(function () {
+                var ischecked = $(this).is(':checked');
+                if (ischecked) {
+                    $("#bb").val($(this).val());
+                }
+                else {
+                    $("#bb").val("");
+
+                }
+            });
+        });
+    </script>
+    <script>
+        $(".loader").hide();
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#remove,#ss,.c,.b').change(
+
+                function () {
+
+                    {
+                        $('.loader').show();
+                        var formData = new FormData();
+                        formData.append('b', $("#bb").val()); // myFile is the input type="file" control
+                        formData.append('s', $("#bs").val()); // myFile is the input type="file" control
+                        formData.append('ss', $("#ss").val()); // myFile is the input type="file" control
+
+                            var _url = '@Url.Action("Index", "FreelancerProjects")';
+
+                            $.ajax({
+                                url: _url,
+                                type: 'POST',
+                                data: formData,
+                                processData: false,  // tell jQuery not to process the data
+                                contentType: false,  // tell jQuery not to set contentType
+                                success: function (result) {
+                                    $("body").html(result);
+                                    //$('html, body').animate({
+                                    //    scrollTop: $('.div').last().prev().offset().top
+                                    //}, 2500);
+                                },
+                                error: function (jqXHR) {
+                                },
+                                complete: function (jqXHR, status) {
+                                    $('.loader').hide();
+                                }
+
+                            });
+
+                    }
+                  });
+        });
+    </script>
+
+    @*<script>
+            $(document).ready(function () {
+                $("#remove").click(function () {
+                    $('input[name=ss]').val("")
+                    $("#formname").submit();
+                });
+            });
+
+        </script>*@
+    @*<script>
+            $(document).ready(function () {
+                $(".b").change(function () {
+                    var ischecked = $(this).is(':checked');
+                    if (ischecked) {
+                        $("#bb").val($(this).val());
+                        $("#sub").trigger("click");
+                    }
+                    else {
+                        $("#bb").val("");
+                        $("#sub").trigger("click");
+
+                    }
+                });
+            });
+        </script>*@
+    <script>
+         $(document).ready(function () {
+             $("#notifyme").click(
+
+                 function () {
+                     if (confirm('هل تريد اشعارك بالمشاريع فعلاً ؟'))
+                     {
+                        {
+                        var FollowOptions = {};
+                        @*FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Communities/Follow/";*@
+                        FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/FreelancerProjects/NotifyMe/";
+                             FollowOptions.data = {};
+                             $.ajax(FollowOptions);
+                         }
+
+                         $(this).hide();
+
+
+                     }
+
+                });
+        });
+    </script>
+
+}

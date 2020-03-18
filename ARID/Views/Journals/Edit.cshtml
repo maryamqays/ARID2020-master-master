@@ -1,0 +1,245 @@
+﻿@model ARID.Models.Journal
+@{
+    ViewData["Title"] = "التعديل على المجلة";
+}
+<h2>التعديل على المجلة</h2>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ArName" class="control-label"></label>
+                <input asp-for="ArName" class="form-control" />
+                <span asp-validation-for="ArName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnName" class="control-label"></label>
+                <input asp-for="EnName" class="form-control" />
+                <span asp-validation-for="EnName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArDescription" class="control-label"></label>
+                <textarea asp-for="ArDescription" class="form-control"></textarea>
+                <span asp-validation-for="ArDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnDescription" class="control-label"></label>
+                <textarea asp-for="EnDescription" class="form-control"></textarea>
+                <span asp-validation-for="EnDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShortName" class="control-label"></label>
+                <input asp-for="ShortName" class="form-control" />
+                <span asp-validation-for="ShortName" class="text-danger"></span>
+            </div>
+            @if (Model.Logo != null)
+            {
+                <div class="form-group">
+                    <label class="control-label">الشعار الحالي</label>
+                    <br />
+                    <img id="img1" class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + Model.Logo)" width="280" height="200" />
+                </div>
+            }
+            <input style="width:125px" id="btn" type="button" class="btn btn-success" value="تعديل الشعار" />
+            <br />
+            <div class="form-group" id="img">
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-primary col-lg-12" />
+                <input asp-for="Logo" id="fileinput" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <br/>
+            @if (Model.JournalHeader != null)
+            {
+                <div class="form-group">
+                    <label class="control-label">ترويسة المجلة الحالية</label>
+                    <br />
+                    <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + Model.JournalHeader)" width="280" height="200" />
+                </div>
+            }
+            <input style="width:125px" id="btn2" type="button" class="btn btn-success" value="تعديل ترويسة المجلة" />
+            <br />
+            <div class="form-group" id="imgtwo">
+                <img id="img2" class="img-rounded" src="" />
+                <input type="file" name="myfile1" id="file1" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-primary col-lg-12" />
+                <input asp-for="JournalHeader" id="fileinput1" class="form-control" />
+                <span asp-validation-for="JournalHeader" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="PISSN" class="control-label"></label>
+                <input asp-for="PISSN" class="form-control" />
+                <span asp-validation-for="PISSN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EISSN" class="control-label"></label>
+                <input asp-for="EISSN" class="form-control" />
+                <span asp-validation-for="EISSN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+          
+            <div class="form-group">
+                <label asp-for="EiCId" class="control-label"></label>
+                <input asp-for="EiCId" class="form-control" />
+                <span asp-validation-for="EiCId" class="text-danger"></span>
+            </div>
+            @if (Model.ReviewerCertificateBackgroundFile != null)
+            {
+                <div class="form-group">
+                    <label class="control-label">شهادة المحكم الحالية</label>
+                    <br />
+                    <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + Model.ReviewerCertificateBackgroundFile)">اضغط لرؤية الشهادة</a>
+                </div>
+            }
+            <input style="width:125px" id="btn3" type="button" class="btn btn-success" value="تعديل شهادة المحكم" />
+            <br />
+            <div class="form-group" id="fileform">
+                <input type="file" name="myfile2" id="file2" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-primary col-lg-12" />
+                <input asp-for="ReviewerCertificateBackgroundFile" id="fileinput2" class="form-control" />
+                <span asp-validation-for="ReviewerCertificateBackgroundFile" class="text-danger"></span>
+            </div>
+            <br />
+            @if (Model.AuthorCertificateBackgroundFile != null)
+            {
+                <div class="form-group">
+                    <label class="control-label">شهادة المؤلف الحالية</label>
+                    <br />
+                    <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.Images + "/" + Model.AuthorCertificateBackgroundFile)">اضغط لرؤية الشهادة</a>
+                </div>
+            }
+            <input style="width:125px" id="btn4" type="button" class="btn btn-success" value="تعديل شهادة المؤلف" />
+            <div class="form-group" id="fileform1">
+                <input type="file" name="myfile3" id="file3" accept=".pdf" class="btn btn-primary col-lg-12" />
+                <input asp-for="AuthorCertificateBackgroundFile" id="fileinput3" class="form-control" />
+                <span asp-validation-for="AuthorCertificateBackgroundFile" class="text-danger"></span>
+            </div>
+            <br />
+            <br />
+            <div class="form-group">
+                <label asp-for="PublisherId" class="control-label"></label>
+                <select asp-for="PublisherId" class="form-control" asp-items="ViewBag.PublisherId"></select>
+                <span asp-validation-for="PublisherId" class="text-danger"></span>
+            </div>
+            @if (User.IsInRole("Admins"))
+            {
+                <div class="form-group">
+                    <label asp-for="ActivationDate" class="control-label"></label>
+                    <input asp-for="ActivationDate" class="form-control" />
+                    <span asp-validation-for="ActivationDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CreatedByUserId" class="control-label"></label>
+                    <input asp-for="CreatedByUserId" class="form-control" />
+                    <span asp-validation-for="CreatedByUserId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="JournalStatus" class="control-label"></label>
+                    <select asp-for="JournalStatus" asp-items="Html.GetEnumSelectList<JournalStatus>()" class="form-control"></select>
+                    <span asp-validation-for="JournalStatus" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Visitors" class="control-label"></label>
+                    <input asp-for="Visitors" class="form-control" />
+                    <span asp-validation-for="Visitors" class="text-danger"></span>
+                </div>
+
+            }
+
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">الرجوع إالى القائمة</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#img").hide();
+            $("#btn").click(function () {
+                $("#img").slideToggle();
+            });
+            $("#imgtwo").hide();
+            $("#btn2").click(function () {
+                $("#imgtwo").slideToggle();
+            });
+            $("#fileform").hide();
+            $("#btn3").click(function () {
+                $("#fileform").slideToggle();
+            });
+
+            $("#fileform1").hide();
+            $("#btn4").click(function () {
+                $("#fileform1").slideToggle();
+            });
+
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file1").change(function () {
+                if ($("#file1").val() != "") {
+                    $("#fileinput1").prop("value", $("#file1").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img2').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file2").change(function () {
+                if ($("#file2").val() != "") {
+                    $("#fileinput2").prop("value", $("#file2").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#file3").change(function () {
+                if ($("#file3").val() != "") {
+                    $("#fileinput3").prop("value", $("#file3").val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            directionality: 'rtl',
+            //language: 'ar_SA',
+            plugins: "link",
+            mode: "textareas",
+            relative_urls: false,
+            remove_script_host: false,
+            convert_urls: true,
+
+            //plugins: "table,contextmenu,paste,-externalplugin"
+
+        });</script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

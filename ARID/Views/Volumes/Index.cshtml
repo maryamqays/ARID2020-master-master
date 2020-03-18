@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ARID.Models.Volume>
+@{
+    ViewData["Title"] = "Index";
+}
+<h2>مجلدات  @ViewData["jan"]</h2>
+
+<p>
+    <a class="btn btn-success bold" asp-action="Create" asp-route-id="@ViewData["jid"]">إضافة</a>
+</p>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPublished)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JournalId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsPublished)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Journal.ArName)
+                </td>
+                <td>
+                    <a title="تعديل" asp-action="Edit" asp-route-id="@item.Id" asp-route-jid="@ViewData["jid"]"><span class="glyphicon glyphicon-edit"></span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a class="btn btn-primary bold" asp-controller="Journals" asp-action="Home" asp-route-id="@ViewData["jsn"]">رجوع</a>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>

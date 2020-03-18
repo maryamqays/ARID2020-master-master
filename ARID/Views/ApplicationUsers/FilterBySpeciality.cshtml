@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ARID.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>أعضاء المنصة من @ViewData["EntityName"] </h2>
+
+
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            <th width="100">
+                @Html.DisplayNameFor(model => model.ARID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfileImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacultyId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UniversityId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CityId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryId)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="GetProfile" asp-route-id="@Common.ARIDFormat(item.ARID)">arid.my/@Common.ARIDFormat(item.ARID)</a>
+
+
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ProfileImage) && !string.IsNullOrWhiteSpace(item.ProfileImage))
+                    {
+                        <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + item.ProfileImage)" width="50" height="50" />
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Faculty.ArFacultyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.University.ArUniversityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City.ArCityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country.ArCountryName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

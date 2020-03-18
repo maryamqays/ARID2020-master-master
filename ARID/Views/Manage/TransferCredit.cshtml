@@ -1,0 +1,35 @@
+﻿@model ARID.Models.TransferCreditViewModel
+
+<div class="row">
+    <div class="col-md-8">
+        <h3>خدمة تحويل الرصيد</h3>
+        <p>يمكن تحويل رصيد الى عضو آخر في منصة اريد عبر الاستمارة أدناه. الرجاء الحرص على إدخال البريد الالكتروني والمبلغ المحول بشكل دقيق وسيتم استقطاعه من حسابكم في المنصة</p>
+        <p>المبلغ المسموح بتحويله من 10-100 دولار فقط</p>
+        <p>لا توجد رسوم للتحويل بين اعضاء منصة اريد </p>
+        <p style="color:red"> @ViewData["PaymentStatus"]</p>
+        <br/>
+        <form asp-action="TransferCredit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                @*<input asp-for="Number" class="form-control" />*@
+                <input class="form-control" id="Email" type="text" name="Email" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                @*<input asp-for="Number" class="form-control" />*@
+                <input class="form-control" type="number" min="10" max="1000"  id="Amount" name="Amount" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="تحويل الرصيد" class="btn btn-default" />
+            </div>
+         
+          
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

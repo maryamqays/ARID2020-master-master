@@ -1,0 +1,49 @@
+﻿@model ARID.Models.CourseChapterChoice
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CourseChapterChoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Option)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Option)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsCorrectAnswer)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsCorrectAnswer)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Mark)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Mark)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CourseChapterExam)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CourseChapterExam.Question)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

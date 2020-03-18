@@ -1,0 +1,166 @@
+﻿@model ARID.Models.ManuscriptViewModel
+@{
+    ViewData["Title"] = "DeleteIndex";
+}
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+
+<h2>البحوث التي تم حذفها</h2><br /><br />
+                                   <div class="col-lg-12">
+                                       <div class="col-lg-12">
+                                           <table class="table-hover table table-striped table-bordered dt-responsive">
+                                               <thead>
+                                                   <tr>
+                                                       <th>
+                                                           @Html.DisplayNameFor(model => model.Manuscript.CreationDate)
+                                                       </th>
+                                                       <th>
+                                                           @Html.DisplayNameFor(model => model.Manuscript.ArTitle)
+                                                       </th>
+                                                       <th>
+                                                           @Html.DisplayNameFor(model => model.Manuscript.EnTitle)
+                                                       </th>
+                                                       @*<th>
+                            @Html.DisplayNameFor(model => model.Manuscript.RunningTitle)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manuscript.Areas)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manuscript.CurrentStatus)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manuscript.CorrespondingAuthorId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manuscript.JournalArticleTypeId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Manuscript.SpecialityId)
+                        </th>*@
+                                                       <th>
+                                                           @Html.DisplayNameFor(model => model.Manuscript.SubmittedforIssueId)
+                                                       </th>
+                                                       @if (currentUser.Id == @ViewData["EiC"].ToString())
+                                                       {
+                                                           <th>
+                                                               التحكيم
+                                                           </th>
+                                                       }
+                                                       <th>
+                                                           @Html.DisplayNameFor(model => model.Manuscript.CurrentStatus)
+
+                                                       </th>
+                                                       <th>
+                                                       </th>
+
+                                                   </tr>
+                                               </thead>
+                                               <tbody>
+                                                   @foreach (var item in Model.Manuscripts)
+                                                   {
+                                                       <tr>
+                                                           <td>
+                                                               @Html.DisplayFor(modelItem => item.CreationDate)
+                                                           </td>
+
+                                                           @if (item.CurrentStatus == ManuscriptCurrentStatus.InComplete)
+                                                           {
+                                                               <td>
+                                                                   <a asp-controller="Manuscripts" asp-action="Edit" asp-route-id="@item.Id">     @Html.DisplayFor(modelItem => item.ArTitle)</a>
+                                                               </td>
+                                                           }
+                                                           @if (item.CurrentStatus != ManuscriptCurrentStatus.InComplete)
+                                                           {
+                                                               <td>
+                                                                   <a asp-controller="Manuscripts" asp-action="Details" asp-route-id="@item.Id">     @Html.DisplayFor(modelItem => item.ArTitle)</a>
+                                                               </td>
+                                                           }
+                                                           @if (item.CurrentStatus == ManuscriptCurrentStatus.InComplete)
+                                                           {
+                                                               <td>
+                                                                   <a asp-controller="Manuscripts" asp-action="Edit" asp-route-id="@item.Id">     @Html.DisplayFor(modelItem => item.EnTitle)</a>
+                                                               </td>
+                                                           }
+                                                           @if (item.CurrentStatus != ManuscriptCurrentStatus.InComplete)
+                                                           {
+                                                               <td>
+                                                                   <a asp-controller="Manuscripts" asp-action="Details" asp-route-id="@item.Id">     @Html.DisplayFor(modelItem => item.EnTitle)</a>
+                                                               </td>
+                                                           }
+                                                           @*@if (item.CurrentStatus == ManuscriptCurrentStatus.SubmissionSentBackToAuthor && item.CorrespondingAuthorId == currentUser.Id)
+                            {
+                                <td>
+                                    <a asp-controller="Submissions" asp-action="Resubmission" asp-route-mid="@item.Id">     @Html.DisplayFor(modelItem => item.ArTitle)</a>
+                                </td>
+                            }*@
+                                                           @*<td>
+                                @Html.DisplayFor(modelItem => item.RunningTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Areas)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CurrentStatus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CorrespondingAuthor.ArName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.JournalArticleType.ArticleType.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Speciality.Name)
+                            </td>*@
+                                                           <td>
+                                                               @Html.DisplayFor(modelItem => item.SubmittedforIssue.Name)
+                                                           </td>
+                                                           @if (currentUser.Id == @ViewData["EiC"].ToString())
+                                                           {
+                                                               <td>
+                                                                   @foreach (var i in Model.SubmissionReviewers.Where(a => a.Submission.ManuscriptId == item.Id && a.IsAccess == false))
+                                                                   {
+                                                                       <a title="@i.ReviewerUser.ArName" style="color:green" class="glyphicon glyphicon-ok"></a>
+                                                                   }
+                                                                   @foreach (var j in Model.Submissions.Where(a => a.ManuscriptId == item.Id && a.AEDecisionText != null))
+                                                                   {
+                                                                       <a title="@j.AE.ApplicationUser.ArName" style="color:red" class="glyphicon glyphicon-ok"></a>
+                                                                   }
+
+                                                               </td>
+                                                               <td>
+                                                                   @Html.DisplayFor(modelItem => item.CurrentStatus)
+                                                               </td>
+                                                               <td>
+                                                                   <a title="تراجع عن الحذف" onclick="javascript:return confirm('هذا الاجراء لايمكن التراجع عنه ، هل تود الاستمرار بهذه العملية؟');" asp-action="UnDelete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-share"></span></a>
+                                                               </td>
+                                                           }
+                                                       </tr>
+                                                   }
+                                               </tbody>
+                                           </table>
+                                       </div>
+                                       <a asp-action="Index" asp-route-id="Submitted" asp-route-jid="@ViewData["jid"]" asp-route-j="1" class="btn btn-primary bold">رجوع</a>
+
+                                   </div>
+<style>
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+        color: ActiveCaption;
+    }
+
+    a.clicked {
+        color: red;
+        text-decoration: underline;
+    }
+
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>

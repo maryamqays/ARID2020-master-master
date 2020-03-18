@@ -1,0 +1,59 @@
+﻿@model ARID.Models.SuggestedReviewer
+@{
+    ViewData["Title"] = "التعديل على معلومات المحكم";
+}
+<h2>التعديل على معلومات المحكم</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ManuscriptId" class="control-label"></label>
+                <select asp-for="ManuscriptId" class="form-control" asp-items="ViewBag.ManuscriptId"></select>
+                <span asp-validation-for="ManuscriptId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewerUserId" class="control-label"></label>
+                <select asp-for="ReviewerUserId" class="form-control" asp-items="ViewBag.ReviewerUserId"></select>
+                <span asp-validation-for="ReviewerUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReasonForSuggesion" class="control-label"></label>
+                <input asp-for="ReasonForSuggesion" class="form-control" />
+                <span asp-validation-for="ReasonForSuggesion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SuggestionStatus" class="control-label"></label>
+                <select asp-for="SuggestionStatus" class="form-control"></select>
+                <span asp-validation-for="SuggestionStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="CanReviewEnglish" /> @Html.DisplayNameFor(model => model.CanReviewEnglish)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="CanReviewArabic" /> @Html.DisplayNameFor(model => model.CanReviewArabic)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ" class="btn btn-success" />
+                <a asp-action="Create" asp-route-mid="@Model.ManuscriptId" class="btn btn-primary bold">رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    label, h2, input[type='submit'], .bold {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: bold;
+    }
+</style>
+

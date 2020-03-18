@@ -1,0 +1,681 @@
+﻿@model ARID.Models.CourseViewModel
+@{
+    ViewData["Title"] = @Html.DisplayNameFor(model => model.Course.ArName);
+}
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@using System.Globalization
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<h2>
+    &nbsp;
+</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-12">
+            @if (Model.Course.Flyer != null)
+            {
+                <center>
+                    <img class="img-rounded" width="500" height="200" src="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Course.Flyer)" />
+                </center>
+            }
+            <h4 class="text-center text-primary">
+                <strong> @Html.DisplayFor(model => model.Course.ArName) | @Html.DisplayFor(model => model.Course.EnName)</strong>
+            </h4>
+            <div class="text-center">
+                @{
+                    ApplicationUser currentUser = null;
+                    if (SignInManager.IsSignedIn(User))
+                    {
+                        currentUser = await UserManager.GetUserAsync(User);
+                        if (Model.CourseRegisterations.Where(f => f.CourseId == Model.Course.Id && f.ApplicationUserId == currentUser.Id).Count() > 0)
+                        {
+                            <a id="regbtn" class="btn btn-danger h5">الغاء التسجيل</a>
+                            <a id="learn" class="btn btn-info h5" asp-route-id="@Model.Course.Id" asp-action="Learn" asp-controller="Courses">الدخول إلى الدورة</a>
+                        }
+                        else
+                        {
+                            <a id="regbtn" class="btn btn-success text-center h5">التسجيل في الدورة</a>
+                        }
+                    }
+
+                }
+            </div>
+            <div class="col-lg-12">
+                <hr />
+                <div class="col-lg-8">
+                    <dl class="dl-horizontal h5">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.StartingDate)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.StartingDate)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.EndingDate)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.EndingDate)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.IntroductoryVideo)
+                        </dt>
+                        <dd>
+                            <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Course.IntroductoryVideo)">
+                                @Html.DisplayFor(model => model.Course.IntroductoryVideo)
+                            </a>
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.FilePdf)
+                        </dt>
+                        <dd>
+                            <a href="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.Course.FilePdf)" width="280" height="200">
+                                @Html.DisplayFor(model => model.Course.FilePdf)
+                            </a>
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.Effort)
+                        </dt>
+                        <dd>
+                            @Html.Raw(Model.Course.Effort)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.IsPaid)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.IsPaid)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.CourseFees)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.CourseFees)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.Certificate)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.Certificate)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.CertificateCost)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.CertificateCost)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.IsFeatured)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.IsFeatured)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.Overview)
+                        </dt>
+                        <dd>
+                            @Html.Raw(Model.Course.Overview)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.Introduction)
+                        </dt>
+                        <dd>
+                            @Html.Raw(Model.Course.Introduction)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.LearningOutcomes)
+                        </dt>
+                        <dd>
+                            @Html.Raw(Model.Course.LearningOutcomes)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.Requirements)
+                        </dt>
+                        <dd>
+                            @Html.Raw(Model.Course.Requirements)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.Tags)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.Tags)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.TargetStudents)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.TargetStudents)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.ImportantDates)
+                        </dt>
+                        <dd>
+                            @Html.Raw(Model.Course.ImportantDates)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.Language)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.Language)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.SpecialityId)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Course.Speciality.Name)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Course.ApplicationUserId)
+                        </dt>
+                        <dd>
+                            <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.Course.ApplicationUser.Id">
+                                @Html.DisplayFor(model => Model.Course.ApplicationUser.ArName)<br />
+                                <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + Model.Course.ApplicationUser.ProfileImage)" width="50" height="50" /><br />
+                            </a>
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="col-lg-4" id="refresh">
+                    @if (User.IsInRole("Admins") || Model.Course.ApplicationUserId == currentUser.Id)
+                    {
+                        <h4 class="text-center">أقسام الدورة</h4>
+                        @if (Model.CourseChapters .Count()>0)
+                        {
+                            var x = 1;
+                            @foreach (var item in Model.CourseChapters)
+                            {
+
+                                <div class="container table-bordered col-lg-12" style="background-color:ghostwhite;border-color:ActiveCaption;padding:2px;margin-top:2px;margin-bottom:2px">
+                                    <a class="text-primary " asp-controller="CourseChapters" asp-action="Edit" asp-route-id="@item.Id">
+                                        <span class="h6">&nbsp; <strong>@item.Name</strong></span>&nbsp;&nbsp;&nbsp;
+                                    </a>
+                                    @if (item.Ishidden == true)
+                                    {<a style="margin-top:1px" class="label label-warning"><small class="h6">&nbsp;مخفي</small></a>}
+
+                                    <a style="margin-top:1px" class="pull-left label label-success" data-toggle="modal" data-target="#@x"><small class="h6">إضافة محتوى</small></a>
+                                    <!-- Modal -->
+                                    <div id="@x" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <form>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                        <div class="form-group title">
+                                                            <label asp-for="CourseChapterContent.Title" class="h5"></label>
+                                                            <input name="title" asp-for="CourseChapterContent.Title" class="form-control input-sm" />
+                                                            <span asp-validation-for="CourseChapterContent.Title" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group desc">
+                                                            <label asp-for="CourseChapterContent.Description" class="h5"></label>
+                                                            <textarea name="desc" asp-for="CourseChapterContent.Description" class="form-control input-sm" rows="2"></textarea>
+                                                            <span asp-validation-for="CourseChapterContent.Description" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group indx">
+                                                            <label asp-for="CourseChapterContent.Indx" class="h5"></label>
+                                                            <input name="indx" asp-for="CourseChapterContent.Indx" class="form-control input-sm" />
+                                                            <span asp-validation-for="CourseChapterContent.Indx" class="text-danger"></span>
+                                                        </div>
+                                                        <div hidden class="form-group coursechid">
+                                                            <label asp-for="CourseChapterContent.CourseChapterId" class="h5"></label>
+                                                            <input value="@item.Id" name="coursechid" asp-for="CourseChapterContent.CourseChapterId" class="form-control input-sm" />
+                                                        </div>
+                                                        <div class="form-group duration">
+                                                            <label asp-for="CourseChapterContent.Duration" class="h5"></label>
+                                                            <input name="duration" asp-for="CourseChapterContent.Duration" class="form-control input-sm" />
+                                                            <span asp-validation-for="CourseChapterContent.Duration" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group isfree">
+                                                            <div class="checkbox">
+                                                                <label class="h5">
+                                                                    <input name="isfree" asp-for="CourseChapterContent.IsFree" /> @Html.DisplayNameFor(model => model.CourseChapterContent.IsFree)
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group isdownload">
+                                                            <div class="checkbox">
+                                                                <label class="h5">
+                                                                    <input name="isdownload" asp-for="CourseChapterContent.IsDownloadable" /> @Html.DisplayNameFor(model => model.CourseChapterContent.IsDownloadable)
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group select">
+                                                            <label asp-for="CourseChapterContent.ContentType" class="h5"></label>
+                                                            <select name="selector" asp-for="CourseChapterContent.ContentType" asp-items="Html.GetEnumSelectList<ContentType>()" class="selector form-control input-sm"><option selected disabled>إختر نوع المحتوى</option></select>
+                                                            <span asp-validation-for="CourseChapterContent.ContentType" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group file">
+                                                            <label asp-for="CourseChapterContent.FilePath" class="h5"></label>
+                                                            <input type="file" name="file" id="file" accept=".pdf" class="btn btn-primary col-lg-12" />
+                                                            <input readonly asp-for="CourseChapterContent.FilePath" id="fileinput" name="fileinput" class="form-control input-sm fileinput" />
+                                                            <span asp-validation-for="CourseChapterContent.FilePath" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group link">
+                                                            <label asp-for="CourseChapterContent.FilePath" class="h5"></label>
+                                                            <input type="url" name="link" asp-for="CourseChapterContent.FilePath" class="form-control input-sm" />
+                                                            <span asp-validation-for="CourseChapterContent.FilePath" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group youtube">
+                                                            <label class="h5">youtube</label>
+                                                            <input type="url" name="youtube" asp-for="CourseChapterContent.FilePath" class="form-control input-sm" />
+                                                            <span asp-validation-for="CourseChapterContent.FilePath" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group vimeo">
+                                                            <label class="h5">vimeo</label>
+                                                            <input type="url" name="vimeo" asp-for="CourseChapterContent.FilePath" class="form-control input-sm" />
+                                                            <span asp-validation-for="CourseChapterContent.FilePath" class="text-danger"></span>
+                                                        </div>
+                                                        <button type="submit" class="btn-sm btn-success h5 submit" data-dismiss="modal">إضافة</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    @if (Model.CourseChapterContents.Where(c => c.CourseChapterId == item.Id).OrderByDescending(c => c.Indx).Any())
+                                    {
+                                        <a href="#@item.Id" data-toggle="collapse" class="showcontents pull-right"><span style="margin-right:5px;" class="text-info glyphicon glyphicon-chevron-left"></span></a>
+                                        <br />
+                                        <div id="@item.Id" class="collapse">
+                                            @foreach (var i in Model.CourseChapterContents.Where(c => c.CourseChapterId == item.Id).OrderBy(c => c.Indx))
+                                            {<div class="col-lg-12 delete" style="background-color:whitesmoke"><a class="h5 pull-right" asp-action="Edit" asp-controller="CourseChapterContents" asp-route-id="@i.Id">@i.Title</a><form onsubmit="return confirm('هل تريد الحذف بالفعل؟');" asp-action="Delete" asp-controller="CourseChapterContents" asp-route-id="@i.Id" method="post" class="pull-left form"><button title="حذف" class="btn-xs btn-danger" type="submit"><small><span class="glyphicon glyphicon-trash"></span></small></button></form></div><hr style="border:1px solid black" />}
+                                        </div>
+                                    }
+                                </div>
+                                x += 1;
+
+                            }
+                        }
+                        else
+                        {
+                            <h6>لا توجد أقسام</h6>
+                        }
+
+                        <br /><br /><br />
+                        <a data-toggle="modal" data-target="#myModal" class="btn-sm btn-success h5 pull-right"><small><span class="glyphicon glyphicon-plus"></span></small>&nbsp;إضافة قسم</a>
+                        <!-- إضافة قسم جديد -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title text-center"><strong>إضافة قسم جديد</strong></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="CourseChapter.Name" class="control-label"></label>
+                                            <input placeholder="هذا الحقل ضروري" name="chaptername" asp-for="CourseChapter.Name" class="form-control input-sm" />
+                                            <span asp-validation-for="CourseChapter.Name" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="CourseChapter.Indx" class="control-label"></label>
+                                            <input placeholder="هذا الحقل ضروري" name="chapterindex" asp-for="CourseChapter.Indx" class="form-control input-sm" />
+                                            <span asp-validation-for="CourseChapter.Indx" class="text-danger"></span>
+                                        </div>
+                                        <hr />
+                                        <div class="form-group">
+                                            <input type="submit" id="addchapter" data-dismiss="modal" name="@Model.Course.Id" value="إضافة" class="btn-sm btn-default h5" />
+                                            <button type="button" class="btn-sm btn-default h5 pull-left" data-dismiss="modal">إغلاق</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <a asp-action="Index" class="btn-sm btn-info h5 pull-left">العودة الى قائمة الدورات<small><span class="glyphicon glyphicon-menu-left"></span></small></a>}
+                    <hr />
+                    @*<p>الاعضاء المسجلون</p>
+                        @foreach (var item in Model.CourseRegisterations)
+                        {
+                            <table>
+                                <tr>
+                                    <td>
+                                        <a target="_blank" asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.Course.ApplicationUser.Id">
+                                            <img class="img-rounded" src="@Url.Content("~/" + @ARID.Properties.Resources.ProfileImageFolder + "/" + Model.Course.ApplicationUser.ProfileImage)" width="50" height="50" /><br />
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        }
+                        <hr>
+                        <p>رعاة الدورة</p>
+                        @foreach (var item in Model.CourseSponsors)
+                        {
+                            <table>
+                                <tr>
+                                    <td>
+                                        <a target="_blank" href="@item.Link">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        }*@
+
+                </div>
+                <hr />
+            </div>
+
+        </div>
+        <a asp-action="Index" class="btn-sm btn-info h5 pull-left">رجوع</a><br /><br />
+    </div>
+</div>
+<style>
+    .modal-body {
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+</style>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('.form').hide();
+            $('.delete').hover(function () {
+                $(this).children('.form').fadeIn();
+            }, function () {
+                $(this).children('.form').fadeOut();
+            }
+            );
+        });
+        $(document).ready(function () {
+            $('input[name="file"]').change(function () {
+                if ($(this).val() != "") {
+                    $(this).siblings(".fileinput").prop("value", $(this).val().split('\\').pop());
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.submit').prop('disabled', true);
+            $('.submit').removeClass('btn-success');
+            $('.submit').addClass('btn-default');
+
+            $('input[name="title"],[name="selector"],[name="desc"],input[name="indx"],input[name="duration"],input[name="duration"],input[name="fileinput"],input[name="link"],input[name="youtube"],input[name="vimeo"]').keyup(function () {
+                if (($(this).parent().parent().children('.title').children('input[name="title"]').val().length > 0 && $(this).parent().parent().children('.desc').children('[name="desc"]').val().length > 0 && $(this).parent().parent().children('.indx').children('input[name="indx"]').val().length > 0 && $(this).parent().parent().children('.duration').children('input[name="duration"]').val().length > 0) && ($(this).parent().parent().children('.link').children('input[name="link"]').val().length > 0 || $(this).parent().parent().children('.file').children('input[name="fileinput"]').val().length > 0 || $(this).parent().parent().children('.vimeo').children('input[name="vimeo"]').val().length > 0 || $(this).parent().parent().children('.youtube').children('input[name="youtube"]').val().length > 0)) {
+                    $(this).parent().siblings('.submit').prop('disabled', false);
+                    $(this).parent().siblings('.submit').addClass('btn-success');
+                    $(this).parent().siblings('.submit').removeClass('btn-default');
+                }
+                else {
+                    $(this).parent().siblings('.submit').prop('disabled', true);
+                    $(this).parent().siblings('.submit').removeClass('btn-success');
+                    $(this).parent().siblings('.submit').addClass('btn-default');
+
+                }
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('input[name="file"],[name = "selector"]').change(function () {
+                if (($(this).parent().parent().children('.title').children('input[name="title"]').val().length > 0 && $(this).parent().parent().children('.desc').children('[name="desc"]').val().length > 0 && $(this).parent().parent().children('.indx').children('input[name="indx"]').val().length > 0 && $(this).parent().parent().children('.duration').children('input[name="duration"]').val().length > 0) && ($(this).parent().parent().children('.link').children('input[name="link"]').val().length > 0 || $(this).parent().parent().children('.file').children('input[name="fileinput"]').val().length > 0 || $(this).parent().parent().children('.vimeo').children('input[name="vimeo"]').val().length > 0 || $(this).parent().parent().children('.youtube').children('input[name="youtube"]').val().length > 0)) {
+                    $(this).parent().siblings('.submit').prop('disabled', false);
+                    $(this).parent().siblings('.submit').addClass('btn-success');
+                    $(this).parent().siblings('.submit').removeClass('btn-default');
+                }
+                else {
+                    $(this).parent().siblings('.submit').prop('disabled', true);
+                    $(this).parent().siblings('.submit').removeClass('btn-success');
+                    $(this).parent().siblings('.submit').addClass('btn-default');
+
+                }
+            });
+
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.showcontents').click(function () {
+                if ($(this).children('span').hasClass('glyphicon-chevron-left')) {
+                    $(this).children('span').removeClass('glyphicon-chevron-left');
+                    $(this).children('span').addClass('glyphicon-chevron-down');
+                }
+                else {
+                    $(this).children('span').removeClass('glyphicon-chevron-down');
+                    $(this).children('span').addClass('glyphicon-chevron-left');
+
+                }
+            });
+            //$('.submit').click(function () {
+                //alert($(this).siblings('.isfree').children('.checkbox').children('.h5').children('[name*="isfree"]').val())
+                //alert($(this).siblings('.isdownload').children('.checkbox').children('.h5').children('input[name*="isdownload"]').val())
+                //alert($(this).siblings('.title').children('input[name*="title"]').val())
+                //alert($(this).siblings('.desc').children('[name*="desc"]').val())
+                //alert($(this).siblings('.indx').children('input[name*="indx"]').val())
+                //alert($(this).siblings('.coursechid').children('[name*="coursechid"]').val())
+                //alert($(this).siblings('.duration').children('input[name*="duration"]').val())
+                //alert($(".select option:selected").val());
+                //alert($(this).siblings('.vimeo').children('input').val())
+                //alert($(this).siblings('.youtube').children('input').val())
+                //alert($(this).siblings('.link').children('input').val())
+
+            //});
+            $('.submit').click(
+
+                function () {
+
+                    {
+                                var formData = new FormData();
+                        formData.append('file', $(this).siblings('.file').children("[name='file']")[0].files[0]); // myFile is the input type="file" control
+                        formData.append('title', $(this).siblings('.title').children('input[name*="title"]').val()); // myFile is the input type="file" control
+                        formData.append('desc', $(this).siblings('.desc').children('[name*="desc"]').val()); // myFile is the input type="file" control
+                        formData.append('indx', $(this).siblings('.indx').children('input[name*="indx"]').val()); // myFile is the input type="file" control
+                        formData.append('coursechid', $(this).siblings('.coursechid').children('[name*="coursechid"]').val()); // myFile is the input type="file" control
+                        formData.append('duration', $(this).siblings('.duration').children('input[name*="duration"]').val()); // myFile is the input type="file" control
+                        formData.append('isfree', $(this).siblings('.isfree').children('.checkbox').children('.h5').children('[name*="isfree"]').val()); // myFile is the input type="file" control
+                        formData.append('isdownload', $(this).siblings('.isdownload').children('.checkbox').children('.h5').children('input[name*="isdownload"]').val()); // myFile is the input type="file" control
+                        formData.append('contenttype', $(this).siblings('.select').children(".selector option:selected").val()); // myFile is the input type="file" control
+                        formData.append('vimeo', $(this).siblings('.vimeo').children('input').val()); // myFile is the input type="file" control
+                        formData.append('youtube', $(this).siblings('.youtube').children('input').val()); // myFile is the input type="file" control
+                        formData.append('link', $(this).siblings('.link').children('input').val()); // myFile is the input type="file" control
+
+                            var _url = '@Url.Action("AddChapterContent", "Courses")';
+
+                            $.ajax({
+                                url: _url,
+                                type: 'POST',
+                                data: formData,
+                                processData: false,  // tell jQuery not to process the data
+                                contentType: false,  // tell jQuery not to set contentType
+                                success: function (result) {
+                                    //$("body").html(result).find('.div').last().hide().fadeIn();
+                                    //$('html, body').animate({
+                                    //    scrollTop: $('.div').last().prev().offset().top
+                                    //}, 2500);
+
+                                },
+                                error: function (jqXHR) {
+                                },
+                                complete: function (jqXHR, status) {
+                                    location.reload(true);
+                                }
+
+                            });
+                    }
+                  });
+        });
+    </script>
+
+    <script>
+        var myEnum = {
+            vimeo: 0,
+            youtube: 1,
+            file: 2,
+            website: 3,
+        };
+        $(document).ready(function () {
+            $(".youtube,.file,.link,.vimeo").hide()
+            $('.selector').change(function () {
+                var value = $(this).children("option:selected").val();
+                if (value == myEnum.file) {
+                    $(this).parent().siblings('.file').fadeIn();
+                    $(this).parent().siblings('.youtube').hide();
+                    $(this).parent().siblings('.link').hide();
+                    $(this).parent().siblings('.vimeo').hide();
+                    $(this).parent().siblings('.file').children('input').prop('required', true);;
+                    $(this).parent().siblings('.youtube').children('input').val('');
+                    $(this).parent().siblings('.link').children('input').val('');
+                    $(this).parent().siblings('.vimeo').children('input').val('');
+                    $(this).parent().siblings('.submit').prop('disabled', true);
+                    $(this).parent().siblings('.submit').removeClass('btn-success');
+                    $(this).parent().siblings('.submit').addClass('btn-default');
+                }
+                else if (value == myEnum.vimeo) {
+                    $(this).parent().siblings('.vimeo').fadeIn();
+                    $(this).parent().siblings('.file').hide();
+                    $(this).parent().siblings('.link').hide();
+                    $(this).parent().siblings('.youtube').hide();
+                    $(this).parent().siblings('.vimeo').children('input').prop('required', true);;
+                    $(this).parent().siblings('.youtube').children('input').val('');
+                    $(this).parent().siblings('.link').children('input').val('');
+                    $(this).parent().siblings('.file').children('input').val('');
+                    $(this).parent().siblings('.submit').prop('disabled', true);
+                    $(this).parent().siblings('.submit').removeClass('btn-success');
+                    $(this).parent().siblings('.submit').addClass('btn-default');
+                }
+                else if (value == myEnum.youtube) {
+                    $(this).parent().siblings('.youtube').fadeIn();
+                    $(this).parent().siblings('.file').hide();
+                    $(this).parent().siblings('.link').hide();
+                    $(this).parent().siblings('.vimeo').hide();
+                    $(this).parent().siblings('.youtube').children('input').prop('required', true);;
+                    $(this).parent().siblings('.vimeo').children('input').val('');
+                    $(this).parent().siblings('.link').children('input').val('');
+                    $(this).parent().siblings('.file').children('input').val('');
+                    $(this).parent().siblings('.submit').prop('disabled', true);
+                    $(this).parent().siblings('.submit').removeClass('btn-success');
+                    $(this).parent().siblings('.submit').addClass('btn-default');
+                }
+                else if (value == myEnum.website) {
+                    $(this).parent().siblings('.link').fadeIn();
+                    $(this).parent().siblings('.youtube').hide();
+                    $(this).parent().siblings('.file').hide();
+                    $(this).parent().siblings('.vimeo').hide();
+                    $(this).parent().siblings('.link').children('input').prop('required', true);;
+                    $(this).parent().siblings('.vimeo').children('input').val('');
+                    $(this).parent().siblings('.youtube').children('input').val('');
+                    $(this).parent().siblings('.file').children('input').val('');
+                    $(this).parent().siblings('.submit').prop('disabled', true);
+                    $(this).parent().siblings('.submit').removeClass('btn-success');
+                    $(this).parent().siblings('.submit').addClass('btn-default');
+                }
+            });
+        });
+    </script>
+    <script>
+        $('#addchapter').prop('disabled', true);
+        $('input[name*="name"]').keyup(function () {
+            if ($(this).val().length > 0 && $('input[name*="index"]').val() > 0) {
+                $('#addchapter').prop('disabled', false);
+                $('#addchapter').removeClass('btn-default');
+                $('#addchapter').addClass('btn-success');
+            }
+            else {
+                $('#addchapter').prop('disabled', true);
+                $('#addchapter').removeClass('btn-success');
+                $('#addchapter').addClass('btn-default');
+
+            }
+        });
+        $('input[name*="index"]').keyup(function () {
+            if ($(this).val() > 0 && $('input[name*="name"]').val().length > 0) {
+                $('#addchapter').prop('disabled', false);
+                $('#addchapter').removeClass('btn-default');
+                $('#addchapter').addClass('btn-success');
+            }
+            else {
+                $('#addchapter').prop('disabled', true);
+                $('#addchapter').removeClass('btn-success');
+                $('#addchapter').addClass('btn-default');
+
+            }
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#addchapter').click(
+
+                function () {
+
+                    {
+
+                                var formData = new FormData();
+                        formData.append('name', $("[name='chaptername']").val()); // myFile is the input type="file" control
+                        formData.append('index', $("[name='chapterindex']").val()); // myFile is the input type="file" control
+                        formData.append('coid', $(this).prop('name')); // myFile is the input type="file" control
+
+                            var _url = '@Url.Action("AddChapter", "Courses")';
+
+                            $.ajax({
+                                url: _url,
+                                type: 'POST',
+                                data: formData,
+                                processData: false,  // tell jQuery not to process the data
+                                contentType: false,  // tell jQuery not to set contentType
+                                success: function (result) {
+                                    $("body").html(result);
+                                    location.reload(true);                                },
+                                error: function (jqXHR) {
+                                },
+                                complete: function (jqXHR, status) {
+                                }
+
+                            });
+
+                    }
+                  });
+        });
+    </script>
+
+    <script>
+            $(document).ready(function () {
+                $("#regbtn").click(
+                    function () {
+                        if ($("#regbtn").text() == "التسجيل في الدورة")
+                        {
+                            var FollowOptions = {};
+                            FollowOptions.url = "/ar-LY/Courses/Reg/";
+                            FollowOptions.data = { id: "@Model.Course.Id" };
+                            FollowOptions.success = function () {
+                                $("#regbtn").prop("text", "الغاء التسجيل");
+                                $("#regbtn").addClass("btn btn-danger");
+                                location.reload();
+                                $("#learn").fadeIn();
+                                $('#counter').text(function (i, oldVal) {
+                                    return parseInt(oldVal, 10) + 1
+                                })
+                            };
+                  $.ajax(FollowOptions);
+                        }
+                        else
+                        {
+                            var FollowOptions = {};
+                            FollowOptions.url = "/@CultureInfo.CurrentCulture.Name/Courses/CancelReg/";
+                            FollowOptions.data = { id: "@Model.Course.Id" };
+                            FollowOptions.success = function () {
+                                $("#regbtn").prop("text", "التسجيل في الدورة");
+                                $("#regbtn").removeClass("btn btn-danger");
+                                $("#regbtn").addClass("btn btn-success");
+                                $("#learn").fadeOut();
+                                $('#counter').text(function (i, oldVal) {
+                                    return parseInt(oldVal, 10) - 1
+                                })
+                               };
+                            $.ajax(FollowOptions);
+                        }
+                    });
+            });
+    </script>
+
+}

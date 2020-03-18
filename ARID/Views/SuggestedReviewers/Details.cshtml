@@ -1,0 +1,54 @@
+﻿@model ARID.Models.SuggestedReviewer
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SuggestedReviewer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CanReviewEnglish)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CanReviewEnglish)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CanReviewArabic)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CanReviewArabic)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReasonForSuggesion)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReasonForSuggesion)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SuggestionStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SuggestionStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Manuscript)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Manuscript.ArAbstract)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ReviewerUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ReviewerUser.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

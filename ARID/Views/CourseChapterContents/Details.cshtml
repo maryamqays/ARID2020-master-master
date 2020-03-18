@@ -1,0 +1,84 @@
+﻿@model ARID.Models.CourseChapterContent
+@{
+    ViewData["Title"] = @Html.DisplayFor(model => model.Title);
+}
+<h4>
+    @Html.DisplayFor(model => model.Title)
+</h4>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-8">
+            <hr />
+            <dl class="dl-horizontal h5">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Indx)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Indx)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ContentType)
+                </dt>
+                <dd id="conttype">
+                    @Html.DisplayFor(model => model.ContentType)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.FilePath)
+                </dt>
+                <dd id="file">
+                    <a target="_blank" href="@Url.Content("~/" + @ARID.Properties.Resources.ScientificEvent + "/" + Model.FilePath)" width="280" height="200">
+                        @Html.DisplayFor(model => model.FilePath)
+                    </a>
+                </dd>
+                @if (Model.Duration != null)
+                {
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Duration)
+                    </dt>
+                    <dd>
+
+                        @Html.DisplayFor(model => model.Duration)
+                    </dd>
+                }
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsFree)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.IsFree)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsDownloadable)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.IsDownloadable)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CourseChapterId)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CourseChapter.Name)
+                </dd>
+
+            </dl>
+            <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseChapter.CourseId" class="btn-sm btn-info pull-left h5">رجوع</a>
+        </div>
+    </div>
+</div>
+
+@*@section scripts{
+        <script>
+            var conttype ='@Model.ContentType'
+            if (conttype == "2") {
+                $("#file").show()
+            }
+            else {
+                $("#file").hide()
+            }
+        </script>
+    }*@

@@ -1,0 +1,74 @@
+@model IEnumerable<ARID.Models.EmailContent>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table-hover table table-striped table-bordered dt-responsive">
+    <thead>
+        <tr>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.ArContent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EnContent)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ArSubject)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UniqueName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.EnSubject)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sender)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                        @Html.Raw(item.ArContent)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnContent)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArSubject)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UniqueName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.EnSubject)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Sender.ArDescription)
+                    </td>*@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a onclick = "return confirm('Are sure wants to Broadcast?');" asp-action="Broadcast" asp-route-id="@item.Id">Broadcast</a> |
+                    <a onclick = "return confirm('Are sure wants to Test?');" asp-action="TestBroadcast" asp-route-id="@item.Id">Test</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

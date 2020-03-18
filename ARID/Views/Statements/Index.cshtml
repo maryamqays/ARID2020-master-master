@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ARID.Models.Statement>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*<h1>Balance : @ViewData["Balance"]</h1>*@
+
+<h3>كشف الحسابات المالية</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RecordDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Destination)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Details)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecordDate)
+            </td>
+            <td>
+                @if (item.Destination == true)
+                {
+                    <p><span class="glyphicon glyphicon-plus-sign"></span></p>}
+                else
+                { <p><span class="glyphicon glyphicon-minus-sign"></span></p>}
+                @*@Html.DisplayFor(modelItem => item.Destination)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Details)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

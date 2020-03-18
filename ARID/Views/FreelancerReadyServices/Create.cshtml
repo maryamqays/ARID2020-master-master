@@ -1,0 +1,99 @@
+﻿@model ARID.Models.FreelancerReadyService
+
+@{
+    ViewData["Title"] = "إضافة خدمة";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>إضافة خدمة</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form id="createform" asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<div class="form-group">
+                    <label asp-for="ApplicationUserId" class="control-label"></label>
+                    <select asp-for="ApplicationUserId" class ="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" maxlength="58" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SkillCategoryType" class="control-label"></label>
+                <select asp-for="SkillCategoryType" asp-items="Html.GetEnumSelectList<SkillCategoryType>()" class="form-control"><option disabled selected>إختر فئة المهارة</option></select>
+                <span asp-validation-for="SkillCategoryType" class="text-danger"></span>
+            </div>
+            <div class="form-group ">
+                <label asp-for="Skills" class="control-label"></label><br />
+                <input asp-for="Skills" type="text" class="form-control" data-role="tagsinput" width="100" /><br />
+                <span asp-validation-for="Skills" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <img id="img1" class="img-rounded" src="" />
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" name="myfile" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" class="btn btn-primary col-lg-12" />
+                <input asp-for="Image" id="fileinput" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Youtube" class="control-label"></label>
+                <input type="url" asp-for="Youtube" class="form-control" />
+                <span asp-validation-for="Youtube" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequiredDays" class="control-label"></label>
+                <input min="1" max="30" asp-for="RequiredDays" class="form-control" />
+                <span asp-validation-for="RequiredDays" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="Views" class="control-label"></label>
+                    <input asp-for="Views" class="form-control" />
+                    <span asp-validation-for="Views" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateOfRecord" class="control-label"></label>
+                    <input asp-for="DateOfRecord" class="form-control" />
+                    <span asp-validation-for="DateOfRecord" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="PricingType" class="control-label"></label>
+                <select asp-for="PricingType" asp-items="Html.GetEnumSelectList<PricingType>()" class="form-control"><option disabled selected>إختر السعر</option></select>
+                <span asp-validation-for="PricingType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <h4 style="display:inline"> <input onclick="Submit()" type="submit" value="إضافة" class="btn btn-success" /></h4>
+                <h4 style="display:inline;float:left"><a asp-action="Index" class="btn btn-info">رجوع</a></h4>
+
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#file").change(function () {
+                if ($("#file").val() != "") {
+                    $("#fileinput").prop("value", $("#file").val().split('\\').pop());
+                }
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) { $('#img1').attr('src', e.target.result); }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

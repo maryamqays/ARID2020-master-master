@@ -1,0 +1,74 @@
+﻿@model ARID.Models.CommunityViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{ ApplicationUser currentUser = await UserManager.GetUserAsync(User); }
+@{
+    ViewData["Title"] = "مدونة عالم";
+}
+<h2>مدونات أعضاء منصة اريد - مدونة عالم</h2>
+<div class="col-lg-12">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.ShortName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.ApplicationUser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Community.Speciality)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FollowersCount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PostsCount)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Communities)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Index" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Name)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShortName)
+                    </td>
+                    @*<td>@Model.Posts.Where(a => a.CommunityId == item.Id).Count()</td>*@
+                    <td>
+                        <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-Id="@item.ApplicationUserId"> @Html.DisplayFor(modelItem => item.ApplicationUser.ArName)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Speciality.Name)
+                    </td>
+                    <td>
+                        @Model.CommunityFollower.Where(a => a.CommunityId == item.Id).Count()
+                    </td>
+                    <td>@Model.Posts.Where(a => a.CommunityId == item.Id).Count()</td>
+                    <td>
+                        @if (User.IsInRole("Admins"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a asp-action="Delete" asp-route-id="@item.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-center">
+        <cs-pager cs-paging-pagenumber=(int)Model.PagedResult.PageNumber
+                  cs-paging-totalitems=(int)Model.PagedResult.TotalItems
+                  cs-paging-pagesize="1"
+                  cs-pagenumber-param="pagenumber"
+                  asp-action="List"
+                  asp-controller="Blogs"></cs-pager>
+    </div>
+</div>

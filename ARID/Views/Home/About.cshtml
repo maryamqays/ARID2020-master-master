@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+
+
+@inject IViewLocalizer Localizer
+﻿@{
+    ViewData["Title"] = Localizer["Title"];
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>
+    @Localizer["WhatisARID"]
+    <br>
+</h3>
+<h4>
+    @Localizer["Message"]
+</h4>
+
+<a class="btn btn-default" href="@Url.Action("Contact","Home")" target="_blank">@Localizer["ContactUs"]</a>
+
+
+@*@(Html.Kendo().DatePicker().Name("datepicker"))
+
+
+@(Html.Kendo().Editor()
+                                    .Name("editor")
+                                    .Encoded(true)
+                                    .HtmlAttributes(new { style = "width: 100%;height:440px" })
+                                    .Value(@<text>
+                                        <p>
+                                            Kendo UI Editor allows your users to edit HTML in a familiar, user-friendly way.
+                                        </p>
+                                    </text>)
+)*@
+
+@section Scripts {
+
+
+    <script>
+        $(document).ready(function () {
+            // create Editor from textarea HTML element with default set of tools
+            $("#editor").kendoEditor({
+                resizable: {
+                    content: true,
+                    toolbar: true
+                }
+            });
+        });
+    </script>
+
+
+
+}
